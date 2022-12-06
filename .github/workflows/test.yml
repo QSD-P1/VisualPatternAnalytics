@@ -28,6 +28,11 @@ jobs:
     - name: Build
       run: msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release
       working-directory: ./src
+    - name: Upload VSIX bestand
+      uses: actions/upload-artifact@v3
+      with:
+        name: VisualPatternAnalytics
+        path: ./src/VPA.Client.VisualStudio.Extension.Vsix/bin/Release/VPA.Client.VisualStudio.Extension.Vsix.vsix
     - name: Test
       run: dotnet test --no-build --verbosity normal
       working-directory: ./src
