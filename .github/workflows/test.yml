@@ -23,6 +23,10 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./src
+    - uses: NuGet/setup-nuget@v1.1.1
+    - name: Restore nuget packages
+      run: nuget restore "Visual Pattern Analytics.sln"
+      working-directory: ./src
     - name: Build
       run: dotnet build --no-restore
       working-directory: ./src
