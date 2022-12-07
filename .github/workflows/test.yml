@@ -1,0 +1,46 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "develop", "main" ]
+  pull_request:
+    branches: [ "develop", "main" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: microsoft/setup-msbuild@v1.1
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ./src
+    - uses: NuGet/setup-nuget@v1.1.1
+    - name: Restore nuget packages
+      run: nuget restore "Visual Pattern Analytics.sln"
+      working-directory: ./src
+    - name: Build
+      run: msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release
+      working-directory: ./src
+    - name: Setup VSTest
+      uses: darenm/Setup-VSTest@v1
+    - name: Run Tests VPA.Common.Adapters.Tests
+      run: vstest.console.exe .\VPA.Common.Adapters.Tests\bin\Release\net6.0\VPA.Common.Adapters.Tests.dll
+      working-directory: ./src
+    - name: Run Tests VPA.Configuration.Tests
+      run: vstest.console.exe .\VPA.Configuration.Tests\bin\Release\net6.0\VPA.Configuration.Tests.dll
+      working-directory: ./src
+    - name: Run Tests VPA.Usecases.Tests
+      run: vstest.console.exe .\VPA.Usecases.Tests\bin\Release\net6.0\VPA.Usecases.Tests.dll
+      working-directory: ./src
+    - name: Upload VSIX bestand
+      uses: actions/upload-artifact@v3
+      with:
+        name: VisualPatternAnalytics
+        path: ./src/VPA.Client.VisualStudio.Extension.Vsix/bin/Release/VPA.Client.VisualStudio.Extension.Vsix.vsix
