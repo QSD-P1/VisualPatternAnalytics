@@ -26,7 +26,7 @@ jobs:
       run: nuget restore "Visual Pattern Analytics.sln"
       working-directory: ./src
     - name: Build
-      run: msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release
+      run: msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release -m
       working-directory: ./src
     - name: Setup VSTest
       uses: darenm/Setup-VSTest@v1
