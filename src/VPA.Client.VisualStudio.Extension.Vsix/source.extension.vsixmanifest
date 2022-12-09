@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-    <Metadata>
-        <Identity Id="Visual Pattern Analytics.1ba17665-9c88-4d94-a7ba-f9cc3cba6385" Version="0.1" Language="en-US" Publisher="ICTDTQSD1" />
-        <DisplayName>Visual Pattern Analytics</DisplayName>
-        <Description xml:space="preserve">Design pattern analyzer for AAS SolutionsDesign pattern analyzer for AAS </Description>
-        <Preview>true</Preview>
-    </Metadata>
-    <Installation>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
-            <ProductArchitecture>amd64</ProductArchitecture>
-        </InstallationTarget>
-    </Installation>
-    <Dependencies>
-        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-    </Dependencies>
-    <Assets>
-        <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="VPA.Client.VisualStudio.Extension" Path="|VPA.Client.VisualStudio.Extension|" />
-    </Assets>
-    <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,18.0)" DisplayName="Visual Studio core editor" />
-    </Prerequisites>
+  <Metadata>
+    <Identity Id="VPA.Client.VisualStudio.Extension.VSIX.295d9916-0ea1-43bd-ab51-ec5187358a86" Version="1.0" Language="en-US" Publisher="Joep van 't Land" />
+    <DisplayName>VPA.Client.VisualStudio.Extension.VSIX</DisplayName>
+    <Description>Empty VSIX Project.</Description>
+    <Icon>Resources\Icon.png</Icon>
+    <PreviewImage>Resources\Icon.png</PreviewImage>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+  </Installation>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,)" DisplayName="Visual Studio core editor" />
+  </Prerequisites>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+  </Assets>
 </PackageManifest>
