@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace VPA.Common.Adapters.Parser
 {
-	public class ClassObject: HashSet<ClassObject>,
+	public class ClassObject: Node
 	{
-		internal ClassObject() { }
+		public string? Name { get; set; }
+		public string[] AccessModifiers = new string[2];
+		public string? Abstraction { get; set; }
+		public string? Type { get; set; }
+		public bool? Inherit { get; set; }
+		public string? SourcePath { get; set; }
 
-		public static
+		public List<Node> nodes;
+		public ClassObject()
+		{
+			this.nodes = new List<Node>();
+		}
 	}
 }

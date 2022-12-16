@@ -4,7 +4,11 @@ using System.Text;
 
 namespace VPA.Common.Adapters.Parser
 {
-	internal class Field
+	public class FieldObject : Node
 	{
+		public string? Name;
+		public string[] AccessModifiers = new string[2];
+		public string? Type { get; set; }
+		public object? Location { get; set; }
 	}
 }

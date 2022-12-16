@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VPA.Common.Adapters.Parser
 {
-	internal class Node
+	public class Node
 	{
 	}
 }
