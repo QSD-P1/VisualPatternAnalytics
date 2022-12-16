@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VPA.Common.Adapters.Parser
 {
-	public class ProjectObject
+	public class ProjectObject: Node
 	{
 		public string? Name { get; set; }
 		public List<Node> nodes;
