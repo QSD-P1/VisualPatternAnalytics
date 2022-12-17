@@ -8,9 +8,8 @@ namespace VPA.Common.Adapters.Parser
 	public class ClassObject: Node
 	{
 		public string? Name { get; set; }
-		public string[] AccessModifiers = new string[2];
+		public string[] AccessModifiers = new string[6];
 		public string? Abstraction { get; set; }
-		public string? Type { get; set; }
 		public bool? Inherit { get; set; }
 		public string? SourcePath { get; set; }
 
