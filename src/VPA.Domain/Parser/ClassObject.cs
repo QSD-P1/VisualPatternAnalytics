@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
+using VPA.Domain.Parser;
 
 namespace VPA.Common.Adapters.Parser
 {
 	public class ClassNode: Node
 	{
-		public string[] AccessModifiers = new string[6];
+		public AccessModifier AccessModifiers;
 		public string? Abstraction { get; set; }
 		public bool? Inherit { get; set; }
 		public string[] Inherited { get; set; }
