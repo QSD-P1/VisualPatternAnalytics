@@ -5,16 +5,17 @@ using System.Xml.Linq;
 
 namespace VPA.Common.Adapters.Parser
 {
-	public class ClassObject: Node
+	public class ClassNode: Node
 	{
-		public string? Name { get; set; }
 		public string[] AccessModifiers = new string[6];
 		public string? Abstraction { get; set; }
 		public bool? Inherit { get; set; }
+		public string[] Inherited { get; set; }
 		public string? SourcePath { get; set; }
+		public object? Location { get; set; }
 
 		public List<Node> nodes;
-		public ClassObject()
+		public ClassNode()
 		{
 			this.nodes = new List<Node>();
 		}
