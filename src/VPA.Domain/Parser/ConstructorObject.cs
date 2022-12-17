@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VPA.Domain.Parser;
 
-namespace VPA.Common.Adapters.Parser
+namespace VPA.Domain.Parser
 {
 	public class ConstructorObject: Node
 	{

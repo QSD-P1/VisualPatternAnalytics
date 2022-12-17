@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml.Linq;
 using VPA.Domain.Parser;
 
-namespace VPA.Common.Adapters.Parser
+namespace VPA.Domain.Parser
 {
 	public class ClassNode: Node
 	{

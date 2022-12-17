@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace VPA.Common.Adapters.Parser
+namespace VPA.Domain.Parser
 {
 	public abstract class Node
 	{
