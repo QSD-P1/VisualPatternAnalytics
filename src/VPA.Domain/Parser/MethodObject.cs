@@ -9,7 +9,7 @@ namespace VPA.Common.Adapters.Parser
 	{
 		public AccessModifier AccessModifiers;
 		public string? ReturnType { get; set; }
-		public string? Parameters { get; set; }
+		public string[]? Parameters { get; set; }
 		public object? Location { get; set; }
 	}
 }

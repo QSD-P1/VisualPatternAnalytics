@@ -8,6 +8,6 @@ namespace VPA.Common.Adapters.Parser
 	public class ConstructorObject: Node
 	{
 		public AccessModifier AccessModifiers;
-		public string[]? Parameters;
+		public string[]? Parameters { get; set; }
 	}
 }
