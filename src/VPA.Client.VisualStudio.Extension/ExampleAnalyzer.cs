@@ -1,10 +1,13 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
+using VPA.Common.Adapters.Adapters;
 using VPA.Common.Adapters.Interfaces;
 using VPA.Configuration;
+using VPA.Domain.Models;
 using VPA.Usecases.Interfaces;
 
 namespace VPA.Client.VisualStudio.Extension
@@ -43,39 +46,41 @@ namespace VPA.Client.VisualStudio.Extension
 			// See https://github.com/dotnet/roslyn/blob/main/docs/analyzers/Analyzer%20Actions%20Semantics.md for more information
 			//context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.Method);
 			context.RegisterCompilationAction(ValidateWork);
-			context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.Method);
+			//context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.Method);
 		}
 
 		private void ValidateWork(CompilationAnalysisContext context)
 		{
-
-			analyzeSingletonUsecase.Analyze(new Domain.Models.GenericTree());
-			foreach (var item in context.Compilation.SyntaxTrees)
+			var genericList = new List<ClassNode>();
+			foreach (var tree in context.Compilation.SyntaxTrees)
 			{
-				foreach (var tree in item.GetCompilationUnitRoot(CancellationToken.None).ChildNodesAndTokens())
-				{
-					//if (tree.IsKind(SyntaxKind.UsingDirective))
-					//{
-						var diagnostic = Diagnostic.Create(Rule, location: tree.GetLocation());
-						context.ReportDiagnostic(diagnostic);
-					//}
-				}
+				genericList.AddRange(roslynAdapter.ConvertToGenericTree(tree, context.Compilation.GetSemanticModel(tree)));
+
+				//foreach (var tree in tree.GetCompilationUnitRoot(CancellationToken.None).ChildNodesAndTokens())
+				//{
+				//	//if (tree.IsKind(SyntaxKind.UsingDirective))
+				//	//{
+				//	var diagnostic = Diagnostic.Create(Rule, location: tree.GetLocation());
+				//	context.ReportDiagnostic(diagnostic);
+				//	//}
+				//}
 			}
+			//analyzeSingletonUsecase.Analyze(genericList);
 		}
 
-		private static void AnalyzeSymbol(SymbolAnalysisContext context)
-		{
-			// TODO: Replace the following code with your own analysis, generating Diagnostic objects for any issues you find
-			var namedTypeSymbol = (IMethodSymbol)context.Symbol;
+		//private static void AnalyzeSymbol(SymbolAnalysisContext context)
+		//{
+		//	// TODO: Replace the following code with your own analysis, generating Diagnostic objects for any issues you find
+		//	var namedTypeSymbol = (IMethodSymbol)context.Symbol;
 
-			// Find just those named type symbols with names containing lowercase letters.
-			//if (namedTypeSymbol.Name.ToCharArray().Any(char.IsLower))
-			//{
-				// For all such symbols, produce a diagnostic.
-				var diagnostic = Diagnostic.Create(Rule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
+		//	// Find just those named type symbols with names containing lowercase letters.
+		//	//if (namedTypeSymbol.Name.ToCharArray().Any(char.IsLower))
+		//	//{
+		//	// For all such symbols, produce a diagnostic.
+		//	var diagnostic = Diagnostic.Create(Rule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
 
-				context.ReportDiagnostic(diagnostic);
-			//}
-		}
+		//	context.ReportDiagnostic(diagnostic);
+		//	//}
+		//}
 	}
 }
