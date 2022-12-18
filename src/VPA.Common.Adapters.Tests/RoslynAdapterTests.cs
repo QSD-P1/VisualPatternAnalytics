@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using VPA.Common.Adapters.Adapters;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;
+using System;
 
 namespace VPA.Common.Adapters.Tests
 {
@@ -136,6 +137,33 @@ namespace VPA.Common.Adapters.Tests
 				() => Assert.Equal(new[] { "Int32", "String" }, result.Parameter),
 				() => Assert.NotNull(result.Location)
 			);
+		}
+
+		[Fact]
+		public void ConvertFieldDeclarationToFieldNode_ReturnsCorrectFieldNode()
+		{
+			// Arrange
+			var tree = SyntaxFactory.ParseSyntaxTree("class TestClass { private int field1; protected string field2; }");
+			var compilation = CSharpCompilation.Create("MyCompilation")
+				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
+				.AddSyntaxTrees(tree);
+			var semanticModel = compilation.GetSemanticModel(tree);
+
+			var roslynAdapter = new RoslynAdapter();
+
+			// Act
+			var fieldNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().ChildNodes
+				.OfType<FieldNode>()
+				.ToList();
+
+			// Assert
+			Assert.Equal(2, fieldNodes.Count);
+			Assert.Equal("field1", fieldNodes[0].Name);
+			Assert.Equal("int", fieldNodes[0].Type);
+			Assert.Equal("Private", fieldNodes[0].AccessModifiers.ToString());
+			Assert.Equal("field2", fieldNodes[1].Name);
+			Assert.Equal("string", fieldNodes[1].Type);
+			Assert.Equal("Protected", fieldNodes[1].AccessModifiers.ToString());
 		}
 	}
 }

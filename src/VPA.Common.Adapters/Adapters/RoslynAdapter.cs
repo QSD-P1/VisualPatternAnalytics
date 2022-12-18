@@ -26,7 +26,8 @@ namespace VPA.Common.Adapters.Adapters
 			Dictionary<Type, Func<SyntaxNode, SemanticModel, BaseNode>> NodeConvertionDictionary = new()
 			{
 				{ typeof(ClassDeclarationSyntax), ConvertClassDeclarationToClassNode },
-				{ typeof(ConstructorDeclarationSyntax), ConvertConstructorDeclarationToConstructorNode }
+				{ typeof(ConstructorDeclarationSyntax), ConvertConstructorDeclarationToConstructorNode },
+				{ typeof(FieldDeclarationSyntax), ConvertFieldDeclarationToFieldNode }
 			};
 
 			//If we can not find a suitable conversionMethod, just return
@@ -61,7 +62,7 @@ namespace VPA.Common.Adapters.Adapters
 			// Get the symbol for the class
 			var classSymbol = semanticModel.GetDeclaredSymbol(roslynNode);
 
-			// Convert the roslyndata to generic tree classNode
+			// Convert the roslyndata to generic tree ClassNode
 			var newNode = new ClassNode()
 			{
 				Name = classSymbol.Name,
@@ -78,7 +79,7 @@ namespace VPA.Common.Adapters.Adapters
 			// Get the symbol for the class
 			var constructorSymbol = semanticModel.GetDeclaredSymbol((ConstructorDeclarationSyntax)nodeToConvert);
 
-			// Convert the roslyndata to generic tree classNode
+			// Convert the roslyndata to generic tree ConstructorNode
 			var newNode = new ConstructorNode()
 			{
 				AccessModifiers = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), constructorSymbol.DeclaredAccessibility.ToString()),
@@ -87,5 +88,23 @@ namespace VPA.Common.Adapters.Adapters
 			};
 			return newNode;
 		}
+
+		private FieldNode ConvertFieldDeclarationToFieldNode(SyntaxNode nodeToConvert, SemanticModel semanticModel)
+		{
+			//We need to get the symbol on a different way because the semanticModel has a minor bug regarding to fields
+			var roslynNode = (FieldDeclarationSyntax)nodeToConvert;
+			var fieldSymbol = roslynNode.Declaration.Variables.Select(v => semanticModel.GetDeclaredSymbol(v)).FirstOrDefault();
+
+			// Convert the roslyndata to generic tree FieldNode
+			var newNode = new FieldNode()
+			{
+				Name = fieldSymbol.Name,
+				Type = roslynNode.Declaration.Type.ToString(),
+				AccessModifiers = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), fieldSymbol.DeclaredAccessibility.ToString()),
+				Location = fieldSymbol.Locations,
+			};
+			return newNode;
+		}
+
 	}
 }
