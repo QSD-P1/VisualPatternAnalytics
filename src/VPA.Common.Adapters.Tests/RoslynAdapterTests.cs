@@ -31,10 +31,11 @@ namespace VPA.Common.Adapters.Tests
 				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
 				.AddSyntaxTrees(tree);
 			var model = compilation.GetSemanticModel(tree);
-			var adapter = new RoslynAdapter();
+
+			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = (ClassNode)adapter.ConvertToGenericTree(tree, model).First();
+			var result = (ClassNode)roslynAdapter.ConvertToGenericTree(tree, model).First();
 
 			// Assert
 			var expected = new ClassNode
@@ -68,10 +69,11 @@ namespace VPA.Common.Adapters.Tests
 				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
 				.AddSyntaxTrees(tree);
 			var model = compilation.GetSemanticModel(tree);
-			var adapter = new RoslynAdapter();
+
+			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = (ConstructorNode)adapter.ConvertToGenericTree(tree, model).First().ChildNodes.First();
+			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, model).First().ChildNodes.First();
 
 			// Assert
 			var expected = new ConstructorNode
@@ -99,10 +101,10 @@ namespace VPA.Common.Adapters.Tests
 				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
 				.AddSyntaxTrees(tree);
 			var semanticModel = compilation.GetSemanticModel(tree);
-			var adapter = new RoslynAdapter();
+			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = (ClassNode)adapter.ConvertToGenericTree(tree, semanticModel).First();
+			var result = (ClassNode)roslynAdapter.ConvertToGenericTree(tree, semanticModel).First();
 
 			// Assert
 			Assert.Multiple(
@@ -124,10 +126,11 @@ namespace VPA.Common.Adapters.Tests
 				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
 				.AddSyntaxTrees(tree);
 			var semanticModel = compilation.GetSemanticModel(tree);
-			var adapter = new RoslynAdapter();
+
+			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = (ConstructorNode)adapter.ConvertToGenericTree(tree, semanticModel).First().ChildNodes.First();
+			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().ChildNodes.First();
 
 			// Assert
 			Assert.Multiple(
@@ -157,13 +160,46 @@ namespace VPA.Common.Adapters.Tests
 				.ToList();
 
 			// Assert
-			Assert.Equal(2, fieldNodes.Count);
-			Assert.Equal("field1", fieldNodes[0].Name);
-			Assert.Equal("int", fieldNodes[0].Type);
-			Assert.Equal("Private", fieldNodes[0].AccessModifiers.ToString());
-			Assert.Equal("field2", fieldNodes[1].Name);
-			Assert.Equal("string", fieldNodes[1].Type);
-			Assert.Equal("Protected", fieldNodes[1].AccessModifiers.ToString());
+			Assert.Multiple(
+				() => Assert.Equal(2, fieldNodes.Count),
+				() => Assert.Equal("field1", fieldNodes[0].Name),
+				() => Assert.Equal("int", fieldNodes[0].Type),
+				() => Assert.Equal("Private", fieldNodes[0].AccessModifiers.ToString()),
+				() => Assert.Equal("field2", fieldNodes[1].Name),
+				() => Assert.Equal("string", fieldNodes[1].Type),
+				() => Assert.Equal("Protected", fieldNodes[1].AccessModifiers.ToString())
+			);
+		}
+
+
+		[Fact]
+		public void ConvertMethodDeclarationToMethodNode_ReturnsCorrectMethodNode()
+		{
+			// Arrange
+			var tree = SyntaxFactory.ParseSyntaxTree("class TestClass { private int Method1(int x, string y) { return x; } protected string Method2() { return \"\"; } }");
+			var compilation = CSharpCompilation.Create("MyCompilation")
+				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
+				.AddSyntaxTrees(tree);
+			var semanticModel = compilation.GetSemanticModel(tree);
+
+			var roslynAdapter = new RoslynAdapter();
+
+			// Act
+			var methodNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().ChildNodes
+				.OfType<MethodNode>()
+				.ToList();
+
+			// Assert
+			Assert.Multiple(
+				() => Assert.Equal(2, methodNodes.Count),
+				() => Assert.Equal("Method1", methodNodes[0].Name),
+				() => Assert.Equal("Int32", methodNodes[0].ReturnType),
+				() => Assert.Equal("Private", methodNodes[0].AccessModifiers.ToString()),
+				() => Assert.Equal(new List<string> { "Int32", "String" }, methodNodes[0].Parameters),
+				() => Assert.Equal("Method2", methodNodes[1].Name),
+				() => Assert.Equal("String", methodNodes[1].ReturnType),
+				() => Assert.Equal("Protected", methodNodes[1].AccessModifiers.ToString())
+			);
 		}
 	}
 }

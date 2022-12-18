@@ -27,7 +27,8 @@ namespace VPA.Common.Adapters.Adapters
 			{
 				{ typeof(ClassDeclarationSyntax), ConvertClassDeclarationToClassNode },
 				{ typeof(ConstructorDeclarationSyntax), ConvertConstructorDeclarationToConstructorNode },
-				{ typeof(FieldDeclarationSyntax), ConvertFieldDeclarationToFieldNode }
+				{ typeof(FieldDeclarationSyntax), ConvertFieldDeclarationToFieldNode },
+				{ typeof(MethodDeclarationSyntax), ConvertMethodDeclarationToMethodNode }
 			};
 
 			//If we can not find a suitable conversionMethod, just return
@@ -106,5 +107,23 @@ namespace VPA.Common.Adapters.Adapters
 			return newNode;
 		}
 
+		private MethodNode ConvertMethodDeclarationToMethodNode(SyntaxNode nodeToConvert, SemanticModel semanticModel)
+		{
+			var roslynNode = (MethodDeclarationSyntax)nodeToConvert;
+
+			// Get the symbol for the method
+			var methodSymbol = semanticModel.GetDeclaredSymbol(roslynNode);
+
+			// Convert the roslyn data to generic tree MethodNode
+			var newNode = new MethodNode()
+			{
+				Name = methodSymbol.Name,
+				AccessModifiers = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), methodSymbol.DeclaredAccessibility.ToString()),
+				ReturnType = methodSymbol.ReturnType.Name,
+				Location = methodSymbol.Locations,
+				Parameters = methodSymbol.Parameters.Select(x => x.Type.Name).ToList(),
+			};
+			return newNode;
+		}
 	}
 }
