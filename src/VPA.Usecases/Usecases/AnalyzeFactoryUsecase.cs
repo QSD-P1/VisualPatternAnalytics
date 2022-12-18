@@ -5,7 +5,7 @@ namespace VPA.Usecases.Usecases
 {
 	public class AnalyzeFactoryUsecase : IAnalyzeFactoryUsecase
 	{
-		public Task Analyze(GenericTree tree)
+		public Task Analyze(IEnumerable<BaseNode> tree)
 		{
 			throw new NotImplementedException();
 		}

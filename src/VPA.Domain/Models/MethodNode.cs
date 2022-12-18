@@ -6,6 +6,6 @@ namespace VPA.Domain.Models
 	{
 		public AccessModifierEnum AccessModifiers { get; set; }
 		public string ReturnType { get; set; }
-		public object Parameters { get; set; }
+		public IEnumerable<string>? Parameters { get; set; }
 	}
 }

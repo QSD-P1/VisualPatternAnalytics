@@ -51,7 +51,7 @@ namespace VPA.Client.VisualStudio.Extension
 
 		private void ValidateWork(CompilationAnalysisContext context)
 		{
-			var genericList = new List<ClassNode>();
+			var genericList = new List<BaseNode>();
 			foreach (var tree in context.Compilation.SyntaxTrees)
 			{
 				genericList.AddRange(roslynAdapter.ConvertToGenericTree(tree, context.Compilation.GetSemanticModel(tree)));

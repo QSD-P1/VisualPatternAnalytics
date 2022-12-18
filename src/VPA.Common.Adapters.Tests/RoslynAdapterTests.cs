@@ -1,23 +1,13 @@
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using VPA.Common.Adapters.Adapters;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;
-using System;
 
 namespace VPA.Common.Adapters.Tests
 {
-	public class RoslynAdapterTests : IDisposable
+	public class RoslynAdapterTests
 	{
-		public RoslynAdapterTests()
-		{
-
-		}
-		public void Dispose()
-		{
-
-		}
-
 		[Fact]
 		public void ConvertToGenericTree_ReturnsCorrectClassNode()
 		{
@@ -58,13 +48,13 @@ namespace VPA.Common.Adapters.Tests
 		{
 			// Arrange
 			var tree = CSharpSyntaxTree.ParseText(@"
-            public class MyClass
-            {
-                public MyClass()
-                {
-                }
-            }
-        ");
+				public class MyClass
+				{
+				    public MyClass()
+				    {
+				    }
+				}
+			");
 			var compilation = CSharpCompilation.Create("MyCompilation")
 				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
 				.AddSyntaxTrees(tree);

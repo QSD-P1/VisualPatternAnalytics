@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Xml.Linq;
 using VPA.Common.Adapters.Interfaces;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;
@@ -20,9 +19,11 @@ namespace VPA.Common.Adapters.Adapters
 			}
 			return result;
 		}
+
 		private BaseNode ConvertToCustomNode(SyntaxNode node, SemanticModel semanticModel)
 		{
-			//List mapping specific types to the representing convert methods
+			//List mapping specific types to the representing conversion methods
+			//Chosen to use a dictionary instead of switch so the code is easier to read with allot of types
 			Dictionary<Type, Func<SyntaxNode, SemanticModel, BaseNode>> NodeConvertionDictionary = new()
 			{
 				{ typeof(ClassDeclarationSyntax), ConvertClassDeclarationToClassNode },
