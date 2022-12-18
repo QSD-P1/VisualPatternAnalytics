@@ -16,11 +16,11 @@ namespace VPA.Common.Adapters.Adapters
 			var result = new List<BaseNode>();
 			foreach (var node in nodes)
 			{
-				result.Add(ConvertToCustomTree(node, semanticModel));
+				result.Add(ConvertToCustomNode(node, semanticModel));
 			}
 			return result;
 		}
-		private BaseNode ConvertToCustomTree(SyntaxNode node, SemanticModel semanticModel)
+		private BaseNode ConvertToCustomNode(SyntaxNode node, SemanticModel semanticModel)
 		{
 			//List mapping specific types to the representing convert methods
 			Dictionary<Type, Func<SyntaxNode, SemanticModel, BaseNode>> NodeConvertionDictionary = new()
@@ -39,7 +39,17 @@ namespace VPA.Common.Adapters.Adapters
 			var customNode = SpecificConversionMethod(node, semanticModel);
 
 			// Recursively convert the children of the SyntaxNode
-			customNode.ChildNodes = node.ChildNodes().Select(x => ConvertToCustomTree(x, semanticModel)).ToList();
+			var childNodes = node.ChildNodes();
+			var childNodesList = new List<BaseNode>();
+			foreach (var childNode in childNodes)
+			{
+				var convertedNode = ConvertToCustomNode(childNode, semanticModel);
+				if (convertedNode != null)
+				{
+					childNodesList.Add(convertedNode);
+				}
+			}
+			customNode.ChildNodes = childNodesList;
 
 			return customNode;
 		}
@@ -71,7 +81,6 @@ namespace VPA.Common.Adapters.Adapters
 			// Convert the roslyndata to generic tree classNode
 			var newNode = new ConstructorNode()
 			{
-				Name = constructorSymbol.Name,
 				AccessModifiers = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), constructorSymbol.DeclaredAccessibility.ToString()),
 				Location = constructorSymbol.Locations,
 				Parameter = constructorSymbol.Parameters.Select(x => x.Type.Name).ToList(),
