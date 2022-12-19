@@ -73,13 +73,12 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 			// Convert the roslyndata to generic tree ClassNode
 			var newNode = new ClassNode()
 			{
-				Name = classSymbol.Name,
-				Modifiers = roslynNode.Modifiers.ToModifiers(),
-				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), classSymbol.DeclaredAccessibility.ToString()),
 				Interfaces = classSymbol.AllInterfaces.Select(x => x.Name).ToList(),
 				ParentClassName = classSymbol.BaseType.Name,
-				Location = classSymbol.Locations,
 			};
+
+			newNode = FillBaseLeafData(roslynNode, classSymbol, newNode);
+
 			return newNode;
 		}
 
@@ -93,11 +92,11 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 			// Convert the roslyndata to generic tree ConstructorNode
 			var newNode = new ConstructorNode()
 			{
-				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), constructorSymbol.DeclaredAccessibility.ToString()),
-				Location = constructorSymbol.Locations,
-				Modifiers = roslynNode.Modifiers.ToModifiers(),
 				Parameter = constructorSymbol.Parameters.Select(x => x.Type.Name).ToList(),
 			};
+
+			newNode = FillBaseLeafData(roslynNode, constructorSymbol, newNode);
+
 			return newNode;
 		}
 
@@ -107,15 +106,14 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 			var roslynNode = (FieldDeclarationSyntax)nodeToConvert;
 			var fieldSymbol = roslynNode.Declaration.Variables.Select(v => semanticModel.GetDeclaredSymbol(v)).FirstOrDefault();
 
-			// Convert the roslyndata to generic tree FieldNode
+			// Convert the roslyn data to the method specific values
 			var newNode = new FieldNode()
 			{
-				Name = fieldSymbol.Name,
-				Modifiers = roslynNode.Modifiers.ToModifiers(),
 				Type = roslynNode.Declaration.Type.ToString(),
-				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), fieldSymbol.DeclaredAccessibility.ToString()),
-				Location = fieldSymbol.Locations,
 			};
+
+			newNode = FillBaseLeafData(roslynNode, fieldSymbol, newNode);
+
 			return newNode;
 		}
 
@@ -126,17 +124,26 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 			// Get the symbol for the method
 			var methodSymbol = semanticModel.GetDeclaredSymbol(roslynNode);
 
-			// Convert the roslyn data to generic tree MethodNode
+			// Convert the roslyn data to the method specific values
 			var newNode = new MethodNode()
 			{
-				Name = methodSymbol.Name,
-				Modifiers = roslynNode.Modifiers.ToModifiers(),
-				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), methodSymbol.DeclaredAccessibility.ToString()),
 				ReturnType = methodSymbol.ReturnType.Name,
-				Location = methodSymbol.Locations,
 				Parameters = methodSymbol.Parameters.Select(x => x.Type.Name).ToList(),
 			};
+
+			newNode = FillBaseLeafData(roslynNode, methodSymbol, newNode);
+
 			return newNode;
+		}
+
+		private T FillBaseLeafData<T>(MemberDeclarationSyntax nodeToConvert, ISymbol baseSymbol, T baseLeaf) where T : BaseLeaf
+		{
+			baseLeaf.Name = baseSymbol.Name;
+			baseLeaf.AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), baseSymbol.DeclaredAccessibility.ToString());
+			baseLeaf.Modifiers = nodeToConvert.Modifiers.ToModifiers();
+			baseLeaf.Location = baseSymbol.Locations;
+
+			return baseLeaf;
 		}
 	}
 }
