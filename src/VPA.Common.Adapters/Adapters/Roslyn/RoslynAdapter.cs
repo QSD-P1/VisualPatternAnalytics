@@ -45,18 +45,18 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 			var customNode = SpecificConversionMethod(node, semanticModel);
 
 			// Recursively convert the children of the SyntaxNode
-			var childNodes = node.ChildNodes();
-			var childNodesList = new List<BaseLeaf>();
-			foreach (var childNode in childNodes)
-			{
-				var convertedNode = ConvertToCustomNode(childNode, semanticModel);
-				if (convertedNode != null)
-				{
-					childNodesList.Add(convertedNode);
-				}
-			}
 			if (customNode is BaseNode baseNode)
 			{
+				var childNodes = node.ChildNodes();
+				var childNodesList = new List<BaseLeaf>();
+				foreach (var childNode in childNodes)
+				{
+					var convertedNode = ConvertToCustomNode(childNode, semanticModel);
+					if (convertedNode != null)
+					{
+						childNodesList.Add(convertedNode);
+					}
+				}
 				baseNode.ChildNodes = childNodesList;
 			}
 
