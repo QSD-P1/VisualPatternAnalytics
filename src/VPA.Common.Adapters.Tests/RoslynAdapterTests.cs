@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using VPA.Common.Adapters.Adapters;
+using VPA.Common.Adapters.Adapters.Roslyn;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;
 
@@ -85,7 +86,7 @@ namespace VPA.Common.Adapters.Tests
 		public void ConvertClassDeclarationToClassNode_WithValidInput_ReturnsExpectedResult()
 		{
 			// Arrange
-			var tree = SyntaxFactory.ParseSyntaxTree("class TestClass : BaseClass, ITestInterface { }");
+			var tree = SyntaxFactory.ParseSyntaxTree("static class TestClass : BaseClass, ITestInterface { }");
 			var compilation = CSharpCompilation.Create("MyCompilation")
 				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
 				.AddSyntaxTrees(tree);
@@ -99,6 +100,7 @@ namespace VPA.Common.Adapters.Tests
 			Assert.Multiple(
 				() => Assert.NotNull(result),
 				() => Assert.Equal("TestClass", result.Name),
+				() => Assert.Equal(Modifiers.Static, result.Modifiers.Single()),
 				() => Assert.Equal(AccessModifierEnum.Internal, result.AccessModifier),
 				() => Assert.Equal(new[] { "ITestInterface" }, result.Interfaces),
 				() => Assert.Equal("BaseClass", result.ParentClassName),
@@ -110,7 +112,7 @@ namespace VPA.Common.Adapters.Tests
 		public void ConvertConstructorDeclarationToConstructorNode_WithValidInput_ReturnsExpectedResult()
 		{
 			// Arrange
-			var tree = SyntaxFactory.ParseSyntaxTree("class TestClass { public TestClass(int arg1, string arg2) { } }");
+			var tree = SyntaxFactory.ParseSyntaxTree("class TestClass { public override TestClass(int arg1, string arg2) { } }");
 			var compilation = CSharpCompilation.Create("MyCompilation")
 				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
 				.AddSyntaxTrees(tree);
@@ -126,6 +128,7 @@ namespace VPA.Common.Adapters.Tests
 				() => Assert.NotNull(result),
 				() => Assert.Equal("Constructor", result.Name),
 				() => Assert.Equal(AccessModifierEnum.Public, result.AccessModifier),
+				() => Assert.Equal(Modifiers.Override, result.Modifiers.Single()),
 				() => Assert.Equal(new[] { "Int32", "String" }, result.Parameter),
 				() => Assert.NotNull(result.Location)
 			);
@@ -135,7 +138,7 @@ namespace VPA.Common.Adapters.Tests
 		public void ConvertFieldDeclarationToFieldNode_ReturnsCorrectFieldNode()
 		{
 			// Arrange
-			var tree = SyntaxFactory.ParseSyntaxTree("class TestClass { private int field1; protected string field2; }");
+			var tree = SyntaxFactory.ParseSyntaxTree("class TestClass { private int field1; protected new string field2; }");
 			var compilation = CSharpCompilation.Create("MyCompilation")
 				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
 				.AddSyntaxTrees(tree);
@@ -156,6 +159,7 @@ namespace VPA.Common.Adapters.Tests
 				() => Assert.Equal("Private", fieldNodes[0].AccessModifier.ToString()),
 				() => Assert.Equal("field2", fieldNodes[1].Name),
 				() => Assert.Equal("string", fieldNodes[1].Type),
+				() => Assert.Equal(Modifiers.New, fieldNodes[1].Modifiers.Single()),
 				() => Assert.Equal("Protected", fieldNodes[1].AccessModifier.ToString())
 			);
 		}
@@ -165,7 +169,7 @@ namespace VPA.Common.Adapters.Tests
 		public void ConvertMethodDeclarationToMethodNode_ReturnsCorrectMethodNode()
 		{
 			// Arrange
-			var tree = SyntaxFactory.ParseSyntaxTree("class TestClass { private int Method1(int x, string y) { return x; } protected string Method2() { return \"\"; } }");
+			var tree = SyntaxFactory.ParseSyntaxTree("class TestClass { private int Method1(int x, string y) { return x; } protected override string Method2() { return \"\"; } }");
 			var compilation = CSharpCompilation.Create("MyCompilation")
 				.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
 				.AddSyntaxTrees(tree);
@@ -187,6 +191,7 @@ namespace VPA.Common.Adapters.Tests
 				() => Assert.Equal(new List<string> { "Int32", "String" }, methodNodes[0].Parameters),
 				() => Assert.Equal("Method2", methodNodes[1].Name),
 				() => Assert.Equal("String", methodNodes[1].ReturnType),
+				() => Assert.Equal(Modifiers.Override, methodNodes[1].Modifiers.Single()),
 				() => Assert.Equal("Protected", methodNodes[1].AccessModifier.ToString())
 			);
 		}

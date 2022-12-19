@@ -5,7 +5,7 @@ using VPA.Common.Adapters.Interfaces;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;
 
-namespace VPA.Common.Adapters.Adapters
+namespace VPA.Common.Adapters.Adapters.Roslyn
 {
 	public class RoslynAdapter : IRoslynAdapter
 	{
@@ -74,6 +74,7 @@ namespace VPA.Common.Adapters.Adapters
 			var newNode = new ClassNode()
 			{
 				Name = classSymbol.Name,
+				Modifiers = roslynNode.Modifiers.ToModifiers(),
 				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), classSymbol.DeclaredAccessibility.ToString()),
 				Interfaces = classSymbol.AllInterfaces.Select(x => x.Name).ToList(),
 				ParentClassName = classSymbol.BaseType.Name,
@@ -84,14 +85,17 @@ namespace VPA.Common.Adapters.Adapters
 
 		private ConstructorNode ConvertConstructorDeclarationToConstructorNode(SyntaxNode nodeToConvert, SemanticModel semanticModel)
 		{
+			var roslynNode = (ConstructorDeclarationSyntax)nodeToConvert;
+
 			// Get the symbol for the class
-			var constructorSymbol = semanticModel.GetDeclaredSymbol((ConstructorDeclarationSyntax)nodeToConvert);
+			var constructorSymbol = semanticModel.GetDeclaredSymbol(roslynNode);
 
 			// Convert the roslyndata to generic tree ConstructorNode
 			var newNode = new ConstructorNode()
 			{
 				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), constructorSymbol.DeclaredAccessibility.ToString()),
 				Location = constructorSymbol.Locations,
+				Modifiers = roslynNode.Modifiers.ToModifiers(),
 				Parameter = constructorSymbol.Parameters.Select(x => x.Type.Name).ToList(),
 			};
 			return newNode;
@@ -107,6 +111,7 @@ namespace VPA.Common.Adapters.Adapters
 			var newNode = new FieldNode()
 			{
 				Name = fieldSymbol.Name,
+				Modifiers = roslynNode.Modifiers.ToModifiers(),
 				Type = roslynNode.Declaration.Type.ToString(),
 				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), fieldSymbol.DeclaredAccessibility.ToString()),
 				Location = fieldSymbol.Locations,
@@ -125,6 +130,7 @@ namespace VPA.Common.Adapters.Adapters
 			var newNode = new MethodNode()
 			{
 				Name = methodSymbol.Name,
+				Modifiers = roslynNode.Modifiers.ToModifiers(),
 				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), methodSymbol.DeclaredAccessibility.ToString()),
 				ReturnType = methodSymbol.ReturnType.Name,
 				Location = methodSymbol.Locations,

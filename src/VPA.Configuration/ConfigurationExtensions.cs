@@ -1,4 +1,4 @@
-﻿using VPA.Common.Adapters.Adapters;
+﻿using VPA.Common.Adapters.Adapters.Roslyn;
 using VPA.Common.Adapters.Interfaces;
 using VPA.Usecases.Interfaces;
 using VPA.Usecases.Usecases;
