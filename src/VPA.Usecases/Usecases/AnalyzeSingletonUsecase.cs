@@ -11,7 +11,7 @@ namespace VPA.Usecases.Usecases
 		{
 			this.analyzeSingletonUsecase = analyzeSingletonUsecase;
 		}
-		public Task Analyze(IEnumerable<BaseNode> tree)
+		public Task Analyze(ProjectNode tree)
 		{
 			analyzeSingletonUsecase.Analyze(tree);
 			throw new NotImplementedException();
