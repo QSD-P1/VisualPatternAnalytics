@@ -1,10 +1,7 @@
-﻿using VPA.Domain.Enums;
-
-namespace VPA.Domain.Models
+﻿namespace VPA.Domain.Models
 {
-	public class MethodNode : BaseNode
+	public class MethodNode : BaseLeaf
 	{
-		public AccessModifierEnum AccessModifiers { get; set; }
 		public string? ReturnType { get; set; }
 		public IEnumerable<string>? Parameters { get; set; }
 	}

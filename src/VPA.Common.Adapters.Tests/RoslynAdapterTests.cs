@@ -31,13 +31,13 @@ namespace VPA.Common.Adapters.Tests
 			var expected = new ClassNode
 			{
 				Name = "MyClass",
-				AccessModifiers = AccessModifierEnum.Public,
+				AccessModifier = AccessModifierEnum.Public,
 				Interfaces = new List<string>(),
 				ParentClassName = "object",
 			};
 			Assert.Multiple(
 				() => Assert.Equal(expected.Name, actual: result.Name),
-				() => Assert.Equal(expected.AccessModifiers, actual: result.AccessModifiers),
+				() => Assert.Equal(expected.AccessModifier, actual: result.AccessModifier),
 				() => Assert.Equal(expected.Interfaces, actual: result.Interfaces),
 				() => Assert.NotNull(result.Location)
 				);
@@ -69,13 +69,13 @@ namespace VPA.Common.Adapters.Tests
 			var expected = new ConstructorNode
 			{
 				Name = "Constructor",
-				AccessModifiers = AccessModifierEnum.Public,
+				AccessModifier = AccessModifierEnum.Public,
 				Parameter = new List<string>(),
 				ChildNodes = new List<BaseNode>(),
 			};
 			Assert.Multiple(
 				() => Assert.Equal(expected.Name, actual: result.Name),
-				() => Assert.Equal(expected.AccessModifiers, actual: result.AccessModifiers),
+				() => Assert.Equal(expected.AccessModifier, actual: result.AccessModifier),
 				() => Assert.Equal(expected.Parameter, actual: result.Parameter),
 				() => Assert.Equal(expected.ChildNodes, actual: result.ChildNodes),
 				() => Assert.NotNull(result.Location)
@@ -100,7 +100,7 @@ namespace VPA.Common.Adapters.Tests
 			Assert.Multiple(
 				() => Assert.NotNull(result),
 				() => Assert.Equal("TestClass", result.Name),
-				() => Assert.Equal(AccessModifierEnum.Internal, result.AccessModifiers),
+				() => Assert.Equal(AccessModifierEnum.Internal, result.AccessModifier),
 				() => Assert.Equal(new[] { "ITestInterface" }, result.Interfaces),
 				() => Assert.Equal("BaseClass", result.ParentClassName),
 				() => Assert.NotNull(result.Location)
@@ -126,7 +126,7 @@ namespace VPA.Common.Adapters.Tests
 			Assert.Multiple(
 				() => Assert.NotNull(result),
 				() => Assert.Equal("Constructor", result.Name),
-				() => Assert.Equal(AccessModifierEnum.Public, result.AccessModifiers),
+				() => Assert.Equal(AccessModifierEnum.Public, result.AccessModifier),
 				() => Assert.Equal(new[] { "Int32", "String" }, result.Parameter),
 				() => Assert.NotNull(result.Location)
 			);
@@ -154,10 +154,10 @@ namespace VPA.Common.Adapters.Tests
 				() => Assert.Equal(2, fieldNodes.Count),
 				() => Assert.Equal("field1", fieldNodes[0].Name),
 				() => Assert.Equal("int", fieldNodes[0].Type),
-				() => Assert.Equal("Private", fieldNodes[0].AccessModifiers.ToString()),
+				() => Assert.Equal("Private", fieldNodes[0].AccessModifier.ToString()),
 				() => Assert.Equal("field2", fieldNodes[1].Name),
 				() => Assert.Equal("string", fieldNodes[1].Type),
-				() => Assert.Equal("Protected", fieldNodes[1].AccessModifiers.ToString())
+				() => Assert.Equal("Protected", fieldNodes[1].AccessModifier.ToString())
 			);
 		}
 
@@ -184,11 +184,11 @@ namespace VPA.Common.Adapters.Tests
 				() => Assert.Equal(2, methodNodes.Count),
 				() => Assert.Equal("Method1", methodNodes[0].Name),
 				() => Assert.Equal("Int32", methodNodes[0].ReturnType),
-				() => Assert.Equal("Private", methodNodes[0].AccessModifiers.ToString()),
+				() => Assert.Equal("Private", methodNodes[0].AccessModifier.ToString()),
 				() => Assert.Equal(new List<string> { "Int32", "String" }, methodNodes[0].Parameters),
 				() => Assert.Equal("Method2", methodNodes[1].Name),
 				() => Assert.Equal("String", methodNodes[1].ReturnType),
-				() => Assert.Equal("Protected", methodNodes[1].AccessModifiers.ToString())
+				() => Assert.Equal("Protected", methodNodes[1].AccessModifier.ToString())
 			);
 		}
 	}

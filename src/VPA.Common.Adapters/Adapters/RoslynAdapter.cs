@@ -102,7 +102,7 @@ namespace VPA.Common.Adapters.Adapters
 			{
 				Name = fieldSymbol.Name,
 				Type = roslynNode.Declaration.Type.ToString(),
-				AccessModifiers = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), fieldSymbol.DeclaredAccessibility.ToString()),
+				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), fieldSymbol.DeclaredAccessibility.ToString()),
 				Location = fieldSymbol.Locations,
 			};
 			return newNode;
@@ -119,7 +119,7 @@ namespace VPA.Common.Adapters.Adapters
 			var newNode = new MethodNode()
 			{
 				Name = methodSymbol.Name,
-				AccessModifiers = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), methodSymbol.DeclaredAccessibility.ToString()),
+				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), methodSymbol.DeclaredAccessibility.ToString()),
 				ReturnType = methodSymbol.ReturnType.Name,
 				Location = methodSymbol.Locations,
 				Parameters = methodSymbol.Parameters.Select(x => x.Type.Name).ToList(),

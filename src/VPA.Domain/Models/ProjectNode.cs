@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace VPA.Domain.Models
+﻿namespace VPA.Domain.Models
 {
 	public class ProjectNode
 	{
