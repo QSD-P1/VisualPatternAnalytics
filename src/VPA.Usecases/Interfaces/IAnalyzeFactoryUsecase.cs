@@ -4,6 +4,6 @@ namespace VPA.Usecases.Interfaces
 {
 	public interface IAnalyzeFactoryUsecase
 	{
-		public Task Analyze(GenericTree tree);
+		public Task Analyze(ProjectNode tree);
 	}
 }
