@@ -11,7 +11,7 @@ namespace VPA.Domain.Parser
 		public AccessModifier AccessModifiers;
 		public string? Abstraction { get; set; }
 		public bool? Inherit { get; set; }
-		public string[] Inherited { get; set; }
+		public string[]? Inherited { get; set; }
 		public string? SourcePath { get; set; }
 		public object? Location { get; set; }
 

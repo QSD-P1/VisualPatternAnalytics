@@ -4,11 +4,11 @@ using System.Text;
 
 namespace VPA.Domain.Parser
 {
-	public class ProjectObject: Node
+	public class ProjectNode: Node
 	{
 		public List<Node> nodes;
 
-		public ProjectObject() 
+		public ProjectNode() 
 		{
 			this.nodes = new List<Node>();
 		}

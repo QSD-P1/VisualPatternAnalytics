@@ -5,7 +5,7 @@ using VPA.Domain.Parser;
 
 namespace VPA.Domain.Parser
 {
-	public class FieldObject : Node
+	public class FieldNode: Node
 	{
 		public AccessModifier AccessModifiers;
 		public string? Type { get; set; }
