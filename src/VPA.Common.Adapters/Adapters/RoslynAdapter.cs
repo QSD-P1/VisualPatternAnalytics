@@ -9,22 +9,25 @@ namespace VPA.Common.Adapters.Adapters
 {
 	public class RoslynAdapter : IRoslynAdapter
 	{
-		public List<BaseNode> ConvertToGenericTree(SyntaxTree tree, SemanticModel semanticModel)
+		public ProjectNode ConvertToGenericTree(SyntaxTree tree, SemanticModel semanticModel)
 		{
-			var nodes = tree.GetRoot().ChildNodes();
-			var result = new List<BaseNode>();
+			var projectNode = new ProjectNode();
+			var nodes = tree.GetRoot().ChildNodes().OfType<ClassDeclarationSyntax>();
+			var result = new List<ClassNode>();
+
 			foreach (var node in nodes)
 			{
-				result.Add(ConvertToCustomNode(node, semanticModel));
+				result.Add((ClassNode)ConvertToCustomNode(node, semanticModel));
 			}
-			return result;
+			projectNode.ClassNodes = result;
+			return projectNode;
 		}
 
-		private BaseNode ConvertToCustomNode(SyntaxNode node, SemanticModel semanticModel)
+		private BaseLeaf ConvertToCustomNode(SyntaxNode node, SemanticModel semanticModel)
 		{
 			//List mapping specific types to the representing conversion methods
 			//Chosen to use a dictionary instead of switch so the code is easier to read with allot of types
-			Dictionary<Type, Func<SyntaxNode, SemanticModel, BaseNode>> NodeConvertionDictionary = new()
+			Dictionary<Type, Func<SyntaxNode, SemanticModel, BaseLeaf>> NodeConvertionDictionary = new()
 			{
 				{ typeof(ClassDeclarationSyntax), ConvertClassDeclarationToClassNode },
 				{ typeof(ConstructorDeclarationSyntax), ConvertConstructorDeclarationToConstructorNode },
@@ -43,7 +46,7 @@ namespace VPA.Common.Adapters.Adapters
 
 			// Recursively convert the children of the SyntaxNode
 			var childNodes = node.ChildNodes();
-			var childNodesList = new List<BaseNode>();
+			var childNodesList = new List<BaseLeaf>();
 			foreach (var childNode in childNodes)
 			{
 				var convertedNode = ConvertToCustomNode(childNode, semanticModel);
@@ -52,7 +55,10 @@ namespace VPA.Common.Adapters.Adapters
 					childNodesList.Add(convertedNode);
 				}
 			}
-			customNode.ChildNodes = childNodesList;
+			if (customNode is BaseNode baseNode)
+			{
+				baseNode.ChildNodes = childNodesList;
+			}
 
 			return customNode;
 		}

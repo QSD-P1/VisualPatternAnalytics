@@ -5,6 +5,6 @@ namespace VPA.Common.Adapters.Interfaces
 {
 	public interface IRoslynAdapter
 	{
-		public List<BaseNode> ConvertToGenericTree(SyntaxTree tree, SemanticModel semanticModel);
+		public ProjectNode ConvertToGenericTree(SyntaxTree tree, SemanticModel semanticModel);
 	}
 }

@@ -51,20 +51,20 @@ namespace VPA.Client.VisualStudio.Extension
 
 		private void ValidateWork(CompilationAnalysisContext context)
 		{
-			var genericList = new List<BaseNode>();
-			foreach (var tree in context.Compilation.SyntaxTrees)
-			{
-				genericList.AddRange(roslynAdapter.ConvertToGenericTree(tree, context.Compilation.GetSemanticModel(tree)));
+			//var projectNode = new ProjectNode();
+			//foreach (var tree in context.Compilation.SyntaxTrees)
+			//{
+			//	genericList.AddRange(roslynAdapter.ConvertToGenericTree(tree, context.Compilation.GetSemanticModel(tree)));
 
-				//foreach (var tree in tree.GetCompilationUnitRoot(CancellationToken.None).ChildNodesAndTokens())
-				//{
-				//	//if (tree.IsKind(SyntaxKind.UsingDirective))
-				//	//{
-				//	var diagnostic = Diagnostic.Create(Rule, location: tree.GetLocation());
-				//	context.ReportDiagnostic(diagnostic);
-				//	//}
-				//}
-			}
+			//	//foreach (var tree in tree.GetCompilationUnitRoot(CancellationToken.None).ChildNodesAndTokens())
+			//	//{
+			//	//	//if (tree.IsKind(SyntaxKind.UsingDirective))
+			//	//	//{
+			//	//	var diagnostic = Diagnostic.Create(Rule, location: tree.GetLocation());
+			//	//	context.ReportDiagnostic(diagnostic);
+			//	//	//}
+			//	//}
+			//}
 			//analyzeSingletonUsecase.Analyze(genericList);
 		}
 
