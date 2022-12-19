@@ -68,7 +68,6 @@ namespace VPA.Common.Adapters.Tests
 			// Assert
 			var expected = new ConstructorNode
 			{
-				Name = "Constructor",
 				AccessModifier = AccessModifierEnum.Public,
 				Parameter = new List<string>(),
 				ChildNodes = new List<BaseNode>(),
