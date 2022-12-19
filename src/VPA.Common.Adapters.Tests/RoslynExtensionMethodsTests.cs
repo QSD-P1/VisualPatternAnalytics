@@ -7,17 +7,17 @@ namespace VPA.Common.Adapters.Tests
 	public class RoslynExtensionMethodsTests
 	{
 		[Theory]
-		[InlineData(SyntaxKind.NewKeyword, Modifiers.New)]
-		[InlineData(SyntaxKind.AbstractKeyword, Modifiers.Abstract)]
-		[InlineData(SyntaxKind.SealedKeyword, Modifiers.Sealed)]
-		[InlineData(SyntaxKind.StaticKeyword, Modifiers.Static)]
-		[InlineData(SyntaxKind.ReadOnlyKeyword, Modifiers.Readonly)]
-		[InlineData(SyntaxKind.VolatileKeyword, Modifiers.Volatile)]
-		[InlineData(SyntaxKind.VirtualKeyword, Modifiers.Virtual)]
-		[InlineData(SyntaxKind.OverrideKeyword, Modifiers.Override)]
-		[InlineData(SyntaxKind.ExternKeyword, Modifiers.Extern)]
-		[InlineData(SyntaxKind.AsyncKeyword, Modifiers.Async)]
-		public void ToModifiers_ReturnsCorrectModifier(SyntaxKind input, Modifiers expectedOutput)
+		[InlineData(SyntaxKind.NewKeyword, ModifiersEnum.New)]
+		[InlineData(SyntaxKind.AbstractKeyword, ModifiersEnum.Abstract)]
+		[InlineData(SyntaxKind.SealedKeyword, ModifiersEnum.Sealed)]
+		[InlineData(SyntaxKind.StaticKeyword, ModifiersEnum.Static)]
+		[InlineData(SyntaxKind.ReadOnlyKeyword, ModifiersEnum.Readonly)]
+		[InlineData(SyntaxKind.VolatileKeyword, ModifiersEnum.Volatile)]
+		[InlineData(SyntaxKind.VirtualKeyword, ModifiersEnum.Virtual)]
+		[InlineData(SyntaxKind.OverrideKeyword, ModifiersEnum.Override)]
+		[InlineData(SyntaxKind.ExternKeyword, ModifiersEnum.Extern)]
+		[InlineData(SyntaxKind.AsyncKeyword, ModifiersEnum.Async)]
+		public void ToModifiers_ReturnsCorrectModifier(SyntaxKind input, ModifiersEnum expectedOutput)
 		{
 			// Arrange
 			var syntaxTokenList = SyntaxFactory.TokenList(SyntaxFactory.Token(input));

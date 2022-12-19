@@ -1,6 +1,6 @@
 ﻿namespace VPA.Domain.Enums
 {
-	public enum Modifiers
+	public enum ModifiersEnum
 	{
 		New = 0,
 		Abstract = 1,

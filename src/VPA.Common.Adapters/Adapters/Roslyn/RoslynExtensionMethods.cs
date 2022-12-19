@@ -6,23 +6,23 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 {
 	public static class RoslynExtensionMethods
 	{
-		private static readonly Dictionary<SyntaxKind, Modifiers> syntaxKindToModifierMap = new()
+		private static readonly Dictionary<SyntaxKind, ModifiersEnum> syntaxKindToModifierMap = new()
 		{
-			{ SyntaxKind.NewKeyword, Modifiers.New },
-			{ SyntaxKind.AbstractKeyword, Modifiers.Abstract },
-			{ SyntaxKind.SealedKeyword, Modifiers.Sealed },
-			{ SyntaxKind.StaticKeyword, Modifiers.Static },
-			{ SyntaxKind.ReadOnlyKeyword, Modifiers.Readonly },
-			{ SyntaxKind.VolatileKeyword, Modifiers.Volatile },
-			{ SyntaxKind.VirtualKeyword, Modifiers.Virtual },
-			{ SyntaxKind.OverrideKeyword, Modifiers.Override },
-			{ SyntaxKind.ExternKeyword, Modifiers.Extern },
-			{ SyntaxKind.AsyncKeyword, Modifiers.Async },
+			{ SyntaxKind.NewKeyword, ModifiersEnum.New },
+			{ SyntaxKind.AbstractKeyword, ModifiersEnum.Abstract },
+			{ SyntaxKind.SealedKeyword, ModifiersEnum.Sealed },
+			{ SyntaxKind.StaticKeyword, ModifiersEnum.Static },
+			{ SyntaxKind.ReadOnlyKeyword, ModifiersEnum.Readonly },
+			{ SyntaxKind.VolatileKeyword, ModifiersEnum.Volatile },
+			{ SyntaxKind.VirtualKeyword, ModifiersEnum.Virtual },
+			{ SyntaxKind.OverrideKeyword, ModifiersEnum.Override },
+			{ SyntaxKind.ExternKeyword, ModifiersEnum.Extern },
+			{ SyntaxKind.AsyncKeyword, ModifiersEnum.Async },
 		};
 
-		public static List<Modifiers> ToModifiers(this SyntaxTokenList syntaxTokenList)
+		public static List<ModifiersEnum> ToModifiers(this SyntaxTokenList syntaxTokenList)
 		{
-			var methodModifiers = new List<Modifiers>();
+			var methodModifiers = new List<ModifiersEnum>();
 
 			//Iterate over the SyntaxTokenList
 			foreach (var syntaxToken in syntaxTokenList)

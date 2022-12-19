@@ -6,7 +6,7 @@ namespace VPA.Domain.Models
 	{
 		//Override 2 properties since only the constructorNode does not implement these two
 		public new string Name { get => "Constructor"; }
-		private new IEnumerable<Modifiers>? Modifiers;
+		private new IEnumerable<ModifiersEnum>? Modifiers;
 
 		public IEnumerable<string>? Parameter { get; set; }
 	}
