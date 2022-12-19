@@ -26,7 +26,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = roslynAdapter.ConvertToGenericTree(tree, model).ClassNodes.First();
+			var result = roslynAdapter.ConvertToGenericTree(tree, model).First();
 
 			// Assert
 			var expected = new ClassNode
@@ -64,7 +64,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, model).ClassNodes.First().ChildNodes.First();
+			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, model).First().ChildNodes.First();
 
 			// Assert
 			var expected = new ConstructorNode
@@ -94,7 +94,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = roslynAdapter.ConvertToGenericTree(tree, semanticModel).ClassNodes.First();
+			var result = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First();
 
 			// Assert
 			Assert.Multiple(
@@ -121,7 +121,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, semanticModel).ClassNodes.First().ChildNodes.First();
+			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().ChildNodes.First();
 
 			// Assert
 			Assert.Multiple(
@@ -147,7 +147,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var fieldNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).ClassNodes.First().ChildNodes
+			var fieldNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().ChildNodes
 				.OfType<FieldNode>()
 				.ToList();
 
@@ -178,7 +178,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var methodNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).ClassNodes.First().ChildNodes
+			var methodNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().ChildNodes
 				.OfType<MethodNode>()
 				.ToList();
 
