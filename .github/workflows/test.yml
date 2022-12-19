@@ -30,7 +30,7 @@ jobs:
       working-directory: ./src
     - name: Setup VSTest
       uses: darenm/Setup-VSTest@v1
-    - name: Run Tests VPA.Common.Adapters.Tests
+    - name: Run Tests
       run: vstest.console.exe .\**\bin\Release\net6.0\*.Tests.dll
       working-directory: ./src
     - name: Upload VSIX bestand
