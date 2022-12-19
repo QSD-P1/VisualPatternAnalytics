@@ -8,14 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Adapters\Presentation\ToolWindow\Class1.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ApplicationDefinition Include="Adapters\Presentation\ToolWindow\Class1.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.3.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.3.1" />
   </ItemGroup>

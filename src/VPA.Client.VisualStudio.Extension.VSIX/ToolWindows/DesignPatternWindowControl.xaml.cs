@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation;
 
 namespace VPA.Client.VisualStudio.Extension.VSIX
 {
@@ -19,21 +20,10 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 			VS.Events.WindowEvents.ActiveFrameChanged += WindowEvents_ActiveFrameChanged;
 			ClassTreeView.SelectedItemChanged += ClassTreeView_SelectedItemChanged;
 
-			#region prepare tree items
-			var singleTon = new TreeViewItem() { Name = "singleton1", Header = "Singleton pattern" };
-			var testItem = new TreeViewItem() { Name = "programcs", Header = "Program.cs" };
-			testItem.Items.Add(new TreeViewItem() { Name = "Test2", Header = "Test  2" });
-			testItem.Items.Add(new TreeViewItem() { Name = "Test3", Header = "Test 3" });
-			singleTon.Items.Add(testItem);
-
-			var factoryPattern = new TreeViewItem() { Name = "factorypattern1", Header = "Factory pattern" };
-			var testItem2 = new TreeViewItem() { Name = "testclasscs", Header = "TestClass.cs" };
-			testItem2.Items.Add(new TreeViewItem() { Name = "Test5", Header = "Test 5" });
-			testItem2.Items.Add(new TreeViewItem() { Name = "Test6", Header = "Test 6" });
-			factoryPattern.Items.Add(testItem2);
-			_treeItems.Add(singleTon);
-			_treeItems.Add(factoryPattern);
-			#endregion
+			// TODO: Remove mock data
+			var adapter = new ProjectTreeToTreeViewAdapter();
+			adapter.SetAdaptee(new Domain.Models.ProjectNode());
+			_treeItems = adapter.Adapt(new List<TreeViewItem>());
 
 			ClassTreeView.ItemsSource = _treeItems;
 
