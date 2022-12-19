@@ -1,9 +1,7 @@
 ﻿namespace VPA.Domain.Models
 {
-	public abstract class BaseNode
+	public abstract class BaseNode : BaseLeaf
 	{
-		public string? Name { get; set; }
-		public object? Location { get; set; }
-		public IEnumerable<BaseNode>? ChildNodes { get; set; }
+		public IEnumerable<BaseLeaf>? ChildNodes { get; set; }
 	}
 }

@@ -68,7 +68,7 @@ namespace VPA.Common.Adapters.Adapters
 			var newNode = new ClassNode()
 			{
 				Name = classSymbol.Name,
-				AccessModifiers = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), classSymbol.DeclaredAccessibility.ToString()),
+				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), classSymbol.DeclaredAccessibility.ToString()),
 				Interfaces = classSymbol.AllInterfaces.Select(x => x.Name).ToList(),
 				ParentClassName = classSymbol.BaseType.Name,
 				Location = classSymbol.Locations,
@@ -84,7 +84,7 @@ namespace VPA.Common.Adapters.Adapters
 			// Convert the roslyndata to generic tree ConstructorNode
 			var newNode = new ConstructorNode()
 			{
-				AccessModifiers = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), constructorSymbol.DeclaredAccessibility.ToString()),
+				AccessModifier = (AccessModifierEnum)Enum.Parse(typeof(AccessModifierEnum), constructorSymbol.DeclaredAccessibility.ToString()),
 				Location = constructorSymbol.Locations,
 				Parameter = constructorSymbol.Parameters.Select(x => x.Type.Name).ToList(),
 			};
