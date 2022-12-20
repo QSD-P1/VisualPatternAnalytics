@@ -114,6 +114,12 @@
     <ProjectReference Include="..\VPA.Domain\VPA.Domain.csproj">
       <Project>{D22F6119-3069-40A4-9E70-9B160B1248BF}</Project>
       <Name>VPA.Domain</Name>
+  </ProjectReference>
+    <ProjectReference Include="..\VPA.Client.VisualStudio.Extension\VPA.Client.VisualStudio.Extension.csproj">
+      <Project>{0E04A636-CB60-44F8-899E-51C640AE2E93}</Project>
+      <Name>VPA.Client.VisualStudio.Extension</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

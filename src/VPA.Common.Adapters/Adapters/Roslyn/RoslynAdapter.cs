@@ -9,18 +9,17 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 {
 	public class RoslynAdapter : IRoslynAdapter
 	{
-		public ProjectNode ConvertToGenericTree(SyntaxTree tree, SemanticModel semanticModel)
+		public IEnumerable<ClassNode> ConvertToGenericTree(SyntaxTree tree, SemanticModel semanticModel)
 		{
-			var projectNode = new ProjectNode();
-			var nodes = tree.GetRoot().ChildNodes().OfType<ClassDeclarationSyntax>();
+			var nodes = tree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>();
 			var result = new List<ClassNode>();
 
 			foreach (var node in nodes)
 			{
 				result.Add((ClassNode)ConvertToCustomNode(node, semanticModel));
 			}
-			projectNode.ClassNodes = result;
-			return projectNode;
+
+			return result;
 		}
 
 		private BaseLeaf ConvertToCustomNode(SyntaxNode node, SemanticModel semanticModel)

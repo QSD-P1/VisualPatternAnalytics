@@ -44,43 +44,30 @@ namespace VPA.Client.VisualStudio.Extension
 
 			// TODO: Consider registering other actions that act on syntax instead of or in addition to symbols
 			// See https://github.com/dotnet/roslyn/blob/main/docs/analyzers/Analyzer%20Actions%20Semantics.md for more information
-			//context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.Method);
 			context.RegisterCompilationAction(ValidateWork);
-			//context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.Method);
 		}
 
 		private void ValidateWork(CompilationAnalysisContext context)
 		{
-			//var projectNode = new ProjectNode();
-			//foreach (var tree in context.Compilation.SyntaxTrees)
-			//{
-			//	genericList.AddRange(roslynAdapter.ConvertToGenericTree(tree, context.Compilation.GetSemanticModel(tree)));
+			var projectNode = new ProjectNode();
+			var result = new List<ClassNode>();
+			foreach (var tree in context.Compilation.SyntaxTrees)
+			{
+				result.AddRange(roslynAdapter.ConvertToGenericTree(tree, context.Compilation.GetSemanticModel(tree)));
+			}
 
-			//	//foreach (var tree in tree.GetCompilationUnitRoot(CancellationToken.None).ChildNodesAndTokens())
-			//	//{
-			//	//	//if (tree.IsKind(SyntaxKind.UsingDirective))
-			//	//	//{
-			//	//	var diagnostic = Diagnostic.Create(Rule, location: tree.GetLocation());
-			//	//	context.ReportDiagnostic(diagnostic);
-			//	//	//}
-			//	//}
-			//}
-			//analyzeSingletonUsecase.Analyze(genericList);
+			projectNode.ClassNodes = result;
+
+			//Temporary code to show adapter is working
+			foreach (var classnode in projectNode.ClassNodes)
+			{
+				var test = (ImmutableArray<Location>)classnode.Location;
+				foreach (var location in test)
+				{
+					var diagnostic = Diagnostic.Create(Rule, location: location);
+					context.ReportDiagnostic(diagnostic);
+				}
+			}
 		}
-
-		//private static void AnalyzeSymbol(SymbolAnalysisContext context)
-		//{
-		//	// TODO: Replace the following code with your own analysis, generating Diagnostic objects for any issues you find
-		//	var namedTypeSymbol = (IMethodSymbol)context.Symbol;
-
-		//	// Find just those named type symbols with names containing lowercase letters.
-		//	//if (namedTypeSymbol.Name.ToCharArray().Any(char.IsLower))
-		//	//{
-		//	// For all such symbols, produce a diagnostic.
-		//	var diagnostic = Diagnostic.Create(Rule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
-
-		//	context.ReportDiagnostic(diagnostic);
-		//	//}
-		//}
 	}
 }
