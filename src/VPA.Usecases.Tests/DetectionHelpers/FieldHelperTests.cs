@@ -7,7 +7,7 @@ using VPA.Domain.Enums;
 using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 
-namespace VPA.Usecases.Tests
+namespace VPA.Usecases.Tests.DetectionHelpers
 {
 	public class FieldHelperTests
 	{

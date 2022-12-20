@@ -2,7 +2,7 @@ using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 using VPA.Domain.Enums;
 
-namespace VPA.Usecases.Tests
+namespace VPA.Usecases.Tests.DetectionHelpers
 {
 	public class AccessModifierHelperTests
 	{
@@ -12,7 +12,7 @@ namespace VPA.Usecases.Tests
 			// Arrange
 			var constructorNode = new ConstructorNode()
 			{
-				AccessModifier = AccessModifierEnum.Private,			
+				AccessModifier = AccessModifierEnum.Private,
 			};
 			var methodNode = new MethodNode()
 			{
@@ -32,10 +32,11 @@ namespace VPA.Usecases.Tests
 			};
 
 			// Act
-			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves);
+			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
 
 			// Assert
-			Assert.True(result && leaves.Any());
+			Assert.True(matchedLeaves.Any());
+			Assert.True(result);
 		}
 
 		[Fact]
@@ -64,9 +65,10 @@ namespace VPA.Usecases.Tests
 			};
 
 			// Act
-			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves);
+			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
 
 			// Assert
+			Assert.False(matchedLeaves.Any());
 			Assert.False(result);
 		}
 	}

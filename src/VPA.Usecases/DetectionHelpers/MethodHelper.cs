@@ -8,15 +8,18 @@ namespace VPA.Usecases.DetectionHelpers
 {
 	public static class MethodHelper
 	{
-		public static bool HasSameClassReturnType(ClassNode classNode, out MethodNode? leaf)
+		public static bool HasSameClassReturnTypeWithKeywords(ClassNode classNode, KeywordCollection? keywordCollection, out MethodNode? matchedResult)
 		{
-			leaf = null;
+			matchedResult = null;
 
 			foreach (MethodNode methodNode in classNode.Children.OfType<MethodNode>())
 			{
-				if ((methodNode.Modifiers?.Contains(ModifiersEnum.Static) ?? false) && methodNode.ReturnType.Equals(classNode.Name))
+				if (methodNode.ReturnType.Equals(classNode.Name) && 
+					(keywordCollection?.AccessModifier == null || keywordCollection.AccessModifier == methodNode.AccessModifier) && 
+					(keywordCollection?.Modifiers == null || keywordCollection.Modifiers.All(x => methodNode.Modifiers?.Contains(x) ?? false)))
 				{
-					leaf = methodNode;
+
+					matchedResult = methodNode;
 					return true;
 				}
 			}
