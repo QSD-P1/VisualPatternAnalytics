@@ -18,9 +18,11 @@ namespace VPA.Usecases.Usecases
 		{
 			var collection = new DetectorResultCollection()
 			{
-				Name = PatternName,
-				Results = new List<DetectorResult>()
+				Name = PatternName
 			};
+
+			if (project.ClassNodes == null || project.ClassNodes.Any(c => c.Children != null))
+				return collection;
 
 			foreach (var classNode in project.ClassNodes)
 			{

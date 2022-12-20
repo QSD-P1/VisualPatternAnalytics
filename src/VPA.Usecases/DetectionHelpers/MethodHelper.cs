@@ -8,7 +8,7 @@ namespace VPA.Usecases.DetectionHelpers
 {
 	public static class MethodHelper
 	{
-		public static bool HasSameClassReturnType(ClassNode classNode, out MethodNode leaf)
+		public static bool HasSameClassReturnType(ClassNode classNode, out MethodNode? leaf)
 		{
 			leaf = null;
 
