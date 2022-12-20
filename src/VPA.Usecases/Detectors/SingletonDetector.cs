@@ -46,10 +46,5 @@ namespace VPA.Usecases.Usecases
 			}
 			return collection;
 		}
-
-		Task<List<DetectorResult>> IDetector.Detect(ProjectNode tree)
-		{
-			throw new NotImplementedException();
-		}
 	}
 }
