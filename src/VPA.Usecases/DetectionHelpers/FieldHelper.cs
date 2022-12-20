@@ -1,7 +1,7 @@
 ﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
 
-namespace VPA.Usecases.Helpers
+namespace VPA.Usecases.DetectionHelpers
 {
 	public static class FieldHelper
 	{
