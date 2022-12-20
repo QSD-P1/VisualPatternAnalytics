@@ -26,7 +26,6 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 			_treeItems = adapter.Adapt(new List<TreeViewItem>());
 
 			ClassTreeView.ItemsSource = _treeItems;
-
 		}
 
 		private void WindowEvents_ActiveFrameChanged(ActiveFrameChangeEventArgs obj)
@@ -37,29 +36,38 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 			if (documentView == null)
 				return;
 
-			var currentTreeView = ClassTreeView.SelectedItem as TreeViewItem;
-			var parsedName = obj.NewFrame.Caption.Replace(".", "").ToLowerInvariant();
+			var currentSelectedItem = ClassTreeView.SelectedItem as TreeViewItem;
+			var currentOpenDocumentFileName = obj.NewFrame.Caption;
+
+			// PoC
 			ActiveDocument.Text = obj.NewFrame.Caption;
 
-			if (currentTreeView == null || currentTreeView.Name != parsedName)
+			// If current open document is already selected, return
+			if (currentSelectedItem != null && currentSelectedItem.Name == currentOpenDocumentFileName)
+				return;
+
+			List<TreeViewItem> foundItems = new();
+
+			foreach (var rootItem in _treeItems)
 			{
-				TreeViewItem foundItem = null;
-
-				foreach (var rootItem in _treeItems)
-				{
-					foundItem = FindItem(rootItem, parsedName);
-					if (foundItem != null)
-						break;
-				}
-
-
-				if (foundItem != null)
-				{
-					HandleExpansion(foundItem);
-				}
+				foundItems.AddRange(FindItem(rootItem, currentOpenDocumentFileName));
 			}
 
+			CollapseAll(ClassTreeView.Items);
+
+			// Do nothing if no item is found
+			if (foundItems.Count == 0)
+				return;
+			
 			ClassTreeView.UpdateLayout();
+		}
+
+		private void ClassTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		{
+			var selectedItem = e.NewValue as TreeViewItem;
+
+			HandleExpansion(selectedItem);
+			ActiveNode.Text = selectedItem.Header as string;
 		}
 
 		private void HandleExpansion(TreeViewItem itemToExpand)
@@ -79,24 +87,38 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 			}
 		}
 
-		private TreeViewItem FindItem(TreeViewItem rootItem, string name)
+		private void CollapseAll(ItemCollection treeItems)
 		{
-			var isRoot = rootItem.Name == name;
-			if (isRoot)
-				return rootItem;
-
-			foreach (TreeViewItem item in rootItem.Items)
+			foreach (TreeViewItem item in treeItems)
 			{
-				if (item.Name == name)
+				item.IsExpanded = false;
+
+				if (item.HasItems)
 				{
-					return item;
+					CollapseAll(item.Items);
+				}
+			}
+		}
+
+		private List<TreeViewItem> FindItem(TreeViewItem itemToCheck, string tagToFind)
+		{
+			var foundItems = new List<TreeViewItem>();
+
+			if ((string)itemToCheck.Tag == tagToFind)
+				foundItems.Add(itemToCheck);
+
+			foreach (TreeViewItem item in itemToCheck.Items)
+			{
+				if ((string)item.Tag == tagToFind)
+				{
+					foundItems.Add(item);
 				}
 
 				if (item.HasItems)
 				{
 					foreach (TreeViewItem childItem in item.Items)
 					{
-						return FindItem(childItem, name);
+						foundItems.AddRange(FindItem(childItem, tagToFind));
 					}
 				}
 				else
@@ -106,13 +128,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 			}
 
 			// nothing found
-			return null;
-		}
-
-		private void ClassTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-		{
-			var newTreeItem = e.NewValue as TreeViewItem;
-			ActiveNode.Text = newTreeItem.Header as string;
+			return foundItems;
 		}
 	}
 }
