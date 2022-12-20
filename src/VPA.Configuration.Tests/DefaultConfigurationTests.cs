@@ -36,12 +36,12 @@ namespace VPA.Configuration.Tests
 
 			//Huge assumption that we inject the `IAnalyzeSingletonUsecase`.
 			//Feel free to change the interface if we dont use this interface.
-			var result = config.GetService<IAnalyzeSingletonUsecase>();
+			var result = config.GetService<ISingletonDetector>();
 
 			//assert
 			Assert.Multiple(
 				() => Assert.NotNull(result),
-				() => Assert.IsAssignableFrom<IAnalyzeSingletonUsecase>(result)
+				() => Assert.IsAssignableFrom<ISingletonDetector>(result)
 				);
 		}
 

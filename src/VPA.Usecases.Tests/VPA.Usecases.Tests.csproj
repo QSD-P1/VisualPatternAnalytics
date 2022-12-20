@@ -21,4 +21,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VPA.Domain\VPA.Domain.csproj" />
+    <ProjectReference Include="..\VPA.Usecases\VPA.Usecases.csproj" />
+  </ItemGroup>
+
 </Project>
