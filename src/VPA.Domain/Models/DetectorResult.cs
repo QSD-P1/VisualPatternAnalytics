@@ -34,19 +34,4 @@
 
 		public List<BaseLeaf> Children { get; set; }
 	}
-
-
-
-	/// Items{
-	///		IProxy{
-	///		
-	///		}
-	///		ProxyA{
-	///			ConstructorNode
-	///		}
-	///		
-	///		ProxyB{
-	///		
-	///		}
-	///	}
 }
