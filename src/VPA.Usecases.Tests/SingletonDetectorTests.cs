@@ -18,6 +18,7 @@ namespace VPA.Usecases.Tests
 			var config = DefaultConfiguration.GetInstance();
 			var detector = config.GetService<ISingletonDetector>();
 			var projectNode = new ProjectNode();
+
 			var exception = await Record.ExceptionAsync(() => detector.Detect(projectNode));
 
 			Assert.Null(exception);
