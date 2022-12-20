@@ -26,10 +26,9 @@ namespace VPA.Configuration
 			services.Add(typeof(I), typeof(C));
 		}
 
-		public static Dictionary<Type, Type> RegisterUsecases(this Dictionary<Type, Type> services)
+		public static Dictionary<Type, Type> RegisterDetectors(this Dictionary<Type, Type> services)
 		{
-			services.Register<IAnalyzeSingletonUsecase, AnalyzeSingletonUsecase>();
-			services.Register<IAnalyzeFactoryUsecase, AnalyzeFactoryUsecase>();
+			services.Register<ISingletonDetector, SingletonDetector>();
 			return services;
 		}
 
