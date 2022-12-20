@@ -13,6 +13,17 @@ namespace VPA.Usecases.Tests
 	public class SingletonDetectorTests
 	{
 		[Fact]
+		public async Task SingletonDetector_DoesNotThrowWhenNothingCanBeDetected()
+		{
+			var config = DefaultConfiguration.GetInstance();
+			var detector = config.GetService<ISingletonDetector>();
+			var projectNode = new ProjectNode();
+			var exception = await Record.ExceptionAsync(() => detector.Detect(projectNode));
+
+			Assert.Null(exception);
+		}
+
+		[Fact]
 		public async Task SingletonDetector_DetectsPattern()
 		{
 			var config = DefaultConfiguration.GetInstance();
