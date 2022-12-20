@@ -3,13 +3,13 @@ namespace VPA.Configuration.Tests
 	public class ConfigurationExtensionsTests
 	{
 		[Fact]
-		public void RegisterUsecases_ShouldPass()
+		public void RegisterDetectors_ShouldPass()
 		{
 			//Arrange
 			var testdictionary = new Dictionary<Type, Type>();
 
 			//Act
-			testdictionary.RegisterUsecases();
+			testdictionary.RegisterDetectors();
 
 			//Assert
 			Assert.NotEmpty(testdictionary);

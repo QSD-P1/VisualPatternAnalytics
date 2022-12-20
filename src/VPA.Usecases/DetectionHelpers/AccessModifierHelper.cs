@@ -8,14 +8,11 @@ namespace VPA.Usecases.DetectionHelpers
 {
 	public static class AccessModifierHelper
 	{
-		public static bool AllTypeOfHasAccessModifier<T>(IEnumerable<BaseLeaf> nodes, AccessModifierEnum modifier) where T : BaseLeaf
+		public static bool AllTypeOfHasAccessModifier<T>(IEnumerable<BaseLeaf> nodes, AccessModifierEnum modifier, out List<T> leaves) where T : BaseLeaf
 		{
-			foreach (var node in nodes.OfType<T>())
-			{
-				if (node.AccessModifier != modifier)
-					return false;
-			}
-			return true;
+			var nodesOfT = nodes.OfType<T>();
+			leaves = nodesOfT.Where(n => n.AccessModifier == modifier).ToList();
+			return leaves.Count() != nodesOfT.Count();
 		}
 	}
 }

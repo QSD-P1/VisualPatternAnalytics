@@ -4,7 +4,7 @@ using VPA.Domain.Enums;
 
 namespace VPA.Usecases.Tests
 {
-	public class SingletonDetectorTests
+	public class AccessModifierHelperTests
 	{
 		[Fact]
 		public void AllTypeOfHasAccessModifier_WhenUsingPrivateConstructorsOnly_ShouldReturnTrue()
@@ -20,7 +20,7 @@ namespace VPA.Usecases.Tests
 			};
 			var classNode = new ClassNode()
 			{
-				ChildNodes = new List<BaseLeaf>
+				Children = new List<BaseLeaf>
 				{
 					constructorNode,
 					constructorNode,
@@ -32,10 +32,10 @@ namespace VPA.Usecases.Tests
 			};
 
 			// Act
-			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.ChildNodes, AccessModifierEnum.Private);
+			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves);
 
 			// Assert
-			Assert.True(result);
+			Assert.True(result && leaves.Any());
 		}
 
 		[Fact]
@@ -52,7 +52,7 @@ namespace VPA.Usecases.Tests
 			};
 			var classNode = new ClassNode()
 			{
-				ChildNodes = new List<BaseLeaf>
+				Children = new List<BaseLeaf>
 				{
 					privateConstructorNode,
 					privateConstructorNode,
@@ -64,7 +64,7 @@ namespace VPA.Usecases.Tests
 			};
 
 			// Act
-			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.ChildNodes, AccessModifierEnum.Private);
+			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves);
 
 			// Assert
 			Assert.False(result);

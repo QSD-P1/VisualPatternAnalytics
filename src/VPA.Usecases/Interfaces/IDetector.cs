@@ -7,6 +7,8 @@ namespace VPA.Usecases.Interfaces
 {
 	public interface IDetector
 	{
-		public Task<object> Detect(ProjectNode tree);
+		public string PatternName { get; }
+
+		public Task<List<DetectorResult>> Detect(ProjectNode tree);
 	}
 }

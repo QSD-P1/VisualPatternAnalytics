@@ -5,12 +5,16 @@ namespace VPA.Usecases.DetectionHelpers
 {
 	public static class FieldHelper
 	{
-		public static bool ClassHasPublicStaticFieldWithOwnType(ClassNode node)
+		public static bool ClassHasPublicStaticFieldWithOwnType(ClassNode node, out FieldNode leaf)
 		{
-			return node.ChildNodes
-				.OfType<FieldNode>()
-				.Where(n => n.Modifiers.Contains(ModifiersEnum.Static) && n.AccessModifier == AccessModifierEnum.Public)
-				.Any(f => f.Type == node.Name);
+			leaf = node.Children.OfType<FieldNode>()
+			.Where(n => 
+				   n.Modifiers.Contains(ModifiersEnum.Static) 
+				&& n.AccessModifier == AccessModifierEnum.Public 
+				&& n.Name == node.Name)
+			.FirstOrDefault();
+
+			return leaf != null;
 		}
 	}
 }
