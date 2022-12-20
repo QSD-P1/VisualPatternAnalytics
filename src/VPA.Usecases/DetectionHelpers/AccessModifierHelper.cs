@@ -12,7 +12,7 @@ namespace VPA.Usecases.DetectionHelpers
 		{
 			var nodesOfT = nodes.OfType<T>();
 			leaves = nodesOfT.Where(n => n.AccessModifier == modifier).ToList();
-			return leaves.Count() != nodesOfT.Count();
+			return leaves.Count() == nodesOfT.Count();
 		}
 	}
 }
