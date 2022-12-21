@@ -9,10 +9,8 @@ namespace VPA.Usecases.Models
 	public class DesignPatternsChangedEventArgs : EventArgs
 	{
 		public List<DetectorResultCollection> result { get; set; }
-		public IPatternManagerUsecase sender { get; set; }
 		public DesignPatternsChangedEventArgs(List<DetectorResultCollection> result) {
 			this.result = result;
-			this.sender = sender;
 		}
 	}
 }
