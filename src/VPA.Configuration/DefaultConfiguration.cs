@@ -7,7 +7,7 @@
 		private readonly Dictionary<Type, Type> _Services = new();
 		private DefaultConfiguration()
 		{
-			_Services.RegisterUsecases();
+			_Services.RegisterDetectors();
 			_Services.RegisterAdapters();
 		}
 
