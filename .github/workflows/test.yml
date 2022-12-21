@@ -30,14 +30,8 @@ jobs:
       working-directory: ./src
     - name: Setup VSTest
       uses: darenm/Setup-VSTest@v1
-    - name: Run Tests VPA.Common.Adapters.Tests
-      run: vstest.console.exe .\VPA.Common.Adapters.Tests\bin\Release\net6.0\VPA.Common.Adapters.Tests.dll
-      working-directory: ./src
-    - name: Run Tests VPA.Configuration.Tests
-      run: vstest.console.exe .\VPA.Configuration.Tests\bin\Release\net6.0\VPA.Configuration.Tests.dll
-      working-directory: ./src
-    - name: Run Tests VPA.Usecases.Tests
-      run: vstest.console.exe .\VPA.Usecases.Tests\bin\Release\net6.0\VPA.Usecases.Tests.dll
+    - name: Run Tests
+      run: vstest.console.exe .\**\bin\Release\net6.0\*.Tests.dll
       working-directory: ./src
     - name: Upload VSIX bestand
       uses: actions/upload-artifact@v3
