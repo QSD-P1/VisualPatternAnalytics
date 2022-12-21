@@ -2,26 +2,37 @@
 using System.Windows;
 using System.Windows.Controls;
 using VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation;
+using VPA.Configuration;
 using VPA.Domain.Models;
+using VPA.Usecases.Interfaces;
+using VPA.Usecases.Manager;
+using VPA.Usecases.Models;
 
 namespace VPA.Client.VisualStudio.Extension.VSIX
 {
 	public partial class DesignPatternWindowControl : UserControl
 	{
+		private List<TreeViewItem> _treeItems = new List<TreeViewItem>();
+		private readonly IPatternManagerUsecase _patternManager;
+
 		public DesignPatternWindowControl()
 		{
 			InitializeComponent();
+
+			var configuration = DefaultConfiguration.GetInstance();
+			this._patternManager = configuration.GetService<IPatternManagerUsecase>();
+
 			Init();
 		}
-
-		private List<TreeViewItem> _treeItems = new List<TreeViewItem>();
 
 		private void Init()
 		{
 			//VS.Events.WindowEvents.ActiveFrameChanged += WindowEvents_ActiveFrameChanged;
 			//ClassTreeView.SelectedItemChanged += ClassTreeView_SelectedItemChanged;
 
-			var temp = new DetectorResultCollection() { 
+			_patternManager.DesignPatternsChangedEvent += PatternManagerEventHandler;
+
+			/*var temp = new DetectorResultCollection() { 
 				Name = "Singleton", 
 				Results = new List<DetectorResult>() {
 					new	DetectorResult(){
@@ -56,12 +67,22 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 						}
 					}
 				}
-			};
-
-			var adapter = new DetectorResultCollectionToTreeViewAdapter();
-			_treeItems = adapter.Adapt(temp); // USE EVENT RESPONSE
+			};*/
 
 			ClassTreeView.ItemsSource = _treeItems;
+		}
+
+		private void PatternManagerEventHandler(object patternManager, DesignPatternsChangedEventArgs eventArgs)
+		{
+			var adapter = new DetectorResultCollectionToTreeViewAdapter();
+
+			var tempItems = new List<TreeViewItem>();
+			foreach (var resultCollection in eventArgs.Result)
+			{
+				tempItems.AddRange(adapter.Adapt(resultCollection));
+			}
+
+			_treeItems = tempItems;
 		}
 
 		private void WindowEvents_ActiveFrameChanged(ActiveFrameChangeEventArgs obj)
