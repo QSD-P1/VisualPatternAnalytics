@@ -2,22 +2,22 @@
 
 namespace VPA.Domain.Managers
 {
-	public sealed class PatternManager
+	public sealed class PatternManagerUsecase
 	{
-		private static PatternManager _instance;
+		private static PatternManagerUsecase _instance;
 		private static List<Analyzer> _analyzers = new List<Analyzer>();
 		public event DesignPatternsChangedEventHandler DesignPatternsChangedEvent;
-		public delegate void DesignPatternsChangedEventHandler(PatternManager sender, List<object> results);
+		public delegate void DesignPatternsChangedEventHandler(PatternManagerUsecase sender, List<object> results);
 
-		private PatternManager()
+		private PatternManagerUsecase()
 		{
 		}
 
-		public static PatternManager GetInstance()
+		public static PatternManagerUsecase GetInstance()
 		{
 			if (_instance == null)
 			{
-				_instance = new PatternManager();
+				_instance = new PatternManagerUsecase();
 			}
 			return _instance;
 		}
