@@ -56,7 +56,7 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 						childNodesList.Add(convertedNode);
 					}
 				}
-				baseNode.ChildNodes = childNodesList;
+				baseNode.Children = childNodesList;
 			}
 
 			return customNode;

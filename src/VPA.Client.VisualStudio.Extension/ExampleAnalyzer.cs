@@ -27,14 +27,12 @@ namespace VPA.Client.VisualStudio.Extension
 
 		public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(Rule); } }
 
-		private readonly IAnalyzeSingletonUsecase analyzeSingletonUsecase;
 		private readonly IRoslynAdapter roslynAdapter;
 		public ExampleAnalyzer()
 		{
 			//Sadly analyzers dont contain MEF so we cant use Dependency injection.
 			//We wrote our own singleton that manages the implementations.
 			var config = DefaultConfiguration.GetInstance();
-			analyzeSingletonUsecase = config.GetService<IAnalyzeSingletonUsecase>();
 			roslynAdapter = config.GetService<IRoslynAdapter>();
 		}
 		public override void Initialize(AnalysisContext context)
