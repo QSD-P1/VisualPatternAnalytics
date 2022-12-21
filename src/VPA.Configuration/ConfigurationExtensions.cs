@@ -28,7 +28,7 @@ namespace VPA.Configuration
 
 		public static Dictionary<Type, Type> RegisterDetectors(this Dictionary<Type, Type> services)
 		{
-			services.Register<ISingletonDetector, SingletonDetector>();
+			services.Register<IDetectSingletonUsecase, DetectSingletonUsecase>();
 			return services;
 		}
 

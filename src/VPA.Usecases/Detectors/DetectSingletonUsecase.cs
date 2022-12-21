@@ -6,13 +6,13 @@ using VPA.Usecases.Interfaces;
 using VPA.Domain.Enums;
 namespace VPA.Usecases.Usecases
 {
-	public class SingletonDetector : ISingletonDetector
+	public class DetectSingletonUsecase : IDetectSingletonUsecase
 	{
-		public SingletonDetector()
+		public DetectSingletonUsecase()
 		{
 		}
 
-		public string PatternName => "Singletons";
+		public string PatternName => "Singleton";
 
 		public async Task<DetectorResultCollection> Detect(ProjectNode project)
 		{

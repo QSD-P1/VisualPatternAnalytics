@@ -5,7 +5,7 @@ using VPA.Domain.Models;
 
 namespace VPA.Usecases.Interfaces
 {
-	public interface IDetector
+	public interface IDetectUsecase
 	{
 		public string PatternName { get; }
 

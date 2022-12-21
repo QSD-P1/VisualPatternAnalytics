@@ -10,13 +10,13 @@ using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.Tests
 {
-	public class SingletonDetectorTests
+	public class DetectSingletonUsecaseTest
 	{
 		[Fact]
 		public async Task SingletonDetector_DoesNotThrowWhenNothingCanBeDetected()
 		{
 			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<ISingletonDetector>();
+			var detector = config.GetService<IDetectSingletonUsecase>();
 			var projectNode = new ProjectNode();
 
 			var exception = await Record.ExceptionAsync(() => detector.Detect(projectNode));
@@ -28,7 +28,7 @@ namespace VPA.Usecases.Tests
 		public async Task SingletonDetector_DetectsPattern()
 		{
 			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<ISingletonDetector>();
+			var detector = config.GetService<IDetectSingletonUsecase>();
 
 			var className = "TestClass";
 
@@ -77,7 +77,7 @@ namespace VPA.Usecases.Tests
 		public async Task SingletonDetector_DoesNotDetectPattern()
 		{
 			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<ISingletonDetector>();
+			var detector = config.GetService<IDetectSingletonUsecase>();
 
 			var className = "TestClass";
 
