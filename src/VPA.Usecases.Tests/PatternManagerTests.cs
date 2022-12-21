@@ -1,6 +1,6 @@
-using VPA.Usecases;
+using VPA.Usecases.Manager;
 
-namespace VPA.Domain.Managers.Tests
+namespace VPA.Usecases.Tests
 {
 	public class PatternManagerTests
 	{
@@ -10,28 +10,6 @@ namespace VPA.Domain.Managers.Tests
 			var instance = PatternManagerUsecase.GetInstance();
 			Assert.NotNull(instance);
 			Assert.IsType<PatternManagerUsecase>(instance);
-		}
-
-		[Fact]
-		public void DesignPatternsChanged_ShouldSubscribe()
-		{
-			var instance = PatternManagerUsecase.GetInstance();
-			instance.DesignPatternsChangedEvent += (sender, args) =>
-			{
-				Assert.Fail("DesignPatternsChanged was invoked but shouldn't be.");
-			};
-		}
-
-		[Fact]
-		public void DesignPatternsChanged_ShouldNotBeInvoked()
-		{
-			var instance = PatternManagerUsecase.GetInstance();
-			var change = false;
-			instance.DesignPatternsChangedEvent += (sender, args) =>
-			{
-				change = true;
-			};
-			Assert.False(change);
 		}
 	}
 }
