@@ -8,7 +8,7 @@ namespace VPA.Usecases.Manager
 		private static PatternManagerUsecase _instance;
 		private static List<IDetectUsecase> _detectors = new List<IDetectUsecase>();
 		public event DesignPatternsChangedEventHandler DesignPatternsChangedEvent;
-		public delegate void DesignPatternsChangedEventHandler(PatternManagerUsecase sender, List<object> results);
+		public delegate void DesignPatternsChangedEventHandler(PatternManagerUsecase sender, List<DetectorResultCollection> results);
 
 		private PatternManagerUsecase()
 		{
@@ -25,7 +25,7 @@ namespace VPA.Usecases.Manager
 
 		public async Task UpdateTree(ProjectNode node)
 		{
-			var result = new List<object>();
+			var result = new List<DetectorResultCollection>();
 
 			foreach (var detector in _detectors)
 			{
