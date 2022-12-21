@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using VPA.Domain.Models;
+﻿using VPA.Domain.Models;
 
 namespace VPA.Domain.Managers
 {
 	public sealed class PatternManager
 	{
 		private static PatternManager _instance;
-		private static List<Analyzer> _enabledAnalyzers = new List<Analyzer>();
-		private static List<Analyzer> _analyzersInProgress = new List<Analyzer>();
-		public List<object> DetectedPatterns = new List<object>();
+		private static List<Analyzer> _analyzers = new List<Analyzer>();
 		public event DesignPatternsChangedEventHandler DesignPatternsChangedEvent;
-		public delegate void DesignPatternsChangedEventHandler(Analyzer sender, List<object> location);
+		public delegate void DesignPatternsChangedEventHandler(PatternManager sender, List<object> results);
 
 		private PatternManager()
 		{
@@ -27,25 +22,17 @@ namespace VPA.Domain.Managers
 			return _instance;
 		}
 
-		public async static void ExecuteAnalyzers()
+		public async Task UpdateTree(ProjectNode node)
 		{
-			foreach (var analyzer in _enabledAnalyzers)
-			{
-				analyzer.AnalyzerDoneEvent += _instance.OnAnalyzerDone;
-				_analyzersInProgress.Add(analyzer);
-				await analyzer.Analyze();
-			}
-		}
+			var result = new List<object>();
 
-		public void OnAnalyzerDone(Analyzer analyzer, List<object> location)
-		{
-			_analyzersInProgress.Remove(analyzer);
-
-			// Check if there are any new design pattern detections in the list
-			if (analyzer.locations.Except(_instance.DetectedPatterns).Any())
+			foreach (var analyzer in _analyzers)
 			{
-				_instance.DesignPatternsChangedEvent?.Invoke(analyzer, location);
+				var res = await analyzer.Analyze(node);
+				result.Add(res);
 			}
+
+			this.DesignPatternsChangedEvent.Invoke(this, result);
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace VPA.Domain.Models
 
 		// Placeholder voor logica
 		// TODO: Vervangen met een nuttige iets
-		public async Task<object> Analyze() {
+		public async Task<object> Analyze(ProjectNode node) {
 			return new object();
 		}
 	}
