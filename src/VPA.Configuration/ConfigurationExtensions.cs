@@ -1,6 +1,7 @@
 ﻿using VPA.Common.Adapters.Adapters.Roslyn;
 using VPA.Common.Adapters.Interfaces;
 using VPA.Usecases.Interfaces;
+using VPA.Usecases.Manager;
 using VPA.Usecases.Usecases;
 
 namespace VPA.Configuration
@@ -13,7 +14,27 @@ namespace VPA.Configuration
 		/// <typeparam name="I">Must be an interface</typeparam>
 		/// <typeparam name="C">Must be a class implementing the interface</typeparam>
 		/// <param name="services"></param>
-		private static void Register<I, C>(this Dictionary<Type, Type> services)
+		private static void Register<I, C>(this Dictionary<Type, ServiceConfiguration> services)
+			where I : class
+			where C : class
+		{
+			RegisterService<I, C>(services, false);
+		}
+
+		/// <summary>
+		/// Add the specified types to the dictionary
+		/// </summary>
+		/// <typeparam name="I">Must be an interface</typeparam>
+		/// <typeparam name="C">Must be a class implementing the interface</typeparam>
+		/// <param name="services"></param>
+		private static void RegisterSingleton<I, C>(this Dictionary<Type, ServiceConfiguration> services)
+			where I : class
+			where C : class
+		{
+			RegisterService<I, C>(services, true);
+		}
+
+		private static void RegisterService<I, C>(Dictionary<Type, ServiceConfiguration> services, bool isPresistent)
 			where I : class
 			where C : class
 		{
@@ -23,16 +44,25 @@ namespace VPA.Configuration
 				throw new ArgumentException($"Given class `{typeof(C)}` does not implement given interface `{interfaceName}`");
 			}
 
-			services.Add(typeof(I), typeof(C));
+			var newConfig = new ServiceConfiguration()
+			{
+				IsPresistent = isPresistent,
+				Type = typeof(C),
+			};
+
+			services.Add(typeof(I), newConfig);
 		}
 
-		public static Dictionary<Type, Type> RegisterDetectors(this Dictionary<Type, Type> services)
+		public static Dictionary<Type, ServiceConfiguration> RegisterUsecases(this Dictionary<Type, ServiceConfiguration> services)
 		{
 			services.Register<IDetectSingletonUsecase, DetectSingletonUsecase>();
+
+			//TODO MAKE INTERFACE
+			services.RegisterSingleton<PatternManagerUsecase, PatternManagerUsecase>();
 			return services;
 		}
 
-		public static Dictionary<Type, Type> RegisterAdapters(this Dictionary<Type, Type> services)
+		public static Dictionary<Type, ServiceConfiguration> RegisterAdapters(this Dictionary<Type, ServiceConfiguration> services)
 		{
 			services.Register<IRoslynAdapter, RoslynAdapter>();
 			return services;

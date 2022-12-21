@@ -6,10 +6,10 @@ namespace VPA.Configuration.Tests
 		public void RegisterDetectors_ShouldPass()
 		{
 			//Arrange
-			var testdictionary = new Dictionary<Type, Type>();
+			var testdictionary = new Dictionary<Type, ServiceConfiguration>();
 
 			//Act
-			testdictionary.RegisterDetectors();
+			testdictionary.RegisterUsecases();
 
 			//Assert
 			Assert.NotEmpty(testdictionary);
@@ -19,7 +19,7 @@ namespace VPA.Configuration.Tests
 		public void RegisterAdapters_ShouldPass()
 		{
 			//Arrange
-			var testdictionary = new Dictionary<Type, Type>();
+			var testdictionary = new Dictionary<Type, ServiceConfiguration>();
 
 			//Act
 			testdictionary.RegisterAdapters();

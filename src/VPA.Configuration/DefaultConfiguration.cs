@@ -1,13 +1,17 @@
-﻿namespace VPA.Configuration
+﻿using System.Reflection;
+
+namespace VPA.Configuration
 {
 	public class DefaultConfiguration
 	{
 		private static DefaultConfiguration? defaultConfiguration;
 
-		private readonly Dictionary<Type, Type> _Services = new();
+		private readonly Dictionary<Type, ServiceConfiguration> _Services = new();
+
+		private static Dictionary<Type, object> PresistantServices = new();
 		private DefaultConfiguration()
 		{
-			_Services.RegisterDetectors();
+			_Services.RegisterUsecases();
 			_Services.RegisterAdapters();
 		}
 
@@ -24,20 +28,41 @@
 
 		private object GetService(Type T)
 		{
-			if (_Services.TryGetValue(T, out Type serviceType) is false)
+			if (_Services.TryGetValue(T, out ServiceConfiguration serviceConfiguration) is false ||
+				serviceConfiguration.Type is null)
 			{
 				throw new ArgumentException("Can't initialize given type. Make sure it is added to the config list");
 			}
 
-			var constructor = serviceType.GetConstructors()[0];
+			object? serviceToReturn = null;
+			if (serviceConfiguration.IsPresistent)
+			{
+				PresistantServices.TryGetValue(serviceConfiguration.Type, out serviceToReturn);
+			}
+
+			if (serviceToReturn is null)
+			{
+				serviceToReturn = GenerateService(T, serviceConfiguration);
+
+				if (serviceConfiguration.IsPresistent)
+				{
+					PresistantServices.Add(serviceConfiguration.Type, serviceToReturn);
+				}
+			}
+
+			return serviceToReturn;
+		}
+
+		private object? GenerateService(Type T, ServiceConfiguration serviceConfiguration)
+		{
+			var constructor = serviceConfiguration.Type.GetConstructors()[0];
 			var parameters = constructor.GetParameters();
 
 			List<object> resolvedParameters = new();
-
 			foreach (var item in parameters)
 			{
 				object? result = null;
-				if(item.ParameterType == T)
+				if (item.ParameterType == T)
 				{
 					throw new ArgumentException($"Infinite loop detected. {T.Name} has a self reference.");
 				}
@@ -55,9 +80,7 @@
 					throw new ArgumentException($"Missing required parameter {item.ParameterType.Name} in injection");
 				}
 			}
-
-			var service = constructor.Invoke(resolvedParameters.ToArray());
-			return service;
+			return constructor.Invoke(resolvedParameters.ToArray());
 		}
 	}
 }
