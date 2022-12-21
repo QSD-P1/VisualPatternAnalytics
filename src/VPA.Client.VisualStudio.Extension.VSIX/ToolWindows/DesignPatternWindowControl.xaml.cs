@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation;
+using VPA.Domain.Models;
 
 namespace VPA.Client.VisualStudio.Extension.VSIX
 {
@@ -17,13 +18,48 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 
 		private void Init()
 		{
-			VS.Events.WindowEvents.ActiveFrameChanged += WindowEvents_ActiveFrameChanged;
-			ClassTreeView.SelectedItemChanged += ClassTreeView_SelectedItemChanged;
+			//VS.Events.WindowEvents.ActiveFrameChanged += WindowEvents_ActiveFrameChanged;
+			//ClassTreeView.SelectedItemChanged += ClassTreeView_SelectedItemChanged;
 
-			// TODO: Remove mock data
-			var adapter = new ProjectTreeToTreeViewAdapter();
-			adapter.SetAdaptee(new Domain.Models.ProjectNode());
-			_treeItems = adapter.Adapt(new List<TreeViewItem>());
+			var temp = new DetectorResultCollection() { 
+				Name = "Singleton", 
+				Results = new List<DetectorResult>() {
+					new	DetectorResult(){
+						Items = new List<DetectedItem>()
+						{
+							new DetectedItem()
+							{
+								MainNode = new ClassNode()
+								{
+									Name = "SomeClass.cs"
+								},
+								Children = new List<BaseLeaf>()
+								{
+									new ConstructorNode(),
+									new MethodNode(),
+									new FieldNode(),
+								}
+							},
+							new DetectedItem()
+							{
+								MainNode = new ClassNode()
+								{
+									Name = "SomeClass.cs"
+								},
+								Children = new List<BaseLeaf>()
+								{
+									new ConstructorNode(),
+									new MethodNode(),
+									new FieldNode(),
+								}
+							},
+						}
+					}
+				}
+			};
+
+			var adapter = new DetectorResultCollectionToTreeViewAdapter();
+			_treeItems = adapter.Adapt(temp); // USE EVENT RESPONSE
 
 			ClassTreeView.ItemsSource = _treeItems;
 		}
