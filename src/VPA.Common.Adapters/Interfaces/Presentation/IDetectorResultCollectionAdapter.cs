@@ -1,4 +1,4 @@
-﻿using VPA.Client.VisualStudio.Extension.VSIX;
+﻿using VPA.Domain.Models;
 
 namespace VPA.Common.Adapters.Interfaces.Presentation
 {

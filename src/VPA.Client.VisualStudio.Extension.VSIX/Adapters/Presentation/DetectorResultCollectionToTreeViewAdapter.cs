@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
 using VPA.Common.Adapters.Interfaces.Presentation;
-using VPA.Domain.Enums;
 using VPA.Domain.Models;
 
 namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation
