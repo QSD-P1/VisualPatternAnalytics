@@ -64,20 +64,20 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, model).First().ChildNodes.First();
+			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, model).First().Children.First();
 
 			// Assert
 			var expected = new ConstructorNode
 			{
 				AccessModifier = AccessModifierEnum.Public,
 				Parameter = new List<string>(),
-				ChildNodes = new List<BaseNode>(),
+				Children = new List<BaseNode>(),
 			};
 			Assert.Multiple(
 				() => Assert.Equal(expected.Name, actual: result.Name),
 				() => Assert.Equal(expected.AccessModifier, actual: result.AccessModifier),
 				() => Assert.Equal(expected.Parameter, actual: result.Parameter),
-				() => Assert.Equal(expected.ChildNodes, actual: result.ChildNodes),
+				() => Assert.Equal(expected.Children, actual: result.Children),
 				() => Assert.NotNull(result.Location)
 				);
 		}
@@ -121,7 +121,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().ChildNodes.First();
+			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().Children.First();
 
 			// Assert
 			Assert.Multiple(
@@ -147,7 +147,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var fieldNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().ChildNodes
+			var fieldNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().Children
 				.OfType<FieldNode>()
 				.ToList();
 
@@ -178,7 +178,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var methodNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().ChildNodes
+			var methodNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().Children
 				.OfType<MethodNode>()
 				.ToList();
 
