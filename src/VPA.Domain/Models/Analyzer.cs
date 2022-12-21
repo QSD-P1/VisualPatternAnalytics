@@ -7,8 +7,9 @@ namespace VPA.Domain.Models
 {
 	public class Analyzer
 	{
-		public delegate void AnalyzerDoneEventHandler(List<object> source, EventArgs args);
+		public delegate void AnalyzerDoneEventHandler(Analyzer analyzer, List<object> locations);
 		public event AnalyzerDoneEventHandler AnalyzerDoneEvent;
+		public List<object> locations = new List<object>();
 
 		// Placeholder voor logica
 		// TODO: Vervangen met een nuttige iets
