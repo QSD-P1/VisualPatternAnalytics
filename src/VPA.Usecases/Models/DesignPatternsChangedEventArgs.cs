@@ -8,9 +8,9 @@ namespace VPA.Usecases.Models
 {
 	public class DesignPatternsChangedEventArgs : EventArgs
 	{
-		public List<DetectorResultCollection> result { get; set; }
+		public List<DetectorResultCollection> Result { get; set; }
 		public DesignPatternsChangedEventArgs(List<DetectorResultCollection> result) {
-			this.result = result;
+			this.Result = result;
 		}
 	}
 }
