@@ -1,27 +1,13 @@
 ﻿using VPA.Domain.Models;
 using VPA.Usecases.Interfaces;
+using VPA.Usecases.Models;
 
 namespace VPA.Usecases.Manager
 {
-	public sealed class PatternManagerUsecase
+	public sealed class PatternManagerUsecase : IPatternManagerUsecase
 	{
-		private static PatternManagerUsecase _instance;
 		private static List<IDetectUsecase> _detectors = new List<IDetectUsecase>();
-		public event DesignPatternsChangedEventHandler DesignPatternsChangedEvent;
-		public delegate void DesignPatternsChangedEventHandler(PatternManagerUsecase sender, List<DetectorResultCollection> results);
-
-		private PatternManagerUsecase()
-		{
-		}
-
-		public static PatternManagerUsecase GetInstance()
-		{
-			if (_instance == null)
-			{
-				_instance = new PatternManagerUsecase();
-			}
-			return _instance;
-		}
+		public event EventHandler<DesignPatternsChangedEventArgs> DesignPatternsChangedEvent;
 
 		public async Task UpdateTree(ProjectNode node)
 		{
@@ -33,7 +19,7 @@ namespace VPA.Usecases.Manager
 				result.Add(res);
 			}
 
-			DesignPatternsChangedEvent.Invoke(this, result);
+			DesignPatternsChangedEvent.Invoke(this, new DesignPatternsChangedEventArgs(result));
 		}
 	}
 }
