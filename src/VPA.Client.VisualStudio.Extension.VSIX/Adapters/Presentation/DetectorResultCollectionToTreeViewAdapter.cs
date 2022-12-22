@@ -20,7 +20,11 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation
 				throw new NullReferenceException("Adaptee is not set.");
 
 			// The design pattern thats detected
-			var patternItem = new TreeViewItem() { Header = _adaptee.Name };
+			var patternItem = new TreeViewItem()
+			{
+				Header = _adaptee.Name,
+				Name = _adaptee.Name
+			};
 
 			foreach (DetectorResult detectorResult in _adaptee.Results)
 			{
@@ -37,7 +41,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation
 						mainNodeItem.Items.Add(new TreeViewItem()
 						{
 							Header = leaf.Name,
-							Name= leaf.Name
+							Name = leaf.Name
 						});
 					}
 
