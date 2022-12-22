@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation;
 using VPA.Configuration;
-using VPA.Domain.Models;
 using VPA.Usecases.Interfaces;
-using VPA.Usecases.Manager;
 using VPA.Usecases.Models;
 
 namespace VPA.Client.VisualStudio.Extension.VSIX
