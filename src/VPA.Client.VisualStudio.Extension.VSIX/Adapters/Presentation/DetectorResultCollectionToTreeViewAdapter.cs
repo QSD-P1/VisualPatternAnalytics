@@ -19,21 +19,30 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation
 			if (_adaptee is null)
 				throw new NullReferenceException("Adaptee is not set.");
 
-			// The design pattern that's detected
-			var patternItem = new TreeViewItem() { Header = _adaptee.Name };
+			// The design pattern thats detected
+			var patternItem = new TreeViewItem()
+			{
+				Header = _adaptee.Name,
+				Name = _adaptee.Name
+			};
 
 			foreach (DetectorResult detectorResult in _adaptee.Results)
 			{
 				foreach (DetectedItem detectedItem in detectorResult.Items)
 				{
-					// TODO: Parse Type
-					var mainNodeItem = new TreeViewItem() { Header = detectedItem.MainNode.GetType().Name };
+					var mainNodeItem = new TreeViewItem()
+					{
+						Header = detectedItem.MainNode.Name,
+						Name = detectedItem.MainNode.Name
+					};
 
-					// These should be Fields, Methods, Constructor etc.
 					foreach (BaseLeaf leaf in detectedItem.Children)
 					{
-						// TODO: Parse Type
-						mainNodeItem.Items.Add(new TreeViewItem() { Header = leaf.Name ?? leaf.GetType().Name });
+						mainNodeItem.Items.Add(new TreeViewItem()
+						{
+							Header = leaf.Name,
+							Name = leaf.Name
+						});
 					}
 
 					patternItem.Items.Add(mainNodeItem);

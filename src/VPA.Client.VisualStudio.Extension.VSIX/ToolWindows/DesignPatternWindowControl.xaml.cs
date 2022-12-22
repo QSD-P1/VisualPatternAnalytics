@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation;
@@ -38,15 +40,24 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 
 		private void PatternManagerEventHandler(object patternManager, DesignPatternsChangedEventArgs eventArgs)
 		{
+			ClassTreeView.Dispatcher.Invoke(() =>
+			{
+				HandleEvent(eventArgs);
+			});
+		}
+
+		private void HandleEvent(DesignPatternsChangedEventArgs eventArgs)
+		{
 			var adapter = new DetectorResultCollectionToTreeViewAdapter();
 
 			var tempItems = new List<TreeViewItem>();
-			foreach (var resultCollection in eventArgs.Result)
+			foreach (var resultCollection in eventArgs.Result.Where(y => y.Results.Any()))
 			{
 				tempItems.AddRange(adapter.Adapt(resultCollection));
 			}
 
 			_treeItems = tempItems;
+			ClassTreeView.ItemsSource = _treeItems;
 		}
 
 		private void WindowEvents_ActiveFrameChanged(ActiveFrameChangeEventArgs obj)
@@ -79,7 +90,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 			// Do nothing if no item is found
 			if (foundItems.Count == 0)
 				return;
-			
+
 			ClassTreeView.UpdateLayout();
 		}
 
