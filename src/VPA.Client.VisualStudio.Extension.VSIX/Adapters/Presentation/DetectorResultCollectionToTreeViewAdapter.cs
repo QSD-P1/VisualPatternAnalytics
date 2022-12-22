@@ -19,11 +19,8 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation
 			if (_adaptee is null)
 				throw new NullReferenceException("Adaptee is not set.");
 
-			var patternItem = new TreeViewItem()
-			{
-				Header = _adaptee.Name,
-				Name = _adaptee.Name
-			};
+			// The design pattern thats detected
+			var patternItem = new TreeViewItem() { Header = _adaptee.Name };
 
 			foreach (DetectorResult detectorResult in _adaptee.Results)
 			{
