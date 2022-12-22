@@ -27,47 +27,11 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 
 		private void Init()
 		{
+			// Disabled because it doesnt work in the current state
 			//VS.Events.WindowEvents.ActiveFrameChanged += WindowEvents_ActiveFrameChanged;
 			//ClassTreeView.SelectedItemChanged += ClassTreeView_SelectedItemChanged;
 
 			_patternManager.DesignPatternsChangedEvent += PatternManagerEventHandler;
-
-			/*var temp = new DetectorResultCollection() { 
-				Name = "Singleton", 
-				Results = new List<DetectorResult>() {
-					new	DetectorResult(){
-						Items = new List<DetectedItem>()
-						{
-							new DetectedItem()
-							{
-								MainNode = new ClassNode()
-								{
-									Name = "SomeClass.cs"
-								},
-								Children = new List<BaseLeaf>()
-								{
-									new ConstructorNode(),
-									new MethodNode(),
-									new FieldNode(),
-								}
-							},
-							new DetectedItem()
-							{
-								MainNode = new ClassNode()
-								{
-									Name = "SomeClass.cs"
-								},
-								Children = new List<BaseLeaf>()
-								{
-									new ConstructorNode(),
-									new MethodNode(),
-									new FieldNode(),
-								}
-							},
-						}
-					}
-				}
-			};*/
 
 			ClassTreeView.ItemsSource = _treeItems;
 		}
