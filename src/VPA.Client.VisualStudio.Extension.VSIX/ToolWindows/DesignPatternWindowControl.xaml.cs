@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation;
 using VPA.Configuration;
+using VPA.Domain.Models;
 using VPA.Usecases.Interfaces;
 using VPA.Usecases.Models;
 
@@ -37,15 +38,12 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 
 		private void PatternManagerEventHandler(object patternManager, DesignPatternsChangedEventArgs eventArgs)
 		{
-			ClassTreeView.Dispatcher.Invoke(() =>
-			{
-				HandleEvent(eventArgs);
-			});
+			ClassTreeView.Dispatcher.Invoke(() => HandleEvent(eventArgs));
 		}
 
 		private void HandleEvent(DesignPatternsChangedEventArgs eventArgs)
 		{
-			var adapter = new DetectorResultCollectionToTreeViewAdapter();
+			var adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
 
 			var tempItems = new List<TreeViewItem>();
 			foreach (var resultCollection in eventArgs.Result.Where(y => y.Results.Any()))

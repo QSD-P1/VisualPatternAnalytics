@@ -5,9 +5,9 @@ using VPA.Domain.Models;
 
 namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation
 {
-	public class DetectorResultCollectionToTreeViewAdapter : IDetectorResultCollectionAdapter
+	public class DetectorResultCollectionToTreeViewToTreeViewAdapter : IDetectorResultCollectionToTreeViewAdapter
 	{
-		public dynamic Adapt(DetectorResultCollection _adaptee)
+		public TreeViewItem Adapt(DetectorResultCollection _adaptee)
 		{
 			if (_adaptee is null)
 				throw new NullReferenceException("Adaptee is not set.");

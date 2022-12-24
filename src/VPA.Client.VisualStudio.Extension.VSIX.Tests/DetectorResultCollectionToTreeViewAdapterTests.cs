@@ -10,7 +10,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Tests
 		public void AdaptCorrectTest()
 		{
 			// Arrange
-			var adapter = new DetectorResultCollectionToTreeViewAdapter();
+			var adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
 
 			var detectorResultCollection = new DetectorResultCollection()
 			{
@@ -85,7 +85,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Tests
 		public void WrongInputTest()
 		{
 			// Arrange
-			var adapter = new DetectorResultCollectionToTreeViewAdapter();
+			var adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
 
 			// Act
 			Action act = () => adapter.Adapt(null);
