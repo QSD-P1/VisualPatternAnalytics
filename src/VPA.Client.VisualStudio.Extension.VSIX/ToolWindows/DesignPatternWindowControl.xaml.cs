@@ -50,7 +50,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 			var tempItems = new List<TreeViewItem>();
 			foreach (var resultCollection in eventArgs.Result.Where(y => y.Results.Any()))
 			{
-				tempItems.AddRange(adapter.Adapt(resultCollection));
+				tempItems.Add(adapter.Adapt(resultCollection));
 			}
 
 			_treeItems = tempItems;
