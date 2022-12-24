@@ -91,7 +91,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Tests
 			Action act = () => adapter.Adapt(null);
 
 			// Assert
-			Assert.Throws<NullReferenceException>(act = );
+			Assert.Throws<NullReferenceException>(act);
 		}
 	}
 }
