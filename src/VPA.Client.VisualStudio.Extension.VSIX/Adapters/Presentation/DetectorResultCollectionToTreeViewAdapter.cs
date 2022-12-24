@@ -7,19 +7,12 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation
 {
 	public class DetectorResultCollectionToTreeViewAdapter : IDetectorResultCollectionAdapter
 	{
-		private readonly List<TreeViewItem> _items;
-
-		public DetectorResultCollectionToTreeViewAdapter()
-		{
-			_items = new();
-		}
-
 		public dynamic Adapt(DetectorResultCollection _adaptee)
 		{
 			if (_adaptee is null)
 				throw new NullReferenceException("Adaptee is not set.");
 
-			// The design pattern thats detected
+			// The design pattern that's detected
 			var patternItem = new TreeViewItem()
 			{
 				Header = _adaptee.Name,
@@ -49,9 +42,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation
 				}
 			}
 
-			_items.Add(patternItem);
-
-			return _items;
+			return patternItem;
 		}
 	}
 }
