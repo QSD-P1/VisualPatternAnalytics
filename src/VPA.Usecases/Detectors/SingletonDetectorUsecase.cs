@@ -30,7 +30,7 @@ namespace VPA.Usecases.Detectors
 				}
 			};
 
-			foreach (var classNode in project.ClassNodes)
+			foreach (ClassNode classNode in project.ClassNodes)
 			{
 				// Skip class because no constructors means that it has a single public constructor
 				if (!classNode.Children.OfType<ConstructorNode>().Any()) continue;
@@ -40,7 +40,7 @@ namespace VPA.Usecases.Detectors
 				var itemResult = new DetectedItem();
 
 				if (
-					   AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves)
+					   AccessModifierHelper.AllOfTypeHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves)
 					&& FieldHelper.ClassHasPublicStaticFieldWithOwnType(classNode, out var fieldLeaf)
 					&& MethodHelper.HasSameClassReturnTypeWithKeywords(classNode, publicStaticKeywords, out var methodLeaf)
 					)
