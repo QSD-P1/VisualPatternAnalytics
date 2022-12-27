@@ -20,7 +20,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 			{
 				Type = className,
 				Modifiers = new List<ModifiersEnum> { ModifiersEnum.Static },
-				AccessModifier = AccessModifierEnum.Public
+				AccessModifier = AccessModifierEnum.Private
 			};
 
 			var classNode = new ClassNode()

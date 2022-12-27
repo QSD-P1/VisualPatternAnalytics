@@ -74,7 +74,7 @@ namespace VPA.Common.Adapters.Tests
 				Children = new List<BaseNode>(),
 			};
 			Assert.Multiple(
-				() => Assert.Equal(expected.Name, actual: result.Name),
+				() => Assert.Equal(expected.GetType(), actual: result.GetType()),
 				() => Assert.Equal(expected.AccessModifier, actual: result.AccessModifier),
 				() => Assert.Equal(expected.Parameter, actual: result.Parameter),
 				() => Assert.Equal(expected.Children, actual: result.Children),
