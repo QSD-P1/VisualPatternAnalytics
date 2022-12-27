@@ -45,6 +45,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Adapters\Presentation\DetectorResultCollectionToTreeViewToTreeViewAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\OpenDesignPatternWindow.cs" />
     <Compile Include="VPA.Client.VisualStudio.Extension.VSIXPackage.cs" />
@@ -88,6 +89,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Design" />
     <Reference Include="System.Xaml" />
@@ -102,11 +104,30 @@
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.5232" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VPA.Common.Adapters\VPA.Common.Adapters.csproj">
+      <Project>{0DFA344A-8964-4D32-9DD0-0984915F731E}</Project>
+      <Name>VPA.Common.Adapters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VPA.Configuration\VPA.Configuration.csproj">
+      <Project>{7e16acde-77f1-4231-a8c4-8490ea0c8b62}</Project>
+      <Name>VPA.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VPA.Domain\VPA.Domain.csproj">
+      <Project>{D22F6119-3069-40A4-9E70-9B160B1248BF}</Project>
+      <Name>VPA.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VPA.Client.VisualStudio.Extension\VPA.Client.VisualStudio.Extension.csproj">
       <Project>{0E04A636-CB60-44F8-899E-51C640AE2E93}</Project>
       <Name>VPA.Client.VisualStudio.Extension</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference>
+    <ProjectReference Include="..\VPA.Usecases\VPA.Usecases.csproj">
+      <Project>{61cdfdb4-00b0-46e8-92bd-04a54ae05c6f}</Project>
+      <Name>VPA.Usecases</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
