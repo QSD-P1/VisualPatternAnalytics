@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Windows.Controls;
-using VPA.Common.Adapters.Interfaces.Presentation;
+﻿using System.Windows.Controls;
 using VPA.Domain.Models;
 
-namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation
+namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 {
 	public class DetectorResultCollectionToTreeViewToTreeViewAdapter : IDetectorResultCollectionToTreeViewAdapter
 	{

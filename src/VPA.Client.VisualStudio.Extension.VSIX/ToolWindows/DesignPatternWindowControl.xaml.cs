@@ -2,13 +2,12 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using VPA.Client.VisualStudio.Extension.VSIX.Adapters.Presentation;
+using VPA.Client.VisualStudio.Extension.VSIX.Adapters;
 using VPA.Configuration;
-using VPA.Domain.Models;
 using VPA.Usecases.Interfaces;
 using VPA.Usecases.Models;
 
-namespace VPA.Client.VisualStudio.Extension.VSIX
+namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 {
 	public partial class DesignPatternWindowControl : UserControl
 	{

@@ -1,4 +1,6 @@
-﻿namespace VPA.Client.VisualStudio.Extension.VSIX
+﻿using VPA.Client.VisualStudio.Extension.VSIX.ToolWindows;
+
+namespace VPA.Client.VisualStudio.Extension.VSIX.Commands
 {
 	[Command(PackageIds.OpenDesignPatternWindow)]
 	internal sealed class OpenDesignPatternWindow : BaseCommand<OpenDesignPatternWindow>
