@@ -14,14 +14,17 @@ namespace VPA.Usecases.Manager
 			_detectors.Add(singletonDetector);
 		}
 
-		public async Task UpdateTree(ProjectNode node)
+		public async Task UpdateTree(ProjectNode projectNode)
 		{
 			var result = new List<DetectorResultCollection>();
 
-			foreach (var detector in _detectors)
+			if (projectNode.ClassNodes != null && projectNode.ClassNodes.Any(c => c.Children != null && c.Children.Any()))
 			{
-				var res = await detector.Detect(node);
-				result.Add(res);
+				foreach (var detector in _detectors)
+				{
+					var res = await detector.Detect(projectNode);
+					result.Add(res);
+				}
 			}
 
 			DesignPatternsChangedEvent.Invoke(this, new DesignPatternsChangedEventArgs(result));

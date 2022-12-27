@@ -22,9 +22,6 @@ namespace VPA.Usecases.Detectors
 				Name = PatternName
 			};
 
-			if (project.ClassNodes == null || !project.ClassNodes.Any(c => c.Children != null))
-				return collection;
-
 			var publicStaticKeywords = new KeywordCollection()
 			{
 				AccessModifier = AccessModifierEnum.Public,

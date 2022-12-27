@@ -68,7 +68,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
 
 			// Assert
-			Assert.False(matchedLeaves.Any());
+			Assert.Null(matchedLeaves);
 			Assert.False(result);
 		}
 	}
