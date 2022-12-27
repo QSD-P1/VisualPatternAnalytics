@@ -4,11 +4,12 @@ using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Interfaces;
 using VPA.Domain.Enums;
-namespace VPA.Usecases.Usecases
+
+namespace VPA.Usecases.Detectors
 {
-	public class DetectSingletonUsecase : IDetectSingletonUsecase
+	public class SingletonDetectorUsecase : ISingletonDetectorUsecase
 	{
-		public DetectSingletonUsecase()
+		public SingletonDetectorUsecase()
 		{
 		}
 

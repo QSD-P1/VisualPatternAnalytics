@@ -2,7 +2,7 @@
 using VPA.Common.Adapters.Interfaces;
 using VPA.Usecases.Interfaces;
 using VPA.Usecases.Manager;
-using VPA.Usecases.Usecases;
+using VPA.Usecases.Detectors;
 
 namespace VPA.Configuration
 {
@@ -55,7 +55,7 @@ namespace VPA.Configuration
 
 		public static Dictionary<Type, ServiceConfiguration> RegisterUsecases(this Dictionary<Type, ServiceConfiguration> services)
 		{
-			services.Register<IDetectSingletonUsecase, DetectSingletonUsecase>();
+			services.Register<ISingletonDetectorUsecase, SingletonDetectorUsecase>();
 			services.RegisterSingleton<IPatternManagerUsecase, PatternManagerUsecase>();
 			return services;
 		}

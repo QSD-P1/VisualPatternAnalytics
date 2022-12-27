@@ -6,12 +6,12 @@ namespace VPA.Usecases.Manager
 {
 	public sealed class PatternManagerUsecase : IPatternManagerUsecase
 	{
-		private static List<IDetectUsecase> _detectors = new List<IDetectUsecase>();
+		private static List<IDetectorUsecase> _detectors = new List<IDetectorUsecase>();
 		public event EventHandler<DesignPatternsChangedEventArgs> DesignPatternsChangedEvent;
 
-		public PatternManagerUsecase(IDetectSingletonUsecase detectSingletonUsecase)
+		public PatternManagerUsecase(ISingletonDetectorUsecase singletonDetector)
 		{
-			_detectors.Add(detectSingletonUsecase);
+			_detectors.Add(singletonDetector);
 		}
 
 		public async Task UpdateTree(ProjectNode node)
