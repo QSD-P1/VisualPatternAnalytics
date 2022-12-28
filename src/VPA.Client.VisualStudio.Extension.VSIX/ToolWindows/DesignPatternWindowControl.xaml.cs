@@ -13,13 +13,15 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 	{
 		private List<TreeViewItem> _treeItems = new List<TreeViewItem>();
 		private readonly IPatternManagerUsecase _patternManager;
+		private readonly IDetectorResultCollectionToTreeViewAdapter _adapter;
 
 		public DesignPatternWindowControl()
 		{
 			InitializeComponent();
 
 			var configuration = DefaultConfiguration.GetInstance();
-			this._patternManager = configuration.GetService<IPatternManagerUsecase>();
+			_patternManager = configuration.GetService<IPatternManagerUsecase>();
+			_adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
 
 			Init();
 		}
@@ -42,12 +44,10 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 
 		private void HandleEvent(DesignPatternsChangedEventArgs eventArgs)
 		{
-			var adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
-
 			var tempItems = new List<TreeViewItem>();
 			foreach (var resultCollection in eventArgs.Result.Where(y => y.Results.Any()))
 			{
-				tempItems.Add(adapter.Adapt(resultCollection));
+				tempItems.Add(_adapter.Adapt(resultCollection));
 			}
 
 			_treeItems = tempItems;
