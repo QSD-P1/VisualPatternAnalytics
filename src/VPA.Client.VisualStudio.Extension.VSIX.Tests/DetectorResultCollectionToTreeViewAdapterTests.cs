@@ -7,7 +7,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Tests
 	public class DetectorResultCollectionToTreeViewAdapterTests
 	{
 		[StaFact]
-		public void AdaptCorrectTest()
+		public void DetectorResultAdapter_AdapterReturnsNestedTreeViewItems()
 		{
 			// Arrange
 			var adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
@@ -82,7 +82,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Tests
 		}
 
 		[StaFact]
-		public void WrongInputTest()
+		public void DetectorResultAdapter_WrongInputThrows()
 		{
 			// Arrange
 			var adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
