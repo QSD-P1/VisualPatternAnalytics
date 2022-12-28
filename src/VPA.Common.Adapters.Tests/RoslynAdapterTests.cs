@@ -69,12 +69,13 @@ namespace VPA.Common.Adapters.Tests
 			// Assert
 			var expected = new ConstructorNode
 			{
+				Name = "Constructor",
 				AccessModifier = AccessModifierEnum.Public,
 				Parameter = new List<string>(),
 				Children = new List<BaseNode>(),
 			};
 			Assert.Multiple(
-				() => Assert.Equal(expected.GetType(), actual: result.GetType()),
+				() => Assert.Equal(expected.Name, actual: result.Name),
 				() => Assert.Equal(expected.AccessModifier, actual: result.AccessModifier),
 				() => Assert.Equal(expected.Parameter, actual: result.Parameter),
 				() => Assert.Equal(expected.Children, actual: result.Children),
