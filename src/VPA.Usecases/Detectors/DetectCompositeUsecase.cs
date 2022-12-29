@@ -114,8 +114,6 @@ namespace VPA.Usecases.Detectors
 					if (fields.Any(x => x.Type == $"List<{currentInterface}>")) continue;
 
 					// This set classes is a composite because we found a leaf!
-					// compositeLeaf = classNode;
-					// classesWithInterfaceListType[currentInterface];
 
 					var result = new DetectorResult();
 					result.Items.Add(new DetectedItem() { MainNode = classNode });
