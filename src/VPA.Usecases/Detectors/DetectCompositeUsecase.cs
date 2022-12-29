@@ -18,7 +18,6 @@ namespace VPA.Usecases.Detectors
 				Name = PatternName
 			};
 
-
 			// No classes
 			if (tree.ClassNodes == null)
 				return resultCollection;
@@ -71,7 +70,7 @@ namespace VPA.Usecases.Detectors
 				{
 					if (classNode.Children == null) continue;
 
-					var fields = classNode.Children.OfType<FieldNode>();
+					var fields = classNode.Children.OfType<FieldNode>().ToList();
 
 					if (!fields.Any()) continue;
 
@@ -96,11 +95,29 @@ namespace VPA.Usecases.Detectors
 			{
 				var currentInterface = entry.Key;
 				var currentClasses = entry.Value;
-				var OtherClassesForInterface = classesPerInterface[currentInterface].Where(
-					x => !currentClasses.Contains(x));
+
+				var otherClassesForInterface = classesPerInterface[currentInterface].Where(
+					x => !currentClasses.Contains(x)).ToList();
+
+				if (!otherClassesForInterface.Any()) continue;
+
+				foreach (ClassNode classNode in otherClassesForInterface)
+				{
+					if (classNode.Children != null && !classNode.Children.Any()) continue;
+
+					var fields = classNode.Children.OfType<FieldNode>().ToList();
+					
+					if (fields.Any()) continue;
+
+					if (fields.Any(x => x.Type == $"List<{currentInterface}>")) continue;
+
+					// This set classes is a composite!
+					var composite = classesWithInterfaceListType[currentInterface];
+					composite.Add(classNode);
+				}
+
 			}
 			
-
 			return resultCollection;
 		}
 	}
