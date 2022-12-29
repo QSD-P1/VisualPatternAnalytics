@@ -32,7 +32,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPA.Usecases.Tests", "VPA.U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VPA.Client.VisualStudio.Extension.VSIX", "VPA.Client.VisualStudio.Extension.VSIX\VPA.Client.VisualStudio.Extension.VSIX.csproj", "{194678FD-5030-449A-86D0-37A5716BC0A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VPA.Domain.Managers.Tests", "VPA.Domain.Managers.Tests\VPA.Domain.Managers.Tests.csproj", "{18CD7B58-4338-4B91-B2F7-16147C661215}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPA.Domain.Managers.Tests", "VPA.Domain.Managers.Tests\VPA.Domain.Managers.Tests.csproj", "{18CD7B58-4338-4B91-B2F7-16147C661215}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CE3E1892-CE0F-41FA-95F9-8BF5983DC083}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VPA.Client.VisualStudio.Extension.VSIX.Tests", "VPA.Client.VisualStudio.Extension.VSIX.Tests\VPA.Client.VisualStudio.Extension.VSIX.Tests.csproj", "{BB559347-A9F9-4B1E-A905-7333DBB07A49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -164,6 +168,18 @@ Global
 		{18CD7B58-4338-4B91-B2F7-16147C661215}.Release|arm64.Build.0 = Release|Any CPU
 		{18CD7B58-4338-4B91-B2F7-16147C661215}.Release|x86.ActiveCfg = Release|Any CPU
 		{18CD7B58-4338-4B91-B2F7-16147C661215}.Release|x86.Build.0 = Release|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Debug|arm64.Build.0 = Debug|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Debug|x86.Build.0 = Debug|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Release|arm64.ActiveCfg = Release|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Release|arm64.Build.0 = Release|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Release|x86.ActiveCfg = Release|Any CPU
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -176,6 +192,8 @@ Global
 		{63C9C070-A74D-4B2A-AABE-64A8424DBA98} = {40D157AB-EFBB-4259-A0B0-3E399AEE3B2C}
 		{194678FD-5030-449A-86D0-37A5716BC0A2} = {E46549A5-38CB-44EA-8CE5-EAF30EA7B04C}
 		{18CD7B58-4338-4B91-B2F7-16147C661215} = {40D157AB-EFBB-4259-A0B0-3E399AEE3B2C}
+		{CE3E1892-CE0F-41FA-95F9-8BF5983DC083} = {67812F50-6A8A-432D-812A-D1739A3FAE3C}
+		{BB559347-A9F9-4B1E-A905-7333DBB07A49} = {CE3E1892-CE0F-41FA-95F9-8BF5983DC083}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1CD48272-A3DB-41C1-AEC5-157CEF042CC6}
