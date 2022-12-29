@@ -28,14 +28,15 @@ namespace VPA.Client.VisualStudio.Extension
 		public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(Rule); } }
 
 		private readonly IRoslynAdapter roslynAdapter;
-		private readonly IPatternManagerUsecase _patternManagerUsecase;
+		private readonly IPatternManagerUsecase patternManager;
+
 		public ExampleAnalyzer()
 		{
 			//Sadly analyzers dont contain MEF so we cant use Dependency injection.
 			//We wrote our own singleton that manages the implementations.
 			var config = DefaultConfiguration.GetInstance();
 			roslynAdapter = config.GetService<IRoslynAdapter>();
-			_patternManagerUsecase = config.GetService<IPatternManagerUsecase>();
+			patternManager = config.GetService<IPatternManagerUsecase>();
 		}
 		public override void Initialize(AnalysisContext context)
 		{
@@ -58,13 +59,14 @@ namespace VPA.Client.VisualStudio.Extension
 			}
 
 			projectNode.ClassNodes = result;
+			patternManager.UpdateTree(projectNode);
 
 			_patternManagerUsecase.UpdateTree(projectNode);
 
 			return;
 
 			//Temporary code to show adapter is working
-			foreach (var classnode in projectNode.ClassNodes)
+			/*foreach (var classnode in projectNode.ClassNodes)
 			{
 				var test = (ImmutableArray<Location>)classnode.Location;
 				foreach (var location in test)
@@ -72,7 +74,7 @@ namespace VPA.Client.VisualStudio.Extension
 					var diagnostic = Diagnostic.Create(Rule, location: location);
 					context.ReportDiagnostic(diagnostic);
 				}
-			}
+			}*/
 		}
 	}
 }
