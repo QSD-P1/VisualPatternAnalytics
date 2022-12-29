@@ -9,9 +9,13 @@ namespace VPA.Usecases.Manager
 		private static List<IDetectUsecase> _detectors = new List<IDetectUsecase>();
 		public event EventHandler<DesignPatternsChangedEventArgs> DesignPatternsChangedEvent;
 
-		public PatternManagerUsecase(IDetectSingletonUsecase detectSingletonUsecase)
+		public PatternManagerUsecase(
+			IDetectSingletonUsecase detectSingletonUsecase,
+			IDetectCompositeUsecase detectCompositeUsecase
+		)
 		{
-			_detectors.Add(detectSingletonUsecase);
+			// _detectors.Add(detectSingletonUsecase);
+			_detectors.Add(detectCompositeUsecase);
 		}
 
 		public async Task UpdateTree(ProjectNode node)
@@ -24,7 +28,7 @@ namespace VPA.Usecases.Manager
 				result.Add(res);
 			}
 
-			DesignPatternsChangedEvent.Invoke(this, new DesignPatternsChangedEventArgs(result));
+			DesignPatternsChangedEvent?.Invoke(this, new DesignPatternsChangedEventArgs(result));
 		}
 	}
 }

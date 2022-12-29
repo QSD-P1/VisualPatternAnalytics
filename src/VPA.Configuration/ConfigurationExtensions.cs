@@ -1,5 +1,6 @@
 ﻿using VPA.Common.Adapters.Adapters.Roslyn;
 using VPA.Common.Adapters.Interfaces;
+using VPA.Usecases.Detectors;
 using VPA.Usecases.Interfaces;
 using VPA.Usecases.Manager;
 using VPA.Usecases.Usecases;
@@ -56,6 +57,7 @@ namespace VPA.Configuration
 		public static Dictionary<Type, ServiceConfiguration> RegisterUsecases(this Dictionary<Type, ServiceConfiguration> services)
 		{
 			services.Register<IDetectSingletonUsecase, DetectSingletonUsecase>();
+			services.Register<IDetectCompositeUsecase, DetectCompositeUsecase>();
 			services.RegisterSingleton<IPatternManagerUsecase, PatternManagerUsecase>();
 			return services;
 		}
