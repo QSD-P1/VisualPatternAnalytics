@@ -23,6 +23,7 @@ namespace VPA.Usecases.Detectors
 			if (tree.ClassNodes == null)
 				return resultCollection;
 			
+			// Finding all interfaces that are used
 			var allDistinctInterfaces = new List<string>();
 
 			foreach (ClassNode classNode in tree.ClassNodes)
@@ -44,6 +45,7 @@ namespace VPA.Usecases.Detectors
 			if (allDistinctInterfaces.Count == 0)
 				return resultCollection;
 
+			// Combine all classes per interface
 			var classesPerInterface = new Dictionary<string, List<ClassNode>>();
 
 			foreach (string distinctInterface in allDistinctInterfaces)
@@ -58,6 +60,33 @@ namespace VPA.Usecases.Detectors
 				}
 			}
 
+			// Check if class has collection field of interface type
+			ClassNode classWithInterfaceListType = null;
+
+			foreach (KeyValuePair<string, List<ClassNode>> entry in classesPerInterface)
+			{
+				var currentInterface = entry.Key;
+
+				foreach (ClassNode classNode in entry.Value)
+				{
+					if (classNode.Children == null) continue;
+
+					var fields = classNode.Children.OfType<FieldNode>();
+
+					if (!fields.Any()) continue;
+
+					foreach (FieldNode field in fields)
+					{
+						if (field.Type != $"List<{currentInterface}>") continue;
+
+						// Found it!
+						classWithInterfaceListType = classNode;
+					}
+				}
+			}
+
+			if (classWithInterfaceListType == null)
+				return resultCollection;
 
 			return resultCollection;
 		}
