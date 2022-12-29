@@ -61,7 +61,7 @@ namespace VPA.Usecases.Detectors
 			}
 
 			// Check if class has collection field of interface type
-			ClassNode classWithInterfaceListType = null;
+			var classesWithInterfaceListType = new Dictionary<string, List<ClassNode>>();
 
 			foreach (KeyValuePair<string, List<ClassNode>> entry in classesPerInterface)
 			{
@@ -80,13 +80,26 @@ namespace VPA.Usecases.Detectors
 						if (field.Type != $"List<{currentInterface}>") continue;
 
 						// Found it!
-						classWithInterfaceListType = classNode;
+						if (!classesWithInterfaceListType.ContainsKey(currentInterface))
+							classesWithInterfaceListType[currentInterface] = new List<ClassNode>();
+
+						classesWithInterfaceListType[currentInterface].Add(classNode);
 					}
 				}
 			}
 
-			if (classWithInterfaceListType == null)
+			if (!classesWithInterfaceListType.Any())
 				return resultCollection;
+
+			// Now we have found the composite class, try and find the leaf within the same interface
+			foreach (KeyValuePair<string, List<ClassNode>> entry in classesWithInterfaceListType)
+			{
+				var currentInterface = entry.Key;
+				var currentClasses = entry.Value;
+				var OtherClassesForInterface = classesPerInterface[currentInterface].Where(
+					x => !currentClasses.Contains(x));
+			}
+			
 
 			return resultCollection;
 		}
