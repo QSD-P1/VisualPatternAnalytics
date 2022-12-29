@@ -5,39 +5,36 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 {
 	public class DetectorResultCollectionToTreeViewToTreeViewAdapter : IDetectorResultCollectionToTreeViewAdapter
 	{
-		public TreeViewItem Adapt(DetectorResultCollection _adaptee)
+		public TreeViewItem Adapt(DetectorResultCollection detectionResults)
 		{
-			if (_adaptee is null)
+			if (detectionResults is null)
 				throw new NullReferenceException("Adaptee is not set.");
 
 			// The design pattern that's detected
 			var patternItem = new TreeViewItem()
 			{
-				Header = _adaptee.Name,
-				Name = _adaptee.Name
+				Header = detectionResults.Name,
+				Name = detectionResults.Name
 			};
 
-			foreach (DetectorResult detectorResult in _adaptee.Results)
+			foreach (DetectedItem detectedItem in detectionResults.Results)
 			{
-				foreach (DetectedItem detectedItem in detectorResult.Items)
+				var mainNodeItem = new TreeViewItem()
 				{
-					var mainNodeItem = new TreeViewItem()
-					{
-						Header = detectedItem.MainNode.Name,
-						Name = detectedItem.MainNode.Name
-					};
+					Header = detectedItem.MainNode.Name,
+					Name = detectedItem.MainNode.Name
+				};
 
-					foreach (BaseLeaf leaf in detectedItem.Children)
+				foreach (BaseLeaf leaf in detectedItem.Children)
+				{
+					mainNodeItem.Items.Add(new TreeViewItem()
 					{
-						mainNodeItem.Items.Add(new TreeViewItem()
-						{
-							Header = leaf.Name,
-							Name = leaf.Name
-						});
-					}
-
-					patternItem.Items.Add(mainNodeItem);
+						Header = leaf.Name,
+						Name = leaf.Name
+					});
 				}
+
+				patternItem.Items.Add(mainNodeItem);
 			}
 
 			return patternItem;

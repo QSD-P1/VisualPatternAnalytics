@@ -12,30 +12,23 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Tests
 			// Arrange
 			var adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
 
-			var detectorResultCollection = new DetectorResultCollection()
+			var detectorResultCollection = new DetectorResultCollection("Singleton")
 			{
-				Name = "Singleton",
-				Results = new List<DetectorResult>()
+				Results = new List<DetectedItem>()
 				{
-					new DetectorResult()
+					new DetectedItem()
 					{
-						Items = new List<DetectedItem>()
+						MainNode = new ClassNode()
 						{
-							new DetectedItem()
-							{
-								MainNode = new ClassNode()
-								{
-									Name = "SomeClass"
-								},
-								Children = new List<BaseLeaf>()
-								{
-									new ConstructorNode(),
-									new MethodNode(),
-									new FieldNode(),
-								}
-							},
+							Name = "SomeClass"
+						},
+						Children = new List<BaseLeaf>()
+						{
+							new ConstructorNode(),
+							new MethodNode(),
+							new FieldNode(),
 						}
-					}
+					},
 				}
 			};
 
