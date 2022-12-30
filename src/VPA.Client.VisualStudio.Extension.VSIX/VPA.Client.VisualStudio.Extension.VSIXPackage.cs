@@ -4,6 +4,7 @@ global using System;
 global using Task = System.Threading.Tasks.Task;
 using System.Runtime.InteropServices;
 using System.Threading;
+using VPA.Client.VisualStudio.Extension.VSIX.ToolWindows;
 
 namespace VPA.Client.VisualStudio.Extension.VSIX
 {

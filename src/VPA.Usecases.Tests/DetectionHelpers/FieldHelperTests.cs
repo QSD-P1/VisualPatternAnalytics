@@ -20,7 +20,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 			{
 				Type = className,
 				Modifiers = new List<ModifiersEnum> { ModifiersEnum.Static },
-				AccessModifier = AccessModifierEnum.Public
+				AccessModifier = AccessModifierEnum.Private
 			};
 
 			var classNode = new ClassNode()
@@ -32,7 +32,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 				}
 			};
 
-			var result = FieldHelper.ClassHasPublicStaticFieldWithOwnType(classNode, out var leaf);
+			var result = FieldHelper.ClassHasPrivateStaticFieldWithOwnType(classNode, out var leaf);
 
 			Assert.True(result && leaf != null);
 		}
@@ -58,7 +58,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 				}
 			};
 
-			var result = FieldHelper.ClassHasPublicStaticFieldWithOwnType(classNode, out var leaf);
+			var result = FieldHelper.ClassHasPrivateStaticFieldWithOwnType(classNode, out var leaf);
 
 			Assert.False(result && leaf == null);
 		}

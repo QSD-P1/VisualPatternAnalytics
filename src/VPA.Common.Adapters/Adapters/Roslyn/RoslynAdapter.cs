@@ -95,6 +95,7 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 			};
 
 			newNode = FillBaseLeafData(roslynNode, constructorSymbol, newNode);
+			newNode.Name = "Constructor";
 
 			return newNode;
 		}

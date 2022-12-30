@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualStudio.Imaging;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.VisualStudio.Imaging;
 
-namespace VPA.Client.VisualStudio.Extension.VSIX
+namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 {
 	public class DesignPatternToolWindow : BaseToolWindow<DesignPatternToolWindow>
 	{
