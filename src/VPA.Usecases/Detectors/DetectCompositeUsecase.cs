@@ -29,7 +29,7 @@ namespace VPA.Usecases.Detectors
 				return resultCollection;
 
 			// Combine all classes per interface
-			var classesPerInterface = ClassHelperUsecase.GetClassesPerInterface(projectNode);
+			var classesPerInterface = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
 			var classesWithInterfaceListType = ClassHelperUsecase.GetClassesWithInterfaceListType(classesPerInterface);
 
 

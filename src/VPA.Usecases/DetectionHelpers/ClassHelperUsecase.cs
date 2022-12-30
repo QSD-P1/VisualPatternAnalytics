@@ -8,28 +8,25 @@ namespace VPA.Usecases.DetectionHelpers
 {
 	public static class ClassHelperUsecase
 	{
-		public static Dictionary<string, List<ClassNode>> GetClassesPerInterface(ProjectNode projectNode)
+		public static Dictionary<string, List<ClassNode>> GetClassesPerParentClass(ProjectNode projectNode)
 		{
-			var classesPerInterface = new Dictionary<string, List<ClassNode>>();
+			var classesPerParentClass = new Dictionary<string, List<ClassNode>>();
 
 			if (projectNode.ClassNodes == null)
-				return classesPerInterface;
+				return classesPerParentClass;
 
 			foreach (var classNode in projectNode.ClassNodes)
 			{
-				if (classNode.Interfaces == null)
+				if (classNode.ParentClassName == null)
 					break;
 
-				foreach (var usedInterface in classNode.Interfaces)
-				{
-					if (classesPerInterface.ContainsKey(usedInterface))
-						classesPerInterface[usedInterface].Add(classNode);
+				if (classesPerParentClass.ContainsKey(classNode.ParentClassName))
+					classesPerParentClass[classNode.ParentClassName].Add(classNode);
 
-					classesPerInterface.Add(usedInterface, new List<ClassNode> { classNode });
-				}
+				classesPerParentClass.Add(classNode.ParentClassName, new List<ClassNode> { classNode });
 			}
 
-			return classesPerInterface;
+			return classesPerParentClass;
 		}
 
 		public static Dictionary<string, List<ClassNode>> GetClassesWithInterfaceListType(Dictionary<string, List<ClassNode>> classesPerInterface)
