@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using VPA.Domain.Models;
+using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.Detectors
@@ -11,7 +12,11 @@ namespace VPA.Usecases.Detectors
 	{
 		public string PatternName => "Composite";
 
-		public async Task<DetectorResultCollection> Detect(ProjectNode tree)
+		public DetectCompositeUsecase()
+		{
+		}
+
+		public async Task<DetectorResultCollection> Detect(ProjectNode projectNode)
 		{
 			var resultCollection = new DetectorResultCollection()
 			{
@@ -20,26 +25,11 @@ namespace VPA.Usecases.Detectors
 			};
 
 			// No classes
-			if (tree.ClassNodes == null)
+			if (projectNode.ClassNodes == null)
 				return resultCollection;
 
 			// Finding all interfaces that are used
-			var allDistinctInterfaces = new List<string>();
-
-			foreach (ClassNode classNode in tree.ClassNodes)
-			{
-				// Find interfaces
-				if (classNode.Interfaces != null)
-				{
-					foreach (string classInterface in classNode.Interfaces)
-					{
-						if (allDistinctInterfaces.Contains(classInterface))
-							continue;
-
-						allDistinctInterfaces.Add(classInterface);
-					}
-				}
-			}
+			var allDistinctInterfaces = ClassHelperUsecase.GetUsedClassInterfaces(projectNode);
 
 			// No interfaces in use
 			if (allDistinctInterfaces.Count == 0)
@@ -50,7 +40,7 @@ namespace VPA.Usecases.Detectors
 
 			foreach (string distinctInterface in allDistinctInterfaces)
 			{
-				foreach (ClassNode classNode in tree.ClassNodes.Where(
+				foreach (ClassNode classNode in projectNode.ClassNodes.Where(
 					         x => x.Interfaces.Contains(distinctInterface)))
 				{
 					if (!classesPerInterface.ContainsKey(distinctInterface))
