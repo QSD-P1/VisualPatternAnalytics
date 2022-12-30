@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows.Controls;
 using VPA.Client.VisualStudio.Extension.VSIX.TreeViewItemEventHandlers;
 using VPA.Domain.Models;
@@ -13,7 +16,6 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 			{
 				throw new NullReferenceException("detectionResults is not set.");
 			}
-
 			// The design pattern that's detected
 			var patternItem = new TreeViewItem()
 			{
@@ -24,9 +26,13 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 
 			foreach (DetectedItem detectedItem in detectionResults.Results)
 			{
+				var filepath = ((IEnumerable<Location>)detectedItem.MainNode.Location).First().SourceTree.FilePath;
+				Path.GetFileName(filepath);
+				var headerText = $"{detectedItem.MainNode.Name} ({Path.GetFileName(filepath)})";
+
 				var mainNodeItem = new TreeViewItem()
 				{
-					Header = detectedItem.MainNode.Name,
+					Header = headerText,
 					Name = detectedItem.MainNode.Name,
 					Tag = detectedItem.MainNode.Location,
 				};
@@ -35,13 +41,14 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 
 				foreach (BaseLeaf leaf in detectedItem.Children)
 				{
-					var newItem = new TreeViewItem()
+					var locationString = ((IEnumerable<Location>)leaf.Location).First().GetLineSpan().StartLinePosition.Line;
+
+						var newItem = new TreeViewItem()
 					{
-						Header = leaf.Name,
+						Header = $"{leaf.Name} (Line {locationString})",
 						Name = leaf.Name,
 						Tag = leaf.Location,
 					};
-
 					newItem.PreviewMouseDoubleClick += MouseDoubleClickEventHandler.OpenLocationInActiveFrame;
 					mainNodeItem.Items.Add(newItem);
 				}

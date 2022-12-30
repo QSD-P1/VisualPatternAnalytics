@@ -8,17 +8,15 @@
              xmlns:util="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Utilities"
              xmlns:catalog="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.ImageCatalog"
              xmlns:toolkit="clr-namespace:Community.VisualStudio.Toolkit;assembly=Community.VisualStudio.Toolkit"
-             toolkit:Themes.UseVsTheme="False"
-             mc:Ignorable="d"
-             d:DesignHeight="300"
-             d:DesignWidth="300"
+             toolkit:Themes.UseVsTheme="True"
              Name="DesignPatternToolWindow">
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <TreeView Height="177" Name="ClassTreeView"/>
-            <TextBlock x:Name="ActiveNode" TextWrapping="Wrap" Text="Nothing selected" Background="White" Height="Auto"/>
-            <TextBlock x:Name="ActiveDocument" TextWrapping="Wrap" Text="TextBlock" Background="White" Height="Auto"/>
-            <DockPanel Height="100" LastChildFill="False"/>
-        </StackPanel>
+        <DockPanel VerticalAlignment="Stretch" LastChildFill="True">
+            <TextBlock DockPanel.Dock="Bottom" x:Name="ActiveDocument" TextWrapping="Wrap" Text="TextBlock" Height="Auto" FontStyle="Oblique"/>
+            <TextBlock DockPanel.Dock="Bottom" x:Name="ActiveDocumentTitle" TextWrapping="Wrap" Text="Active file:" Height="auto" FontWeight="Bold"></TextBlock>
+            <TextBlock DockPanel.Dock="Bottom" x:Name="ActiveNode" TextWrapping="Wrap" Text="Nothing selected" Height="Auto" FontStyle="Oblique"/>
+            <TextBlock DockPanel.Dock="Bottom" x:Name="ActiveNodeTitle" TextWrapping="Wrap" Text="Selected node:" Height="auto" FontWeight="Bold"></TextBlock>
+            <TreeView DockPanel.Dock="Top" MinHeight="177" Height="Auto" BorderThickness="1" Name="ClassTreeView"/>
+        </DockPanel>
     </Grid>
 </UserControl>
