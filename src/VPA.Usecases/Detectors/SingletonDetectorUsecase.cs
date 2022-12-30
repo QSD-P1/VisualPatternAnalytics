@@ -41,7 +41,7 @@ namespace VPA.Usecases.Detectors
 
 				if (
 					   AccessModifierHelper.AllOfTypeHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves)
-					&& FieldHelper.ClassHasPublicStaticFieldWithOwnType(classNode, out var fieldLeaf)
+					&& FieldHelper.ClassHasPrivateStaticFieldWithOwnType(classNode, out var fieldLeaf)
 					&& MethodHelper.HasSameClassReturnTypeWithKeywords(classNode, publicStaticKeywords, out var methodLeaf)
 					)
 				{

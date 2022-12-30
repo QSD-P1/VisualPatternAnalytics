@@ -41,7 +41,7 @@ namespace VPA.Usecases.Tests
 			{
 				Type = className,
 				Modifiers = new List<ModifiersEnum> { ModifiersEnum.Static },
-				AccessModifier = AccessModifierEnum.Public
+				AccessModifier = AccessModifierEnum.Private
 			};
 
 			var methodNode = new MethodNode()
