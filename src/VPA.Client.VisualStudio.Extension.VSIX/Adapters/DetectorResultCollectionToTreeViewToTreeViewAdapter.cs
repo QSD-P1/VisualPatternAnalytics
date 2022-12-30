@@ -28,7 +28,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 			{
 				var filepath = ((IEnumerable<Location>)detectedItem.MainNode.Location).First().SourceTree.FilePath;
 				Path.GetFileName(filepath);
-				var headerText = $"{detectedItem.MainNode.Name} ({Path.GetFileName(filepath)})";
+				var headerText = $"{detectedItem.MainNode.Name} : {detectedItem.MainNode.ObjectTypeName} ({Path.GetFileName(filepath)})";
 
 				var mainNodeItem = new TreeViewItem()
 				{
@@ -43,9 +43,9 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 				{
 					var locationString = ((IEnumerable<Location>)leaf.Location).First().GetLineSpan().StartLinePosition.Line;
 
-						var newItem = new TreeViewItem()
+					var newItem = new TreeViewItem()
 					{
-						Header = $"{leaf.Name} (Line {locationString})",
+						Header = $"{leaf.Name} : {leaf.ObjectTypeName} (Line {locationString})",
 						Name = leaf.Name,
 						Tag = leaf.Location,
 					};
