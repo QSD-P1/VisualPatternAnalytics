@@ -28,27 +28,8 @@ namespace VPA.Usecases.Detectors
 			if (projectNode.ClassNodes == null)
 				return resultCollection;
 
-			// Finding all interfaces that are used
-			var allDistinctInterfaces = ClassHelperUsecase.GetUsedClassInterfaces(projectNode);
-
-			// No interfaces in use
-			if (allDistinctInterfaces.Count == 0)
-				return resultCollection;
-
 			// Combine all classes per interface
-			var classesPerInterface = new Dictionary<string, List<ClassNode>>();
-
-			foreach (string distinctInterface in allDistinctInterfaces)
-			{
-				foreach (ClassNode classNode in projectNode.ClassNodes.Where(
-					         x => x.Interfaces.Contains(distinctInterface)))
-				{
-					if (!classesPerInterface.ContainsKey(distinctInterface))
-						classesPerInterface[distinctInterface] = new List<ClassNode>();
-
-					classesPerInterface[distinctInterface].Add(classNode);
-				}
-			}
+			var classesPerInterface = ClassHelperUsecase.GetClassesPerInterface(projectNode);
 
 			// Check if class has collection field of interface type
 			var classesWithInterfaceListType = new Dictionary<string, List<ClassNode>>();

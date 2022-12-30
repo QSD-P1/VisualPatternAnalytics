@@ -7,9 +7,36 @@ namespace VPA.Usecases.DetectionHelpers
 {
 	public static class ClassHelperUsecase
 	{
-		public static List<string> GetUsedClassInterfaces(ProjectNode projectNode)
+		public static Dictionary<string, List<ClassNode>> GetClassesPerInterface(ProjectNode projectNode)
 		{
-			return projectNode.ClassNodes?.SelectMany(cl => cl.Interfaces?.Distinct()).ToList();
+			var classesPerInterface = new Dictionary<string, List<ClassNode>>();
+
+			if (projectNode.ClassNodes == null)
+			{
+				return classesPerInterface;
+			}
+
+			foreach (var classNode in projectNode.ClassNodes)
+			{
+				if (classNode.Interfaces == null)
+				{
+					break;
+				}
+
+				foreach (var usedInterface in classNode.Interfaces)
+				{
+					if (classesPerInterface.ContainsKey(usedInterface))
+					{
+						classesPerInterface[usedInterface].Add(classNode);
+					}
+					else
+					{
+						classesPerInterface.Add(usedInterface, new List<ClassNode> { classNode });
+					}
+				}
+			}
+
+			return classesPerInterface;
 		}
 	}
 }
