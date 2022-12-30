@@ -27,12 +27,13 @@ namespace VPA.Usecases.Detectors
 				var result = new DetectorResult();
 				var itemResult = new DetectedItem();
 
-				if (classNode.Interfaces != null)
+				if (classNode.Interfaces != null && classNode.Children != null)
 				{
 					foreach (FieldNode fieldNode in classNode.Children.OfTypeWithAccessModifier<FieldNode>(AccessModifierEnum.Private))
 					{
 						if (FieldHelper.HasFoundOtherClassFromFieldType(project.ClassNodes, fieldNode, classNode, out var foundClass))
 						{
+							if (foundClass != null)
 							foreach (string @interface in classNode.Interfaces)
 							{
 								if (foundClass.Interfaces.Contains(@interface))

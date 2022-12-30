@@ -26,7 +26,7 @@ namespace VPA.Usecases.DetectionHelpers
 			if (fieldNode.Type == classNode.Name) return false;
 
 			// Search for the classnode
-			matchedResult = classNodes.FirstOrDefault(x => x.Name == fieldNode.Type);
+			matchedResult = classNodes.FirstOrDefault(x => x.Name == fieldNode.Type?.Replace("?", ""));
 
 			return matchedResult != null;
 		}
