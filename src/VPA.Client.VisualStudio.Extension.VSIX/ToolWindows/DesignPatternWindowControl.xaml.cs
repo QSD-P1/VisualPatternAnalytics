@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.Threading;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using VPA.Client.VisualStudio.Extension.VSIX.Adapters;
@@ -28,16 +29,15 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 
 		private void Init()
 		{
-			// Disabled because it doesnt work in the current state
-			//VS.Events.WindowEvents.ActiveFrameChanged += WindowEvents_ActiveFrameChanged;
-			//ClassTreeView.SelectedItemChanged += ClassTreeView_SelectedItemChanged;
+			VS.Events.WindowEvents.ActiveFrameChanged += WindowEvents_ActiveFrameChanged;
+			ClassTreeView.SelectedItemChanged += ClassTreeView_SelectedItemChanged;
 
-			_patternManager.DesignPatternsChangedEvent += PatternManagerEventHandler;
+			_patternManager.DesignPatternsChangedEvent += PatternManagerDesignPatternsChangedEventHandler;
 
 			ClassTreeView.ItemsSource = _treeItems;
 		}
 
-		private void PatternManagerEventHandler(object patternManager, DesignPatternsChangedEventArgs eventArgs)
+		private void PatternManagerDesignPatternsChangedEventHandler(object patternManager, DesignPatternsChangedEventArgs eventArgs)
 		{
 			ThreadHelper.JoinableTaskFactory.Run(async delegate
 			{
@@ -60,13 +60,25 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 			return Task.CompletedTask;
 		}
 
-		private void WindowEvents_ActiveFrameChanged(ActiveFrameChangeEventArgs obj)
+		private async void WindowEvents_ActiveFrameChanged(ActiveFrameChangeEventArgs obj)
 		{
-			var documentView = obj.NewFrame.GetDocumentViewAsync().GetAwaiter().GetResult();
+			DocumentView documentView = default;
+			try
+			{
+				documentView = await obj.NewFrame.GetDocumentViewAsync();
+			}
+			catch (COMException) 
+			{
+				//The newframe isnt ready yet. Just return
+				return;
+
+			}
 
 			// If the open window is not a document, we shouldn't do anything
 			if (documentView == null)
+			{
 				return;
+			}
 
 			var currentSelectedItem = ClassTreeView.SelectedItem as TreeViewItem;
 			var currentOpenDocumentFileName = obj.NewFrame.Caption;
@@ -93,74 +105,73 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 
 			ClassTreeView.UpdateLayout();
 		}
+	private void ClassTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+	{
+		var selectedItem = e.NewValue as TreeViewItem;
 
-		private void ClassTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		//HandleExpansion(selectedItem);
+		ActiveNode.Text = selectedItem.Header as string;
+	}
+
+	//private void HandleExpansion(TreeViewItem itemToExpand)
+	//{
+	//	foreach (var treeItem in _treeItems)
+	//	{
+	//		treeItem.IsExpanded = false;
+	//	}
+
+	//	var parent = itemToExpand.Parent as TreeViewItem;
+	//	itemToExpand.IsExpanded = true;
+
+	//	while (parent != null)
+	//	{
+	//		parent.IsExpanded = true;
+	//		parent = parent.Parent as TreeViewItem;
+	//	}
+	//}
+
+	private void CollapseAll(ItemCollection treeItems)
+	{
+		foreach (TreeViewItem item in treeItems)
 		{
-			var selectedItem = e.NewValue as TreeViewItem;
+			item.IsExpanded = false;
 
-			HandleExpansion(selectedItem);
-			ActiveNode.Text = selectedItem.Header as string;
-		}
-
-		private void HandleExpansion(TreeViewItem itemToExpand)
-		{
-			foreach (var treeItem in _treeItems)
+			if (item.HasItems)
 			{
-				treeItem.IsExpanded = false;
+				CollapseAll(item.Items);
 			}
-
-			var parent = itemToExpand.Parent as TreeViewItem;
-			itemToExpand.IsExpanded = true;
-
-			while (parent != null)
-			{
-				parent.IsExpanded = true;
-				parent = parent.Parent as TreeViewItem;
-			}
-		}
-
-		private void CollapseAll(ItemCollection treeItems)
-		{
-			foreach (TreeViewItem item in treeItems)
-			{
-				item.IsExpanded = false;
-
-				if (item.HasItems)
-				{
-					CollapseAll(item.Items);
-				}
-			}
-		}
-
-		private List<TreeViewItem> FindItem(TreeViewItem itemToCheck, string tagToFind)
-		{
-			var foundItems = new List<TreeViewItem>();
-
-			if ((string)itemToCheck.Tag == tagToFind)
-				foundItems.Add(itemToCheck);
-
-			foreach (TreeViewItem item in itemToCheck.Items)
-			{
-				if ((string)item.Tag == tagToFind)
-				{
-					foundItems.Add(item);
-				}
-
-				if (item.HasItems)
-				{
-					foreach (TreeViewItem childItem in item.Items)
-					{
-						foundItems.AddRange(FindItem(childItem, tagToFind));
-					}
-				}
-				else
-				{
-					continue;
-				}
-			}
-
-			// nothing found
-			return foundItems;
 		}
 	}
+
+	private List<TreeViewItem> FindItem(TreeViewItem itemToCheck, string tagToFind)
+	{
+		var foundItems = new List<TreeViewItem>();
+
+		if ((string)itemToCheck.Tag == tagToFind)
+			foundItems.Add(itemToCheck);
+
+		foreach (TreeViewItem item in itemToCheck.Items)
+		{
+			if ((string)item.Tag == tagToFind)
+			{
+				foundItems.Add(item);
+			}
+
+			if (item.HasItems)
+			{
+				foreach (TreeViewItem childItem in item.Items)
+				{
+					foundItems.AddRange(FindItem(childItem, tagToFind));
+				}
+			}
+			else
+			{
+				continue;
+			}
+		}
+
+		// nothing found
+		return foundItems;
+	}
+}
 }
