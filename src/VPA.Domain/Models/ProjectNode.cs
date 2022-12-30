@@ -2,6 +2,6 @@
 {
 	public class ProjectNode
 	{
-		public IEnumerable<ClassNode>? ClassNodes { get; set; } = new List<ClassNode>();
+		public IEnumerable<ClassNode> ClassNodes { get; set; } = new List<ClassNode>();
 	}
 }
