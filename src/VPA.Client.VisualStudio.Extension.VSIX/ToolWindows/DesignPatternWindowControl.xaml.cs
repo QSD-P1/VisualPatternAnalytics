@@ -43,11 +43,11 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 			ThreadHelper.JoinableTaskFactory.Run(async delegate
 			{
 				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-				await HandleEventAsync(eventArgs);
+				await HandleDesignPatternsChangedEventAsync(eventArgs);
 			});
 		}
 
-		private Task HandleEventAsync(DesignPatternsChangedEventArgs eventArgs)
+		private Task HandleDesignPatternsChangedEventAsync(DesignPatternsChangedEventArgs eventArgs)
 		{
 			var tempItems = new List<TreeViewItem>();
 			foreach (var resultCollection in eventArgs.Result.Where(y => y.Results.Any()))
@@ -57,6 +57,8 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 
 			_treeItems = tempItems;
 			ClassTreeView.ItemsSource = _treeItems;
+
+			RefreshExpansionInTree(ActiveDocument.Text);
 
 			return Task.CompletedTask;
 		}
@@ -91,6 +93,11 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 				return;
 			}
 
+			RefreshExpansionInTree(currentOpenDocumentFileName);
+		}
+
+		private void RefreshExpansionInTree(string currentOpenDocumentFileName)
+		{
 			List<TreeViewItem> foundItems = new();
 			foreach (var rootItem in _treeItems)
 			{
@@ -110,26 +117,8 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 		{
 			var selectedItem = e.NewValue as TreeViewItem;
 
-			//HandleExpansion(selectedItem);
 			ActiveNode.Text = selectedItem.Header as string;
 		}
-
-		//private void HandleExpansion(TreeViewItem itemToExpand)
-		//{
-		//	foreach (var treeItem in _treeItems)
-		//	{
-		//		treeItem.IsExpanded = false;
-		//	}
-
-		//	var parent = itemToExpand.Parent as TreeViewItem;
-		//	itemToExpand.IsExpanded = true;
-
-		//	while (parent != null)
-		//	{
-		//		parent.IsExpanded = true;
-		//		parent = parent.Parent as TreeViewItem;
-		//	}
-		//}
 
 		private void CollapseAll(ItemCollection treeItems)
 		{
