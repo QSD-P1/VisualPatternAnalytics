@@ -86,7 +86,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 			ActiveDocument.Text = currentOpenDocumentFileName;
 
 			//If current open document is already selected, return
-			if (ClassTreeView.SelectedItem is not TreeViewItem currentSelectedItem || currentSelectedItem.Name == currentOpenDocumentFileName)
+			if (ClassTreeView.SelectedItem is TreeViewItem currentSelectedItem && currentSelectedItem.Name == currentOpenDocumentFileName)
 			{
 				return;
 			}
@@ -180,7 +180,11 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 				//If the item has more childs, we should loop through the childs
 				if (tag is IEnumerable<object> nestedCollection)
 				{
-					return CheckIfChildItemsMatchTheLocationToFind(nestedCollection, locationToFind);
+					if (CheckIfChildItemsMatchTheLocationToFind(nestedCollection, locationToFind))
+					{
+						return true;
+					}
+					continue;
 				}
 				//If we found the leaves of the tree, we check if it matches the location we are looking for
 				else if (tag.ToString().Contains(locationToFind))
