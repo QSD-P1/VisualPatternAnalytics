@@ -31,32 +31,21 @@ namespace VPA.Usecases.Detectors
 				{
 					foreach (FieldNode fieldNode in classNode.Children.OfTypeWithAccessModifier<FieldNode>(AccessModifierEnum.Private))
 					{
-						if (FieldHelper.HasFoundOtherClassFromFieldType(project.ClassNodes, fieldNode, classNode, out var foundClass))
+						if (FieldHelper.HasFoundOtherClassFromFieldType(project.ClassNodes, fieldNode, classNode, out ClassNode foundClass))
 						{
-							if (foundClass != null)
-							foreach (string @interface in classNode.Interfaces)
+							var foundInterface = classNode.Interfaces.FirstOrDefault(x => foundClass.Interfaces.Contains(x));
+							if (foundInterface != null)
 							{
-								if (foundClass.Interfaces.Contains(@interface))
-								{
-									itemResult.MainNode = classNode;
-									itemResult.Children.Add(foundClass);
-									itemResult.Children.Add(fieldNode);
+								itemResult.MainNode = classNode;
+								itemResult.Children.Add(foundClass);
+								itemResult.Children.Add(fieldNode);
+								itemResult.Children.Add(new InterfaceNode() { Name = foundInterface });
 
-									//// add items to result;
-									result.Items.Add(itemResult);
-									collection.Results.Add(result);
-								}
+								//// add items to result
+								result.Items.Add(itemResult);
+								collection.Results.Add(result);
 							}
-							// todo interface here
 						}
-						//itemResult.MainNode = fieldNode;
-						//itemResult.Children.AddRange(leaves);
-						//itemResult.Children.Add(fieldLeaf);
-						//itemResult.Children.Add(methodLeaf);
-
-						//// add items to result;
-						//result.Items.Add(itemResult);
-						//collection.Results.Add(result);
 					}
 				}
 			}
