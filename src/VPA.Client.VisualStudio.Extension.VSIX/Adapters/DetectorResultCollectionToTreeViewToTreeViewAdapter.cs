@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Controls;
+using VPA.Client.VisualStudio.Extension.VSIX.TreeViewItemEventHandlers;
 using VPA.Domain.Models;
 
 namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
@@ -9,7 +10,9 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 		public TreeViewItem Adapt(DetectorResultCollection detectionResults)
 		{
 			if (detectionResults is null)
-				throw new NullReferenceException("Adaptee is not set.");
+			{
+				throw new NullReferenceException("detectionResults is not set.");
+			}
 
 			// The design pattern that's detected
 			var patternItem = new TreeViewItem()
@@ -28,14 +31,19 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 					Tag = detectedItem.MainNode.Location,
 				};
 
+				mainNodeItem.PreviewMouseDoubleClick += MouseDoubleClickEventHandler.OpenLocationInActiveFrame;
+
 				foreach (BaseLeaf leaf in detectedItem.Children)
 				{
-					mainNodeItem.Items.Add(new TreeViewItem()
+					var newItem = new TreeViewItem()
 					{
 						Header = leaf.Name,
 						Name = leaf.Name,
 						Tag = leaf.Location,
-					});
+					};
+
+					newItem.PreviewMouseDoubleClick += MouseDoubleClickEventHandler.OpenLocationInActiveFrame;
+					mainNodeItem.Items.Add(newItem);
 				}
 
 				patternItem.Items.Add(mainNodeItem);
