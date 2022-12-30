@@ -30,34 +30,8 @@ namespace VPA.Usecases.Detectors
 
 			// Combine all classes per interface
 			var classesPerInterface = ClassHelperUsecase.GetClassesPerInterface(projectNode);
+			var classesWithInterfaceListType = ClassHelperUsecase.GetClassesWithInterfaceListType(classesPerInterface);
 
-			// Check if class has collection field of interface type
-			var classesWithInterfaceListType = new Dictionary<string, List<ClassNode>>();
-
-			foreach (KeyValuePair<string, List<ClassNode>> entry in classesPerInterface)
-			{
-				var currentInterface = entry.Key;
-
-				foreach (ClassNode classNode in entry.Value)
-				{
-					if (classNode.Children == null) continue;
-
-					var fields = classNode.Children.OfType<FieldNode>().ToList();
-
-					if (!fields.Any()) continue;
-
-					foreach (FieldNode field in fields)
-					{
-						if (field.Type != $"List<{currentInterface}>") continue;
-
-						// Found it!
-						if (!classesWithInterfaceListType.ContainsKey(currentInterface))
-							classesWithInterfaceListType[currentInterface] = new List<ClassNode>();
-
-						classesWithInterfaceListType[currentInterface].Add(classNode);
-					}
-				}
-			}
 
 			if (!classesWithInterfaceListType.Any())
 				return resultCollection;

@@ -14,14 +14,14 @@ namespace VPA.Usecases.Usecases
 
 		public string PatternName => "Singleton";
 
-		public async Task<DetectorResultCollection> Detect(ProjectNode project)
+		public async Task<DetectorResultCollection> Detect(ProjectNode projectNode)
 		{
 			var collection = new DetectorResultCollection()
 			{
 				Name = PatternName
 			};
 
-			if (project.ClassNodes == null || !project.ClassNodes.Any(c => c.Children != null))
+			if (projectNode.ClassNodes == null || !projectNode.ClassNodes.Any(c => c.Children != null))
 				return collection;
 
 			var publicStaticKeywords = new KeywordCollection()
@@ -32,7 +32,7 @@ namespace VPA.Usecases.Usecases
 				}
 			};
 
-			foreach (var classNode in project.ClassNodes)
+			foreach (var classNode in projectNode.ClassNodes)
 			{
 				// Skip class because no constructors means that it has a single public constructor
 				if (!classNode.Children.OfType<ConstructorNode>().Any()) continue;

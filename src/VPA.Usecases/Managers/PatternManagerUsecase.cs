@@ -14,7 +14,7 @@ namespace VPA.Usecases.Manager
 			IDetectCompositeUsecase detectCompositeUsecase
 		)
 		{
-			// _detectors.Add(detectSingletonUsecase);
+			_detectors.Add(detectSingletonUsecase);
 			_detectors.Add(detectCompositeUsecase);
 		}
 
