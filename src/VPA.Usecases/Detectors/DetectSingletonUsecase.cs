@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Interfaces;
-using VPA.Domain.Enums;
 namespace VPA.Usecases.Usecases
 {
 	public class DetectSingletonUsecase : IDetectSingletonUsecase
@@ -32,7 +30,6 @@ namespace VPA.Usecases.Usecases
 			foreach (var classNode in project.ClassNodes)
 			{
 				// we can create these here because 1 singleton can only have 1 related class
-				var result = new DetectorResult();
 				var itemResult = new DetectedItem();
 
 				if (

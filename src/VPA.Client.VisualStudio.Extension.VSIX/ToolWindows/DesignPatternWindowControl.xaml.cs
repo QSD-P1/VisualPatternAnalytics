@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.Threading;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,10 +12,9 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 {
 	public partial class DesignPatternWindowControl : UserControl
 	{
-		private List<TreeViewItem> _treeItems = new List<TreeViewItem>();
+		private List<TreeViewItem> _treeItems = new();
 		private readonly IPatternManagerUsecase _patternManager;
 		private readonly IDetectorResultCollectionToTreeViewAdapter _adapter;
-
 		public DesignPatternWindowControl()
 		{
 			InitializeComponent();
@@ -39,10 +39,14 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 
 		private void PatternManagerEventHandler(object patternManager, DesignPatternsChangedEventArgs eventArgs)
 		{
-			ClassTreeView.Dispatcher.Invoke(() => HandleEvent(eventArgs));
+			ThreadHelper.JoinableTaskFactory.Run(async delegate
+			{
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				await HandleEventAsync(eventArgs);
+			});
 		}
 
-		private void HandleEvent(DesignPatternsChangedEventArgs eventArgs)
+		private Task HandleEventAsync(DesignPatternsChangedEventArgs eventArgs)
 		{
 			var tempItems = new List<TreeViewItem>();
 			foreach (var resultCollection in eventArgs.Result.Where(y => y.Results.Any()))
@@ -52,6 +56,8 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 
 			_treeItems = tempItems;
 			ClassTreeView.ItemsSource = _treeItems;
+
+			return Task.CompletedTask;
 		}
 
 		private void WindowEvents_ActiveFrameChanged(ActiveFrameChangeEventArgs obj)

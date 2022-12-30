@@ -74,17 +74,17 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Tests
 			}
 		}
 
-		[StaFact]
+		[Fact]
 		public void DetectorResultAdapter_WrongInputThrows()
 		{
 			// Arrange
 			var adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
 
 			// Act
-			Action act = () => adapter.Adapt(null);
+			var result = Record.Exception(() => adapter.Adapt(null));
 
 			// Assert
-			Assert.Throws<NullReferenceException>(act);
+			Assert.IsType<NullReferenceException>(result);
 		}
 	}
 }
