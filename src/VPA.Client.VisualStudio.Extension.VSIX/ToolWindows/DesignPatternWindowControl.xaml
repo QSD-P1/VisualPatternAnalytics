@@ -16,7 +16,7 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <TreeView Height="177" Name="ClassTreeView"/>
-            <TextBlock x:Name="ActiveNode" TextWrapping="Wrap" Text="TextBlock" Background="White" Height="Auto"/>
+            <TextBlock x:Name="ActiveNode" TextWrapping="Wrap" Text="Nothing selected" Background="White" Height="Auto"/>
             <TextBlock x:Name="ActiveDocument" TextWrapping="Wrap" Text="TextBlock" Background="White" Height="Auto"/>
             <DockPanel Height="100" LastChildFill="False"/>
         </StackPanel>

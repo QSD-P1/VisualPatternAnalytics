@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Linq;
+using System.Windows.Controls;
 using VPA.Domain.Models;
 
 namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
@@ -14,7 +15,8 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 			var patternItem = new TreeViewItem()
 			{
 				Header = detectionResults.Name,
-				Name = detectionResults.Name
+				Name = detectionResults.Name,
+				Tag = detectionResults.Results.Select(x => x.MainNode.Location)
 			};
 
 			foreach (DetectedItem detectedItem in detectionResults.Results)
@@ -22,7 +24,8 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 				var mainNodeItem = new TreeViewItem()
 				{
 					Header = detectedItem.MainNode.Name,
-					Name = detectedItem.MainNode.Name
+					Name = detectedItem.MainNode.Name,
+					Tag = detectedItem.MainNode.Location,
 				};
 
 				foreach (BaseLeaf leaf in detectedItem.Children)
@@ -30,7 +33,8 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 					mainNodeItem.Items.Add(new TreeViewItem()
 					{
 						Header = leaf.Name,
-						Name = leaf.Name
+						Name = leaf.Name,
+						Tag = leaf.Location,
 					});
 				}
 
