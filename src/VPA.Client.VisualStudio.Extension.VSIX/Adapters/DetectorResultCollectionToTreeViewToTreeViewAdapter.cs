@@ -41,7 +41,9 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 
 				foreach (BaseLeaf leaf in detectedItem.Children)
 				{
-					var locationString = ((IEnumerable<Location>)leaf.Location).First().GetLineSpan().StartLinePosition.Line;
+					//Get the linenumber from the location + 1
+					//We need to add 1 since it starts counting from 0, but the visual interface doesn't
+					var locationString = ((IEnumerable<Location>)leaf.Location).First().GetLineSpan().StartLinePosition.Line + 1;
 
 					var newItem = new TreeViewItem()
 					{
