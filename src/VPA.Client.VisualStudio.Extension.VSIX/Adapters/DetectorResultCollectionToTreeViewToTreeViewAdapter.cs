@@ -1,8 +1,12 @@
 ﻿using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using VPA.Client.VisualStudio.Extension.VSIX.TreeViewItemEventHandlers;
 using VPA.Domain.Models;
 
@@ -27,12 +31,10 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 			foreach (DetectedItem detectedItem in detectionResults.Results)
 			{
 				var filepath = ((IEnumerable<Location>)detectedItem.MainNode.Location).First().SourceTree.FilePath;
-				Path.GetFileName(filepath);
-				var headerText = $"{detectedItem.MainNode.Name} : {detectedItem.MainNode.ObjectTypeName} ({Path.GetFileName(filepath)})";
 
 				var mainNodeItem = new TreeViewItem()
 				{
-					Header = headerText,
+					Header = CreateHeaderTextblock(detectedItem.MainNode.Name, detectedItem.MainNode.ObjectTypeName, Path.GetFileName(filepath)),
 					Name = detectedItem.MainNode.Name,
 					Tag = detectedItem.MainNode.Location,
 				};
@@ -47,7 +49,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 
 					var newItem = new TreeViewItem()
 					{
-						Header = $"{leaf.Name} : {leaf.ObjectTypeName} (Line {locationString})",
+						Header = CreateHeaderTextblock(leaf.Name, leaf.ObjectTypeName, $"Line {locationString}"),
 						Name = leaf.Name,
 						Tag = leaf.Location,
 					};
@@ -59,6 +61,24 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 			}
 
 			return patternItem;
+		}
+
+		private TextBlock CreateHeaderTextblock(string name, string type, string additionalInformation)
+		{
+			var result = new TextBlock();
+			var nameRun = new Run(name);
+			nameRun.FontWeight = FontWeights.Bold;
+			result.Inlines.Add(nameRun);
+
+			var typeRun = new Run($" : {type}");
+			result.Inlines.Add(typeRun);
+
+			var additionalInformationRun = new Run($" ({additionalInformation})");
+			additionalInformationRun.FontStyle = FontStyles.Italic;
+			additionalInformationRun.FontWeight = FontWeights.Light;
+			result.Inlines.Add(additionalInformationRun);
+
+			return result;
 		}
 	}
 }

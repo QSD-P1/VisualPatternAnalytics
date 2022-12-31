@@ -88,7 +88,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 			ActiveDocument.Text = currentOpenDocumentFileName;
 
 			//If current open document is already selected, return
-			if (ClassTreeView.SelectedItem is TreeViewItem currentSelectedItem && currentSelectedItem.Name == currentOpenDocumentFileName)
+			if (ClassTreeView.SelectedItem is TreeViewItem currentSelectedItem && ((IEnumerable<object>)currentSelectedItem.Tag).First().ToString().Contains(currentOpenDocumentFileName))
 			{
 				return;
 			}
@@ -109,7 +109,6 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 
 			//We expand everything that matched the location
 			foundItems.ForEach(x => x.IsExpanded = true);
-
 			ClassTreeView.UpdateLayout();
 		}
 
