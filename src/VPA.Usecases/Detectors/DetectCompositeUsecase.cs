@@ -29,21 +29,21 @@ namespace VPA.Usecases.Detectors
 				return resultCollection;
 
 			// Combine all classes per interface
-			var classesPerInterface = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
-			var classesWithInterfaceListType = ClassHelperUsecase.GetClassesWithInterfaceListType(classesPerInterface);
+			var classesPerParent = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
+			var classesWithParentListType = ClassHelperUsecase.GetClassesWithParentListType(classesPerParent);
 
 
-			if (!classesWithInterfaceListType.Any())
+			if (!classesWithParentListType.Any())
 				return resultCollection;
 
 			// Now we have found the composite class, try and find the leaf within the same interface
 			// and check if they have no collection making them a composite instead of a leaf
-			foreach (KeyValuePair<string, List<ClassNode>> entry in classesWithInterfaceListType)
+			foreach (KeyValuePair<string, List<ClassNode>> entry in classesWithParentListType)
 			{
 				var currentInterface = entry.Key;
 				var currentClasses = entry.Value;
 
-				var otherClassesForInterface = classesPerInterface[currentInterface].Where(
+				var otherClassesForInterface = classesPerParent[currentInterface].Where(
 					x => !currentClasses.Contains(x)).ToList();
 
 				if (!otherClassesForInterface.Any()) continue;
@@ -63,7 +63,7 @@ namespace VPA.Usecases.Detectors
 					var result = new DetectorResult();
 					result.Items.Add(new DetectedItem() { MainNode = classNode });
 
-					foreach (ClassNode composite in classesWithInterfaceListType[currentInterface])
+					foreach (ClassNode composite in classesWithParentListType[currentInterface])
 					{
 						result.Items.Add(new DetectedItem() { MainNode = composite });
 					}

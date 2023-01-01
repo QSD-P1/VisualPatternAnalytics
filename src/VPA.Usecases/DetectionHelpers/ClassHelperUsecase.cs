@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using VPA.Domain.Enums;
 using VPA.Domain.Models;
 
 namespace VPA.Usecases.DetectionHelpers
@@ -18,25 +19,30 @@ namespace VPA.Usecases.DetectionHelpers
 			foreach (var classNode in projectNode.ClassNodes)
 			{
 				if (classNode.ParentClassName == null)
-					break;
+					continue;
 
 				if (classesPerParentClass.ContainsKey(classNode.ParentClassName))
+				{
 					classesPerParentClass[classNode.ParentClassName].Add(classNode);
-
-				classesPerParentClass.Add(classNode.ParentClassName, new List<ClassNode> { classNode });
+				}
+				else
+				{
+					classesPerParentClass.Add(classNode.ParentClassName, new List<ClassNode> { classNode });
+				}
 			}
 
 			return classesPerParentClass;
 		}
 
-		public static Dictionary<string, List<ClassNode>> GetClassesWithInterfaceListType(Dictionary<string, List<ClassNode>> classesPerInterface)
+		public static Dictionary<string, List<ClassNode>> GetClassesWithParentListType(Dictionary<string, List<ClassNode>> classesPerParent)
 		{
 			// Check if class has collection field of interface type
-			var classesWithInterfaceListType = new Dictionary<string, List<ClassNode>>();
+			var classesWithParentListType = new Dictionary<string, List<ClassNode>>();
 
-			foreach (KeyValuePair<string, List<ClassNode>> entry in classesPerInterface)
+
+			foreach (KeyValuePair<string, List<ClassNode>> entry in classesPerParent)
 			{
-				var currentInterface = entry.Key;
+				var currentParent = entry.Key;
 
 				foreach (ClassNode classNode in entry.Value)
 				{
@@ -44,22 +50,22 @@ namespace VPA.Usecases.DetectionHelpers
 
 					var fields = classNode.Children.OfType<FieldNode>().ToList();
 
-					if (fields.Any()) continue;
+					if (!fields.Any()) continue;
 
 					foreach (FieldNode field in fields)
 					{
-						if (!typeof(IEnumerable<object>).IsAssignableFrom(Type.GetType(field.Type))) continue;
+						if (!Enum.IsDefined(typeof(CollectionTypesEnum), field.Type)) continue;
 
 						// Found it!
-						if (!classesWithInterfaceListType.ContainsKey(currentInterface))
-							classesWithInterfaceListType[currentInterface] = new List<ClassNode>();
+						if (!classesWithParentListType.ContainsKey(currentParent))
+							classesWithParentListType[currentParent] = new List<ClassNode>();
 
-						classesWithInterfaceListType[currentInterface].Add(classNode);
+						classesWithParentListType[currentParent].Add(classNode);
 					}
 				}
 			}
 
-			return classesWithInterfaceListType;
+			return classesWithParentListType;
 		}
 	}
 }
