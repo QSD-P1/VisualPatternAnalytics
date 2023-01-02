@@ -19,7 +19,27 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 		{
 			await this.RegisterCommandsAsync();
 
+			VS.Events.SolutionEvents.OnAfterBackgroundSolutionLoadComplete += SolutionEvents_OnAfterBackgroundSolutionLoadComplete;
+			VS.Events.DocumentEvents.Saved += DocumentEvents_Saved;
+
 			this.RegisterToolWindows();
+		}
+
+		private void SolutionEvents_OnAfterBackgroundSolutionLoadComplete()
+		{
+			VS.Commands.ExecuteAsync("Build.RunCodeAnalysisonSolution");
+		}
+
+		private void DocumentEvents_Saved(string obj)
+		{
+			VS.Commands.ExecuteAsync("Build.RunCodeAnalysisonSolution");
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			VS.Events.SolutionEvents.OnAfterBackgroundSolutionLoadComplete -= SolutionEvents_OnAfterBackgroundSolutionLoadComplete;
+			VS.Events.DocumentEvents.Saved -= DocumentEvents_Saved;
+			base.Dispose(disposing);
 		}
 	}
 }
