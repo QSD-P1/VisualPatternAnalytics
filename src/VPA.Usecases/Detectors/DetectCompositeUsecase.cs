@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using VPA.Domain.Enums;
 using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Interfaces;
@@ -31,8 +32,6 @@ namespace VPA.Usecases.Detectors
 			// Combine all classes per interface
 			var classesPerParent = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
 			var classesWithParentListType = ClassHelperUsecase.GetClassesWithParentListType(classesPerParent);
-
-
 			if (!classesWithParentListType.Any())
 				return resultCollection;
 
@@ -40,10 +39,10 @@ namespace VPA.Usecases.Detectors
 			// and check if they have no collection making them a composite instead of a leaf
 			foreach (KeyValuePair<string, List<ClassNode>> entry in classesWithParentListType)
 			{
-				var currentInterface = entry.Key;
+				var currentParent = entry.Key;
 				var currentClasses = entry.Value;
 
-				var otherClassesForInterface = classesPerParent[currentInterface].Where(
+				var otherClassesForInterface = classesPerParent[currentParent].Where(
 					x => !currentClasses.Contains(x)).ToList();
 
 				if (!otherClassesForInterface.Any()) continue;
@@ -53,19 +52,33 @@ namespace VPA.Usecases.Detectors
 					if (classNode.Children != null && !classNode.Children.Any()) continue;
 
 					var fields = classNode.Children.OfType<FieldNode>().ToList();
+					bool leafHasCollectionOfParent = false;
 
-					if (fields.Any()) continue;
+					if (fields.Any())
+					{
+						foreach (var field in fields)
+						{
+							var collectionGenericObject = FieldHelper.GetCollectionGenericObject(field.Type);
 
-					if (fields.Any(x => x.Type == $"List<{currentInterface}>")) continue;
+							if (collectionGenericObject != null && Enum.IsDefined(typeof(CollectionTypesEnum), collectionGenericObject.CollectionType) &&
+							    collectionGenericObject.GenericType == currentParent)
+								leafHasCollectionOfParent = true;
+						}
+					}
+
+					if (leafHasCollectionOfParent)
+					{
+						continue;
+					}
 
 					// This set classes is a composite because we found a leaf!
 
 					var result = new DetectorResult();
-					result.Items.Add(new DetectedItem() { MainNode = classNode });
+					result.Items.Add(new DetectedItem { MainNode = classNode });
 
-					foreach (ClassNode composite in classesWithParentListType[currentInterface])
+					foreach (ClassNode composite in classesWithParentListType[currentParent])
 					{
-						result.Items.Add(new DetectedItem() { MainNode = composite });
+						result.Items.Add(new DetectedItem { MainNode = composite });
 					}
 
 					resultCollection.Results.Add(result);

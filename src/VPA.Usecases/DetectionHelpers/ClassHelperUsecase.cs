@@ -54,7 +54,9 @@ namespace VPA.Usecases.DetectionHelpers
 
 					foreach (FieldNode field in fields)
 					{
-						if (!Enum.IsDefined(typeof(CollectionTypesEnum), field.Type)) continue;
+						var collectionGenericObject = FieldHelper.GetCollectionGenericObject(field.Type);
+
+						if (!Enum.IsDefined(typeof(CollectionTypesEnum), collectionGenericObject.CollectionType) || collectionGenericObject.GenericType != currentParent) continue;
 
 						// Found it!
 						if (!classesWithParentListType.ContainsKey(currentParent))

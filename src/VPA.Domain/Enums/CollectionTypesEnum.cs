@@ -6,9 +6,7 @@ namespace VPA.Domain.Enums
 {
 	public enum CollectionTypesEnum
 	{
-		Array = 0,
-		ArrayList = 1,
-		IEnumerable = 2,
-		List = 3
+		IEnumerable = 0,
+		List = 1
 	}
 }

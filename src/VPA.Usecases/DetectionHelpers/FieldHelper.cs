@@ -16,5 +16,26 @@ namespace VPA.Usecases.DetectionHelpers
 
 			return leaf != null;
 		}
+
+		public static CollectionGenericObject GetCollectionGenericObject(string typeString)
+		{
+			if (typeString == null)
+			{
+				return null;
+			}
+
+			var genericTypeArray = typeString.Split('<');
+			var collectionType = genericTypeArray.FirstOrDefault();
+
+			if (collectionType == null)
+			{
+				return null;
+			}
+
+			var genericType = genericTypeArray.Length > 1 ? genericTypeArray[1] : null;
+			genericType = genericType?.Split('>').FirstOrDefault();
+
+			return new CollectionGenericObject { CollectionType = collectionType, GenericType = genericType };
+		}
 	}
 }
