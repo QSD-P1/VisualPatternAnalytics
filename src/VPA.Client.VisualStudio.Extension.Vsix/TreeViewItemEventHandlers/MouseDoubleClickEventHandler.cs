@@ -8,6 +8,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.TreeViewItemEventHandlers
 {
 	internal static class MouseDoubleClickEventHandler
 	{
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "VSTHRD100:Avoid async void methods", Justification = "This is an eventhandler, they are the only valid usage of async void")]
 		public static async void OpenLocationInActiveFrame(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			if (e.Source is not TreeViewItem treeViewItem)
