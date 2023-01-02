@@ -36,6 +36,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 			ClassTreeView.ItemsSource = _treeItems;
 		}
 
+		#region EventHandlers
 		private void PatternManagerDesignPatternsChangedEventHandler(object patternManager, DesignPatternsChangedEventArgs eventArgs)
 		{
 			ThreadHelper.JoinableTaskFactory.Run(async delegate
@@ -45,25 +46,18 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 			});
 		}
 
-		private Task HandleDesignPatternsChangedEventAsync(DesignPatternsChangedEventArgs eventArgs)
+		private void ClassTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
-			var tempItems = new List<TreeViewItem>();
-			foreach (var resultCollection in eventArgs.Result.Where(y => y.Results.Any()))
-			{
-				tempItems.Add(_adapter.Adapt(resultCollection));
-			}
+			var selectedItem = e?.NewValue as TreeViewItem;
+			var headerTextBlock = selectedItem?.Header as TextBlock;
 
-			_treeItems = tempItems;
-			ClassTreeView.ItemsSource = _treeItems;
-
-			RefreshExpansionInTree(ActiveDocument.Text);
-
-			return Task.CompletedTask;
+			ActiveNode.Text = headerTextBlock?.Text ?? "Nothing selected";
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "VSTHRD100:Avoid async void methods", Justification = "Eventhandlers must be void, so async void is okay")]
 		private async void WindowEvents_ActiveFrameChanged(ActiveFrameChangeEventArgs obj)
 		{
-			DocumentView? documentView = null;
+			DocumentView documentView;
 			try
 			{
 				documentView = await obj.NewFrame.GetDocumentViewAsync();
@@ -85,18 +79,38 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 			var currentOpenDocumentFileName = obj.NewFrame.Caption;
 			ActiveDocument.Text = currentOpenDocumentFileName;
 
-			//If current open document is already selected, return
-			if (ClassTreeView.SelectedItem is TreeViewItem currentSelectedItem && ((IEnumerable<object>)currentSelectedItem.Tag).First().ToString().Contains(currentOpenDocumentFileName))
-			{
-				return;
-			}
-
 			RefreshExpansionInTree(currentOpenDocumentFileName);
+		}
+		#endregion
+
+		#region Private methods
+		private Task HandleDesignPatternsChangedEventAsync(DesignPatternsChangedEventArgs eventArgs)
+		{
+			var treeViewItems = new List<TreeViewItem>();
+			foreach (var resultCollection in eventArgs.Result.Where(y => y.Results.Any()))
+			{
+				treeViewItems.Add(_adapter.Adapt(resultCollection));
+			}
+			_treeItems = treeViewItems;
+			ClassTreeView.ItemsSource = _treeItems;
+
+			RefreshExpansionInTree(ActiveDocument.Text);
+
+			return Task.CompletedTask;
 		}
 
 		private void RefreshExpansionInTree(string currentOpenDocumentFileName)
 		{
+			if (_treeItems.Count < 1)
+			{
+				return;
+			}
+
 			List<TreeViewItem> foundItems = new();
+
+			//We need the current selectedItem because collapsing will remove the selection
+			var selectedItem = ClassTreeView.SelectedItem as TreeViewItem;
+
 			foreach (var rootItem in _treeItems)
 			{
 				foundItems.AddRange(FindItemsMatchingTheCurrentLocation(rootItem, currentOpenDocumentFileName));
@@ -107,15 +121,14 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 
 			//We expand everything that matched the location
 			foundItems.ForEach(x => x.IsExpanded = true);
+
+			//If there was a item selected, select it again since collapsing removes the selection
+			if (selectedItem != null)
+			{
+				selectedItem.IsSelected = true;
+			}
+
 			ClassTreeView.UpdateLayout();
-		}
-
-		private void ClassTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-		{
-			var selectedItem = e?.NewValue as TreeViewItem;
-			var headerTextBlock = selectedItem?.Header as TextBlock;
-
-			ActiveNode.Text = headerTextBlock?.Text ?? "Nothing selected";
 		}
 
 		private void CollapseAll(ItemCollection treeItems)
@@ -123,7 +136,6 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 			foreach (TreeViewItem item in treeItems)
 			{
 				item.IsExpanded = false;
-
 				if (item.HasItems)
 				{
 					CollapseAll(item.Items);
@@ -183,5 +195,6 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 			//We could'nt find the location, so we return false
 			return false;
 		}
+		#endregion
 	}
 }
