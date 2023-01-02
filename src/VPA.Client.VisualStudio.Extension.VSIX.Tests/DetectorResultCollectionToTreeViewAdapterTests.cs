@@ -12,30 +12,23 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Tests
 			// Arrange
 			var adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
 
-			var detectorResultCollection = new DetectorResultCollection()
+			var detectorResultCollection = new DetectorResultCollection("Singleton")
 			{
-				Name = "Singleton",
-				Results = new List<DetectorResult>()
+				Results = new List<DetectedItem>()
 				{
-					new DetectorResult()
+					new DetectedItem()
 					{
-						Items = new List<DetectedItem>()
+						MainNode = new ClassNode()
 						{
-							new DetectedItem()
-							{
-								MainNode = new ClassNode()
-								{
-									Name = "SomeClass"
-								},
-								Children = new List<BaseLeaf>()
-								{
-									new ConstructorNode(),
-									new MethodNode(),
-									new FieldNode(),
-								}
-							},
+							Name = "SomeClass"
+						},
+						Children = new List<BaseLeaf>()
+						{
+							new ConstructorNode(),
+							new MethodNode(),
+							new FieldNode(),
 						}
-					}
+					},
 				}
 			};
 
@@ -81,17 +74,17 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Tests
 			}
 		}
 
-		[StaFact]
+		[Fact]
 		public void DetectorResultAdapter_WrongInputThrows()
 		{
 			// Arrange
 			var adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
 
 			// Act
-			Action act = () => adapter.Adapt(null);
+			var result = Record.Exception(() => adapter.Adapt(null));
 
 			// Assert
-			Assert.Throws<NullReferenceException>(act);
+			Assert.IsType<NullReferenceException>(result);
 		}
 	}
 }

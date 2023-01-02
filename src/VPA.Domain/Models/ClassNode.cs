@@ -4,5 +4,7 @@
 	{
 		public IEnumerable<string>? Interfaces { get; set; }
 		public string? ParentClassName { get; set; }
+
+		public override string ObjectTypeName => "Class";
 	}
 }

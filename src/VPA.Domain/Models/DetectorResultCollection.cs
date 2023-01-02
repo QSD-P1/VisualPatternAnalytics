@@ -2,13 +2,14 @@
 {
 	public class DetectorResultCollection
 	{
-		public DetectorResultCollection()
+		public DetectorResultCollection(string name)
 		{
-			Results = new List<DetectorResult>();
+			Name = name;
+			Results = new List<DetectedItem>();
 		}
 
 		public string Name { get; set; }
 
-		public List<DetectorResult> Results { get; set; }
+		public List<DetectedItem> Results { get; set; }
 	}
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Interfaces;
-using VPA.Domain.Enums;
 namespace VPA.Usecases.Usecases
 {
 	public class DetectSingletonUsecase : IDetectSingletonUsecase
@@ -16,10 +14,7 @@ namespace VPA.Usecases.Usecases
 
 		public async Task<DetectorResultCollection> Detect(ProjectNode project)
 		{
-			var collection = new DetectorResultCollection()
-			{
-				Name = PatternName
-			};
+			var collection = new DetectorResultCollection(PatternName);
 
 			if (project.ClassNodes == null || !project.ClassNodes.Any(c => c.Children != null))
 				return collection;
@@ -34,11 +29,7 @@ namespace VPA.Usecases.Usecases
 
 			foreach (var classNode in project.ClassNodes)
 			{
-				// Skip class because no constructors means that it has a single public constructor
-				if (!classNode.Children.OfType<ConstructorNode>().Any()) continue;
-
 				// we can create these here because 1 singleton can only have 1 related class
-				var result = new DetectorResult();
 				var itemResult = new DetectedItem();
 
 				if (
@@ -53,8 +44,7 @@ namespace VPA.Usecases.Usecases
 					itemResult.Children.Add(methodLeaf);
 
 					// add items to result;
-					result.Items.Add(itemResult);
-					collection.Results.Add(result);
+					collection.Results.Add(itemResult);
 				}
 			}
 			return collection;
