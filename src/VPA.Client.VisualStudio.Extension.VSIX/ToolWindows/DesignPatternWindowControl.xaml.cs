@@ -112,9 +112,10 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 
 		private void ClassTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
-			var selectedItem = e.NewValue as TreeViewItem;
+			var selectedItem = e?.NewValue as TreeViewItem;
+			var headerTextBlock = selectedItem?.Header as TextBlock;
 
-			ActiveNode.Text = selectedItem.Header as string;
+			ActiveNode.Text = headerTextBlock?.Text ?? "Nothing selected";
 		}
 
 		private void CollapseAll(ItemCollection treeItems)

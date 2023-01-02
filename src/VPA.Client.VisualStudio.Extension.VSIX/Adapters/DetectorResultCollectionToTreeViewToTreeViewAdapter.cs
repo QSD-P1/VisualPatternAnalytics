@@ -66,11 +66,11 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 		private TextBlock CreateHeaderTextblock(string name, string type, string additionalInformation)
 		{
 			var result = new TextBlock();
-			var nameRun = new Run(name);
-			nameRun.FontWeight = FontWeights.Bold;
-			result.Inlines.Add(nameRun);
+			result.FontWeight = FontWeights.Bold;
+			result.Text = name;
 
 			var typeRun = new Run($" : {type}");
+			typeRun.FontWeight = FontWeights.Regular;
 			result.Inlines.Add(typeRun);
 
 			var additionalInformationRun = new Run($" ({additionalInformation})");
