@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VPA.Configuration;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;
+using VPA.Usecases.Detectors;
 using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.Tests
@@ -15,8 +16,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task CompositeDetector_DoesNotThrowWhenNothingCanBeDetected()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectCompositeUsecase>();
+			var detector = new DetectCompositeUsecase();
 			var projectNode = new ProjectNode();
 
 			var exception = await Record.ExceptionAsync(() => detector.Detect(projectNode));
@@ -27,8 +27,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task CompositeDetector_DetectsPatternUsingAbstracts()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectCompositeUsecase>();
+			var detector = new DetectCompositeUsecase();
 
 			var parentName = "Parent";
 
@@ -75,8 +74,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task CompositeDetector_DetectsPatternUsingInterfaces()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectCompositeUsecase>();
+			var detector = new DetectCompositeUsecase();
 
 			var parentName = "Parent";
 
@@ -123,8 +121,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task CompositeDetector_NoLeafFound_DoesNotDetectComposite()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectCompositeUsecase>();
+			var detector = new DetectCompositeUsecase();
 
 			var parentName = "Parent";
 
@@ -174,8 +171,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task CompositeDetector_NoCompositeFound_DoesNotDetectComposite()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectCompositeUsecase>();
+			var detector = new DetectCompositeUsecase();
 
 			var parentName = "Parent";
 
@@ -217,8 +213,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task CompositeDetector_NotSharingAParent_DoesNotDetectComposite()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectCompositeUsecase>();
+			var detector = new DetectCompositeUsecase();
 
 			var parentName = "Parent";
 			var parentNameTwo = "ParentTwo";
@@ -265,8 +260,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task CompositeDetector_MissingACollectionOfParent_DoesNotDetectComposite()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectCompositeUsecase>();
+			var detector = new DetectCompositeUsecase();
 
 			var parentName = "Parent";
 			var parentNameTwo = "ParentTwo";
