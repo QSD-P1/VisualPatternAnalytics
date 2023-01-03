@@ -19,9 +19,6 @@ namespace VPA.Client.VisualStudio.Extension.VSIX
 		{
 			await this.RegisterCommandsAsync();
 
-			VS.Events.SolutionEvents.OnAfterBackgroundSolutionLoadComplete += () => VS.Commands.ExecuteAsync("Build.RunCodeAnalysisonSolution");
-			VS.Events.DocumentEvents.Saved += (input) => VS.Commands.ExecuteAsync("Build.RunCodeAnalysisonSolution");
-
 			this.RegisterToolWindows();
 		}
 	}
