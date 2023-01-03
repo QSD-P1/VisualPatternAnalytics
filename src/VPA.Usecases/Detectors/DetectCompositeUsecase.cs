@@ -25,9 +25,14 @@ namespace VPA.Usecases.Detectors
 			if (projectNode.ClassNodes == null)
 				return resultCollection;
 
-			// Combine all classes per interface
+			// Combine all classes per interface and abstract classes
 			var classesPerParent = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
-			var classesWithParentListType = ClassHelperUsecase.GetClassesWithParentListType(classesPerParent);
+			var classesPerInterface = ClassHelperUsecase.GetClassesPerInterface(projectNode);
+
+			var combinedParentAndInterfaceClasses = classesPerParent.Concat(classesPerInterface).ToDictionary(x => x.Key, x => x.Value);
+
+			var classesWithParentListType = ClassHelperUsecase.GetClassesWithParentListType(combinedParentAndInterfaceClasses);
+			
 			if (!classesWithParentListType.Any())
 				return resultCollection;
 
@@ -38,7 +43,7 @@ namespace VPA.Usecases.Detectors
 				var currentParent = entry.Key;
 				var currentClasses = entry.Value;
 
-				var otherClassesForInterface = classesPerParent[currentParent].Where(
+				var otherClassesForInterface = combinedParentAndInterfaceClasses[currentParent].Where(
 					x => !currentClasses.Contains(x)).ToList();
 
 				if (!otherClassesForInterface.Any()) continue;

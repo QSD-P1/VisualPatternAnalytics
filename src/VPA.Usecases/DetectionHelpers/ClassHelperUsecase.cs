@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;
@@ -21,17 +22,37 @@ namespace VPA.Usecases.DetectionHelpers
 				if (classNode.ParentClassName == null)
 					continue;
 
-				if (classesPerParentClass.ContainsKey(classNode.ParentClassName))
-				{
-					classesPerParentClass[classNode.ParentClassName].Add(classNode);
-				}
-				else
-				{
-					classesPerParentClass.Add(classNode.ParentClassName, new List<ClassNode> { classNode });
-				}
+				if (!classesPerParentClass.ContainsKey(classNode.ParentClassName))
+					classesPerParentClass[classNode.ParentClassName] = new List<ClassNode>();
+				
+				classesPerParentClass[classNode.ParentClassName].Add(classNode);
 			}
 
 			return classesPerParentClass;
+		}
+
+		public static Dictionary<string, List<ClassNode>> GetClassesPerInterface(ProjectNode projectNode)
+		{
+			var classesPerInterface = new Dictionary<string, List<ClassNode>>();
+
+			if (projectNode.ClassNodes == null)
+				return classesPerInterface;
+
+			foreach (var classNode in projectNode.ClassNodes)
+			{
+				if (classNode.Interfaces == null)
+					continue;
+				
+				foreach (string classInterface in classNode.Interfaces)
+				{
+					if (!classesPerInterface.ContainsKey(classInterface))
+						classesPerInterface[classInterface] = new List<ClassNode>();
+						
+					classesPerInterface[classInterface].Add(classNode);
+				}
+			}
+
+			return classesPerInterface;
 		}
 
 		public static Dictionary<string, List<ClassNode>> GetClassesWithParentListType(Dictionary<string, List<ClassNode>> classesPerParent)
