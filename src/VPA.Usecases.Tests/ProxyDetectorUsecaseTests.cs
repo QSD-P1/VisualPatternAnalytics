@@ -70,7 +70,7 @@ namespace VPA.Usecases.Tests
 			// Act
 			var projectNode = new ProjectNode()
 			{
-				ClassNodes = new List<ClassNode>() { EmptyClass, NotPartOfProxyClass }
+				ClassNodes = new List<ClassNode>() { ProxyClass, NotPartOfProxyClass }
 			};
 
 			var result = await detector.Detect(projectNode);
@@ -85,7 +85,7 @@ namespace VPA.Usecases.Tests
 			// Act
 			var projectNode = new ProjectNode()
 			{
-				ClassNodes = new List<ClassNode>() { ProxyClass, ProxiedClass, NotPartOfProxyClass }
+				ClassNodes = new List<ClassNode>() { EmptyClass, ProxyClass, ProxiedClass, NotPartOfProxyClass }
 			};
 
 			var result = await detector.Detect(projectNode);

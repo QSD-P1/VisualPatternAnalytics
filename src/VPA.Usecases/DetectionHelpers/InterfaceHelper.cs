@@ -13,17 +13,22 @@ namespace VPA.Usecases.DetectionHelpers
 			matchedResult = null;
 
 			// Searches for the interface
-			string? matchedInterfaceName = classNode1.Interfaces.FirstOrDefault(x => classNode2.Interfaces.Contains(x));
-
-			// If no interface found; return false
-			if (matchedInterfaceName == null) return false;
-
-			// Set matchedResult and return true
-			matchedResult = new InterfaceNode()
+			if (classNode2.Interfaces != null)
 			{
-				Name = matchedInterfaceName
-			};
-			return true;
+				string? matchedInterfaceName = classNode1.Interfaces.FirstOrDefault(x => classNode2.Interfaces.Contains(x));
+
+				// If no identical interface found; return false
+				if (matchedInterfaceName == null) return false;
+
+				// Set matchedResult and return true
+				matchedResult = new InterfaceNode()
+				{
+					Name = matchedInterfaceName
+				};
+
+				return true;
+			}
+			return false;
 		}
 	}
 }
