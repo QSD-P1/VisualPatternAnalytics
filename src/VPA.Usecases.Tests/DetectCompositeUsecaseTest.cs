@@ -25,7 +25,7 @@ namespace VPA.Usecases.Tests
 		}
 
 		[Fact]
-		public async Task CompositeDetector_DetectsPattern()
+		public async Task CompositeDetector_DetectsPatternUsingAbstracts()
 		{
 			var config = DefaultConfiguration.GetInstance();
 			var detector = config.GetService<IDetectCompositeUsecase>();
@@ -41,7 +41,6 @@ namespace VPA.Usecases.Tests
 			{
 				Name = "Composite",
 				ParentClassName = parentName,
-				Interfaces = new List<string> { parentName },
 				Children = new List<BaseLeaf>
 				{
 					fieldNode,
@@ -52,6 +51,53 @@ namespace VPA.Usecases.Tests
 			{
 				Name = "Leaf",
 				ParentClassName = parentName,
+			};
+
+			var projectNode = new ProjectNode
+			{
+				ClassNodes = new List<ClassNode>
+				{
+
+					new()
+					{
+						Name = parentName,
+					},
+					composite,
+					leaf
+				}
+			};
+
+			var result = await detector.Detect(projectNode);
+
+			Assert.True(result.Results.Any());
+		}
+
+		[Fact]
+		public async Task CompositeDetector_DetectsPatternUsingInterfaces()
+		{
+			var config = DefaultConfiguration.GetInstance();
+			var detector = config.GetService<IDetectCompositeUsecase>();
+
+			var parentName = "Parent";
+
+			var fieldNode = new FieldNode
+			{
+				Type = $"List<{parentName}>"
+			};
+
+			var composite = new ClassNode
+			{
+				Name = "Composite",
+				Interfaces = new List<string> { parentName },
+				Children = new List<BaseLeaf>
+				{
+					fieldNode,
+				}
+			};
+
+			var leaf = new ClassNode
+			{
+				Name = "Leaf",
 				Interfaces = new List<string> { parentName }
 			};
 
@@ -91,7 +137,6 @@ namespace VPA.Usecases.Tests
 			{
 				Name = "Composite",
 				ParentClassName = parentName,
-				Interfaces = new List<string> { parentName },
 				Children = new List<BaseLeaf>
 				{
 					fieldNode
@@ -102,7 +147,6 @@ namespace VPA.Usecases.Tests
 			{
 				Name = "NotALeaf",
 				ParentClassName = parentName,
-				Interfaces = new List<string> { parentName },
 				Children = new List<BaseLeaf>
 				{
 					fieldNode
@@ -143,15 +187,13 @@ namespace VPA.Usecases.Tests
 			var composite = new ClassNode
 			{
 				Name = "NotAComposite",
-				ParentClassName = parentName,
-				Interfaces = new List<string> { parentName }
+				ParentClassName = parentName
 			};
 
 			var leaf = new ClassNode
 			{
 				Name = "Leaf",
-				ParentClassName = parentName,
-				Interfaces = new List<string> { parentName }
+				ParentClassName = parentName
 			};
 
 			var projectNode = new ProjectNode
@@ -190,7 +232,6 @@ namespace VPA.Usecases.Tests
 			{
 				Name = "Composite",
 				ParentClassName = parentName,
-				Interfaces = new List<string> { parentName },
 				Children = new List<BaseLeaf>
 				{
 					fieldNode,
@@ -201,7 +242,6 @@ namespace VPA.Usecases.Tests
 			{
 				Name = "Leaf",
 				ParentClassName = parentNameTwo,
-				Interfaces = new List<string> { parentName }
 			};
 
 			var projectNode = new ProjectNode
@@ -240,7 +280,6 @@ namespace VPA.Usecases.Tests
 			{
 				Name = "Composite",
 				ParentClassName = parentName,
-				Interfaces = new List<string> { parentName },
 				Children = new List<BaseLeaf>
 				{
 					fieldNode,
@@ -250,8 +289,7 @@ namespace VPA.Usecases.Tests
 			var leaf = new ClassNode
 			{
 				Name = "Leaf",
-				ParentClassName = parentName,
-				Interfaces = new List<string> { parentName }
+				ParentClassName = parentName
 			};
 
 			var projectNode = new ProjectNode
