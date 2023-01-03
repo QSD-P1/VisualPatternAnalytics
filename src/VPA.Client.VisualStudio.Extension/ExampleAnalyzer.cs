@@ -61,8 +61,6 @@ namespace VPA.Client.VisualStudio.Extension
 			projectNode.ClassNodes = result;
 			patternManager.UpdateTree(projectNode);
 
-			patternManager.UpdateTree(projectNode);
-
 			return;
 
 			//Temporary code to show adapter is working

@@ -70,7 +70,7 @@ namespace VPA.Usecases.Detectors
 
 					// This set classes is a composite because we found a leaf!
 
-					var result = new DetectionResult($"{PatternName}_{resultCollection.Results.Count + 1}");
+					var result = new DetectionResult($"{PatternName}{resultCollection.Results.Count + 1}");
 					result.DetectedItems.Add(new DetectedItem { MainNode = classNode});
 					foreach (ClassNode composite in classesWithParentListType[currentParent])
 					{
