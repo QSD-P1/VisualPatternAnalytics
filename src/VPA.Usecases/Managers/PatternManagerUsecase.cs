@@ -20,7 +20,10 @@ namespace VPA.Usecases.Manager
 
 		public async Task UpdateTree(ProjectNode node)
 		{
-			var result = new List<DetectorResultCollection>();
+			if (DesignPatternsChangedEvent == null)
+				return;
+
+			var result = new List<DetectionResultCollection>();
 
 			foreach (var detector in _detectors)
 			{

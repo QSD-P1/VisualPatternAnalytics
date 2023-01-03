@@ -14,7 +14,7 @@ namespace VPA.Usecases.Usecases
 
 		public async Task<DetectorResultCollection> Detect(ProjectNode projectNode)
 		{
-			var collection = new DetectorResultCollection(PatternName);
+			var collection = new DetectionResultCollection(PatternName);
 
 			if (projectNode.ClassNodes == null || !projectNode.ClassNodes.Any(c => c.Children != null))
 				return collection;
@@ -30,6 +30,7 @@ namespace VPA.Usecases.Usecases
 			foreach (var classNode in projectNode.ClassNodes)
 			{
 				// we can create these here because 1 singleton can only have 1 related class
+				var detectionResult = new DetectionResult($"Singleton {collection.Results.Count + 1}");
 				var itemResult = new DetectedItem();
 
 				if (
@@ -44,7 +45,9 @@ namespace VPA.Usecases.Usecases
 					itemResult.Children.Add(methodLeaf);
 
 					// add items to result;
-					collection.Results.Add(itemResult);
+					//We can add the result and item in the same loop since singletons always are just 1 class
+					detectionResult.DetectedItems.Add(itemResult);
+					collection.Results.Add(detectionResult);
 				}
 			}
 			return collection;

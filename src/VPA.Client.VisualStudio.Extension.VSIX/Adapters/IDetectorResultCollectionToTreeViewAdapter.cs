@@ -5,6 +5,6 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 {
 	public interface IDetectorResultCollectionToTreeViewAdapter
 	{
-		public TreeViewItem Adapt(DetectorResultCollection resultCollection);
+		public TreeViewItem Adapt(DetectionResultCollection resultCollection);
 	}
 }
