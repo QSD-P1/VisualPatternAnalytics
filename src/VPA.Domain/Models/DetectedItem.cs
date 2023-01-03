@@ -2,13 +2,8 @@
 {
 	public class DetectedItem
 	{
-		public DetectedItem()
-		{
-			Children = new List<BaseLeaf>();
-		}
+		public BaseNode MainNode { get; set; } = default!;
 
-		public BaseNode MainNode { get; set; }
-
-		public List<BaseLeaf> Children { get; set; }
+		public List<BaseLeaf> Children { get; set; } = new();
 	}
 }

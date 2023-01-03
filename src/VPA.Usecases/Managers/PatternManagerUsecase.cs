@@ -19,7 +19,7 @@ namespace VPA.Usecases.Manager
 			if (DesignPatternsChangedEvent == null)
 				return;
 
-			var result = new List<DetectorResultCollection>();
+			var result = new List<DetectionResultCollection>();
 
 			foreach (var detector in _detectors)
 			{

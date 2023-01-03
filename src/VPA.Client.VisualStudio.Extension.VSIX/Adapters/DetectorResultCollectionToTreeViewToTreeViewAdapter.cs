@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using EnvDTE;
+using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -14,21 +15,45 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 {
 	public class DetectorResultCollectionToTreeViewToTreeViewAdapter : IDetectorResultCollectionToTreeViewAdapter
 	{
-		public TreeViewItem Adapt(DetectorResultCollection detectionResults)
+		public TreeViewItem Adapt(DetectionResultCollection detectionResultCollection)
 		{
-			if (detectionResults is null)
+			if (detectionResultCollection is null)
 			{
 				throw new NullReferenceException("detectionResults is not set.");
 			}
+
 			// The design pattern that's detected
 			var patternItem = new TreeViewItem()
 			{
-				Header = detectionResults.Name,
-				Name = detectionResults.Name,
-				Tag = detectionResults.Results.Select(x => x.MainNode.Location)
+				Header = detectionResultCollection.DetectedPatternName,
+				Name = detectionResultCollection.DetectedPatternName,
 			};
 
-			foreach (DetectedItem detectedItem in detectionResults.Results)
+			//We add all locations of the mainnodes of the detectedItems.
+			//This way we can check if a certain location belongs to the pattern
+			var tempLocationList = new List<object>();
+			detectionResultCollection.Results.ForEach(x => tempLocationList.AddRange(x.DetectedItems.Select(a => a.MainNode.Location)));
+			patternItem.Tag = tempLocationList;
+
+			foreach (var detectionResult in detectionResultCollection.Results)
+			{
+				var resultItem = new TreeViewItem()
+				{
+					//Strip the whitespaces because its not allowed in a TreeViewItem
+					Header = detectionResult.Name.Replace(" ", ""),
+					Name = detectionResult.Name.Replace(" ", ""),
+					Tag = detectionResult.DetectedItems.Select(a => a.MainNode.Location).ToList(),
+				};
+
+				patternItem.Items.Add(ConvertDetectedItems(resultItem, detectionResult));
+			}
+
+			return patternItem;
+		}
+
+		private TreeViewItem ConvertDetectedItems(TreeViewItem resultItem, DetectionResult detectionResult)
+		{
+			foreach (DetectedItem detectedItem in detectionResult.DetectedItems)
 			{
 				var filepath = ((IEnumerable<Location>)detectedItem.MainNode.Location).First().SourceTree.FilePath;
 
@@ -57,10 +82,10 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 					mainNodeItem.Items.Add(newItem);
 				}
 
-				patternItem.Items.Add(mainNodeItem);
+				resultItem.Items.Add(mainNodeItem);
 			}
 
-			return patternItem;
+			return resultItem;
 		}
 
 		private TextBlock CreateHeaderTextblock(string name, string type, string additionalInformation)
