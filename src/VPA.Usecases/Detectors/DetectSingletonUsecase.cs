@@ -12,7 +12,7 @@ namespace VPA.Usecases.Usecases
 
 		public string PatternName => "Singleton";
 
-		public async Task<DetectorResultCollection> Detect(ProjectNode projectNode)
+		public async Task<DetectionResultCollection> Detect(ProjectNode projectNode)
 		{
 			var collection = new DetectionResultCollection(PatternName);
 

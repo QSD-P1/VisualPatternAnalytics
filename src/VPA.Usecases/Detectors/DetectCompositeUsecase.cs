@@ -17,9 +17,9 @@ namespace VPA.Usecases.Detectors
 		{
 		}
 
-		public async Task<DetectorResultCollection> Detect(ProjectNode projectNode)
+		public async Task<DetectionResultCollection> Detect(ProjectNode projectNode)
 		{
-			var resultCollection = new DetectorResultCollection(PatternName);
+			var resultCollection = new DetectionResultCollection(PatternName);
 
 			// No classes
 			if (projectNode.ClassNodes == null)
@@ -69,11 +69,12 @@ namespace VPA.Usecases.Detectors
 					}
 
 					// This set classes is a composite because we found a leaf!
-					var result = new DetectedItem();
-					result.Children.Add(new DetectedItem().MainNode = classNode);
+
+					var result = new DetectionResult($"{PatternName}_{resultCollection.Results.Count + 1}");
+					result.DetectedItems.Add(new DetectedItem { MainNode = classNode});
 					foreach (ClassNode composite in classesWithParentListType[currentParent])
 					{
-						result.Children.Add(new DetectedItem().MainNode = composite);
+						result.DetectedItems.Add(new DetectedItem { MainNode = composite });
 					}
 
 					resultCollection.Results.Add(result);
