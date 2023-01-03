@@ -15,7 +15,7 @@ namespace VPA.Configuration
 		/// <typeparam name="I">Must be an interface</typeparam>
 		/// <typeparam name="C">Must be a class implementing the interface</typeparam>
 		/// <param name="services"></param>
-		private static void Register<I, C>(this Dictionary<Type, ServiceConfiguration> services)
+		private static void RegisterTransient<I, C>(this Dictionary<Type, ServiceConfiguration> services)
 			where I : class
 			where C : class
 		{
@@ -56,7 +56,7 @@ namespace VPA.Configuration
 
 		public static Dictionary<Type, ServiceConfiguration> RegisterUsecases(this Dictionary<Type, ServiceConfiguration> services)
 		{
-			services.Register<IDetectSingletonUsecase, DetectSingletonUsecase>();
+			services.RegisterTransient<IDetectSingletonUsecase, DetectSingletonUsecase>();
 			services.Register<IDetectCompositeUsecase, DetectCompositeUsecase>();
 			services.RegisterSingleton<IPatternManagerUsecase, PatternManagerUsecase>();
 			return services;
@@ -64,7 +64,7 @@ namespace VPA.Configuration
 
 		public static Dictionary<Type, ServiceConfiguration> RegisterAdapters(this Dictionary<Type, ServiceConfiguration> services)
 		{
-			services.Register<IRoslynAdapter, RoslynAdapter>();
+			services.RegisterTransient<IRoslynAdapter, RoslynAdapter>();
 			return services;
 		}
 	}
