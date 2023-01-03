@@ -23,7 +23,7 @@ namespace VPA.Usecases.Detectors
 
 			foreach (var classNode in project.ClassNodes)
 			{
-				// we can create these here because 1 singleton can only have 1 related class
+				// we can create these here because 1 proxy can only have 1 related class
 				var result = new DetectorResult();
 				var itemResult = new DetectedItem();
 
@@ -31,23 +31,17 @@ namespace VPA.Usecases.Detectors
 				{
 					foreach (FieldNode fieldNode in classNode.Children.OfTypeWithAccessModifier<FieldNode>(AccessModifierEnum.Private))
 					{
-						if (FieldHelper.HasFoundOtherClassFromFieldType(project.ClassNodes, fieldNode, classNode, out ClassNode foundClass))
+						if (FieldHelper.HasFoundOtherClassFromFieldType(project.ClassNodes, fieldNode, classNode, out ClassNode foundClass) &&
+							InterfaceHelper.HasSameInterface(classNode, foundClass, out InterfaceNode foundInterface))
 						{
-							if (foundClass != null && foundClass.Interfaces != null)
-							{
-								var foundInterface = classNode.Interfaces.FirstOrDefault(x => foundClass.Interfaces.Contains(x));
-								if (foundInterface != null)
-								{
-									itemResult.MainNode = classNode;
-									itemResult.Children.Add(foundClass);
-									itemResult.Children.Add(fieldNode);
-									itemResult.Children.Add(new InterfaceNode() { Name = foundInterface });
+							itemResult.MainNode = classNode;
+							itemResult.Children.Add(foundClass);
+							itemResult.Children.Add(fieldNode);
+							itemResult.Children.Add(foundInterface);
 
-									//// add items to result
-									result.Items.Add(itemResult);
-									collection.Results.Add(result);
-								}
-							}
+							// add items to result
+							result.Items.Add(itemResult);
+							collection.Results.Add(result);
 						}
 					}
 				}
