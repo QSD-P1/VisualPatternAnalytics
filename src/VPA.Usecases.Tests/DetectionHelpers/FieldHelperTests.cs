@@ -62,5 +62,37 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 
 			Assert.False(result && leaf == null);
 		}
+
+		[Fact]
+		public void GetCollectionGenericObject_WithGeneric_ReturnCollectionGenericObject()
+		{
+			var genericCollectionString = "List<Parent>";
+			var result = FieldHelper.GetCollectionGenericObject(genericCollectionString);
+			Assert.Equal(result.CollectionType, "List");
+			Assert.Equal(result.GenericType, "Parent");
+		}
+
+		[Fact]
+		public void GetCollectionGenericObject_WithoutGeneric_DontReturnCollectionGenericObject()
+		{
+			var genericCollectionString = "List";
+			var result = FieldHelper.GetCollectionGenericObject(genericCollectionString);
+			Assert.Equal(result.CollectionType, "List");
+			Assert.Equal(result.GenericType, null);
+		}
+
+		[Fact]
+		public void GetCollectionGenericObject_WithNullParam_ReturnsNull()
+		{
+			var result = FieldHelper.GetCollectionGenericObject(null);
+			Assert.Null(result);
+		}
+
+		[Fact]
+		public void GetCollectionGenericObject_WithEmptyString_ReturnsNull()
+		{
+			var result = FieldHelper.GetCollectionGenericObject("");
+			Assert.Null(result);
+		}
 	}
 }

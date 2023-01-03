@@ -19,11 +19,7 @@ namespace VPA.Usecases.Detectors
 
 		public async Task<DetectorResultCollection> Detect(ProjectNode projectNode)
 		{
-			var resultCollection = new DetectorResultCollection()
-			{
-				Name = PatternName,
-				Results = new List<DetectorResult>(),
-			};
+			var resultCollection = new DetectorResultCollection(PatternName);
 
 			// No classes
 			if (projectNode.ClassNodes == null)
@@ -49,36 +45,35 @@ namespace VPA.Usecases.Detectors
 
 				foreach (ClassNode classNode in otherClassesForInterface)
 				{
-					if (classNode.Children != null && !classNode.Children.Any()) continue;
-
-					var fields = classNode.Children.OfType<FieldNode>().ToList();
-					bool leafHasCollectionOfParent = false;
-
-					if (fields.Any())
+					if (classNode.Children != null)
 					{
-						foreach (var field in fields)
-						{
-							var collectionGenericObject = FieldHelper.GetCollectionGenericObject(field.Type);
+						var fields = classNode.Children.OfType<FieldNode>().ToList();
+						bool leafHasCollectionOfParent = false;
 
-							if (collectionGenericObject != null && Enum.IsDefined(typeof(CollectionTypesEnum), collectionGenericObject.CollectionType) &&
-							    collectionGenericObject.GenericType == currentParent)
-								leafHasCollectionOfParent = true;
+						if (fields.Any())
+						{
+							foreach (var field in fields)
+							{
+								var collectionGenericObject = FieldHelper.GetCollectionGenericObject(field.Type);
+
+								if (collectionGenericObject != null && Enum.IsDefined(typeof(CollectionTypesEnum), collectionGenericObject.CollectionType) &&
+								    collectionGenericObject.GenericType == currentParent)
+									leafHasCollectionOfParent = true;
+							}
+						}
+
+						if (leafHasCollectionOfParent)
+						{
+							continue;
 						}
 					}
 
-					if (leafHasCollectionOfParent)
-					{
-						continue;
-					}
-
 					// This set classes is a composite because we found a leaf!
-
-					var result = new DetectorResult();
-					result.Items.Add(new DetectedItem { MainNode = classNode });
-
+					var result = new DetectedItem();
+					result.Children.Add(new DetectedItem().MainNode = classNode);
 					foreach (ClassNode composite in classesWithParentListType[currentParent])
 					{
-						result.Items.Add(new DetectedItem { MainNode = composite });
+						result.Children.Add(new DetectedItem().MainNode = composite);
 					}
 
 					resultCollection.Results.Add(result);

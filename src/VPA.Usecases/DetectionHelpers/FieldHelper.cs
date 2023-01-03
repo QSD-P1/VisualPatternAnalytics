@@ -19,7 +19,7 @@ namespace VPA.Usecases.DetectionHelpers
 
 		public static CollectionGenericObject GetCollectionGenericObject(string typeString)
 		{
-			if (typeString == null)
+			if (typeString == null || typeString == "")
 			{
 				return null;
 			}

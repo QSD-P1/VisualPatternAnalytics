@@ -39,7 +39,6 @@ namespace VPA.Usecases.DetectionHelpers
 			// Check if class has collection field of interface type
 			var classesWithParentListType = new Dictionary<string, List<ClassNode>>();
 
-
 			foreach (KeyValuePair<string, List<ClassNode>> entry in classesPerParent)
 			{
 				var currentParent = entry.Key;
