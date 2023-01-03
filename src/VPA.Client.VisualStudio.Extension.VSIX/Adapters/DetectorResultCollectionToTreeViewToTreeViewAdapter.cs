@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using EnvDTE;
+using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -41,7 +42,7 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.Adapters
 					//Strip the whitespaces because its not allowed in a TreeViewItem
 					Header = detectionResult.Name.Replace(" ", ""),
 					Name = detectionResult.Name.Replace(" ", ""),
-					Tag = detectionResult.DetectedItems.First().MainNode.Location
+					Tag = detectionResult.DetectedItems.Select(a => a.MainNode.Location).ToList(),
 				};
 
 				patternItem.Items.Add(ConvertDetectedItems(resultItem, detectionResult));
