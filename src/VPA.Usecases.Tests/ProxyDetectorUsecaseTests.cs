@@ -12,45 +12,86 @@ namespace VPA.Usecases.Tests
 {
 	public class ProxyDetectorUsecaseTests
 	{
-		[Fact]
-		public async Task ProxyDetector_DetectsPattern()
+		// Arrange Set up for testing
+		static DefaultConfiguration config = DefaultConfiguration.GetInstance();
+		static IProxyDetectorUsecase detector = config.GetService<IProxyDetectorUsecase>();
+		static string proxyName = "Proxy";
+		static string proxiedName = "Proxied";
+		static IList<string> interfaceList = new List<string>() { "Interface" };
+
+		static FieldNode fieldNode = new FieldNode()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IProxyDetectorUsecase>();
+			Type = proxiedName,
+			AccessModifier = AccessModifierEnum.Private
+		};
 
-			var proxyName = "Proxy";
-			var proxiedName = "Proxied";
-			IList<string> interfaceList = new List<string>() {"Interface"};
-
-			var fieldNode = new FieldNode()
-			{
-				Type = proxiedName,
-				AccessModifier = AccessModifierEnum.Private
-			};
-
-			var classA = new ClassNode()
-			{
-				Name = proxyName,
-				Interfaces = interfaceList,
-				Children = new List<BaseLeaf>()
+		ClassNode ProxyClass = new ClassNode()
+		{
+			Name = proxyName,
+			Interfaces = interfaceList,
+			Children = new List<BaseLeaf>()
 						{
 							fieldNode
 						},
-			};
+		};
 
-			var classB = new ClassNode()
-			{
-				Name = proxiedName,
-				Interfaces = interfaceList
-			};
+		ClassNode ProxiedClass = new ClassNode()
+		{
+			Name = proxiedName,
+			Interfaces = interfaceList
+		};
 
+		ClassNode NotPartOfProxyClass = new ClassNode()
+		{
+			Name = proxiedName
+		};
+
+		ClassNode EmptyClass = new ClassNode()
+		{ };
+
+		[Fact]
+		public async Task ProxyDetector_DetectsPattern()
+		{
+			// Act
 			var projectNode = new ProjectNode()
 			{
-				ClassNodes = new List<ClassNode>() {classA, classB}
+				ClassNodes = new List<ClassNode>() {ProxyClass, ProxiedClass}
 			};
 
 			var result = await detector.Detect(projectNode);
+
+			// Assert
 			Assert.True(result.Results.Any());
+		}
+
+		[Fact]
+		public async Task ProxyDetector_SecondClassDifferentInterface()
+		{
+			// Act
+			var projectNode = new ProjectNode()
+			{
+				ClassNodes = new List<ClassNode>() { EmptyClass, NotPartOfProxyClass }
+			};
+
+			var result = await detector.Detect(projectNode);
+
+			// Assert
+			Assert.True(result.Results.Count == 0);
+		}
+
+		[Fact]
+		public async Task ProxyDetector_DetectsPatternWithMultipleClasses()
+		{
+			// Act
+			var projectNode = new ProjectNode()
+			{
+				ClassNodes = new List<ClassNode>() { ProxyClass, ProxiedClass, NotPartOfProxyClass }
+			};
+
+			var result = await detector.Detect(projectNode);
+
+			// Assert
+			Assert.True(result.Results.Count == 1);
 		}
 	}
 }

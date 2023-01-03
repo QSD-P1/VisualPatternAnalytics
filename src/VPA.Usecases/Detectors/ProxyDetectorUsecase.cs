@@ -33,17 +33,20 @@ namespace VPA.Usecases.Detectors
 					{
 						if (FieldHelper.HasFoundOtherClassFromFieldType(project.ClassNodes, fieldNode, classNode, out ClassNode foundClass))
 						{
-							var foundInterface = classNode.Interfaces.FirstOrDefault(x => foundClass.Interfaces.Contains(x));
-							if (foundInterface != null)
+							if (foundClass != null && foundClass.Interfaces != null)
 							{
-								itemResult.MainNode = classNode;
-								itemResult.Children.Add(foundClass);
-								itemResult.Children.Add(fieldNode);
-								itemResult.Children.Add(new InterfaceNode() { Name = foundInterface });
+								var foundInterface = classNode.Interfaces.FirstOrDefault(x => foundClass.Interfaces.Contains(x));
+								if (foundInterface != null)
+								{
+									itemResult.MainNode = classNode;
+									itemResult.Children.Add(foundClass);
+									itemResult.Children.Add(fieldNode);
+									itemResult.Children.Add(new InterfaceNode() { Name = foundInterface });
 
-								//// add items to result
-								result.Items.Add(itemResult);
-								collection.Results.Add(result);
+									//// add items to result
+									result.Items.Add(itemResult);
+									collection.Results.Add(result);
+								}
 							}
 						}
 					}
