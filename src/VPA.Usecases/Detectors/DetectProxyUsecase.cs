@@ -9,9 +9,9 @@ using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.Detectors
 {
-	public class ProxyDetectorUsecase : IProxyDetectorUsecase
+	public class DetectProxyUsecase : IDetectProxyUsecase
 	{
-		public ProxyDetectorUsecase() { }
+		public DetectProxyUsecase() { }
 		public string PatternName => "Proxy";
 
 		public async Task<DetectionResultCollection> Detect(ProjectNode project)

@@ -6,9 +6,9 @@ using VPA.Domain.Enums;
 
 namespace VPA.Usecases.Detectors
 {
-	public class SingletonDetectorUsecase : ISingletonDetectorUsecase
+	public class DetectSingletonUsecase : IDetectSingletonUsecase
 	{
-		public SingletonDetectorUsecase()
+		public DetectSingletonUsecase()
 		{
 		}
 

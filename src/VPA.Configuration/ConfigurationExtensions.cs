@@ -55,8 +55,8 @@ namespace VPA.Configuration
 
 		public static Dictionary<Type, ServiceConfiguration> RegisterUsecases(this Dictionary<Type, ServiceConfiguration> services)
 		{
-			services.RegisterTransient<ISingletonDetectorUsecase, SingletonDetectorUsecase>();
-			services.RegisterTransient<IProxyDetectorUsecase, ProxyDetectorUsecase>();
+			services.RegisterTransient<IDetectSingletonUsecase, DetectSingletonUsecase>();
+			services.RegisterTransient<IDetectProxyUsecase, DetectProxyUsecase>();
 			services.RegisterSingleton<IPatternManagerUsecase, PatternManagerUsecase>();
 			return services;
 		}

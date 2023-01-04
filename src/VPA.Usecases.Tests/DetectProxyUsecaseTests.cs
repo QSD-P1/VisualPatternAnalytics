@@ -11,7 +11,7 @@ using VPA.Usecases.Detectors;
 
 namespace VPA.Usecases.Tests
 {
-	public class ProxyDetectorUsecaseTests
+	public class DetectProxyUsecaseTests
 	{
 		// Arrange Set up for testing
 		static string proxyName = "Proxy";
@@ -52,7 +52,7 @@ namespace VPA.Usecases.Tests
 		public async Task ProxyDetector_DetectsPattern()
 		{
 			// Arrange
-			var proxyDetector = new ProxyDetectorUsecase();
+			var proxyDetector = new DetectProxyUsecase();
 
 			// Act
 			var projectNode = new ProjectNode()
@@ -70,7 +70,7 @@ namespace VPA.Usecases.Tests
 		public async Task ProxyDetector_SecondClassDifferentInterface()
 		{
 			// Arrange
-			var proxyDetector = new ProxyDetectorUsecase();
+			var proxyDetector = new DetectProxyUsecase();
 
 			// Act
 			var projectNode = new ProjectNode()
@@ -88,7 +88,7 @@ namespace VPA.Usecases.Tests
 		public async Task ProxyDetector_DetectsPatternWithMultipleClasses()
 		{
 			// Arrange
-			var proxyDetector = new ProxyDetectorUsecase();
+			var proxyDetector = new DetectProxyUsecase();
 
 			// Act
 			var projectNode = new ProjectNode()

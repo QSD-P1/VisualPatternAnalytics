@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VPA.Usecases.Interfaces
 {
-	public interface IProxyDetectorUsecase : IDetectorUsecase
+	public interface IDetectProxyUsecase : IDetectUsecase
 	{
 	}
 }

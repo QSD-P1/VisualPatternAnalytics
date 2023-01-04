@@ -3,7 +3,7 @@ using VPA.Domain.Models;
 
 namespace VPA.Usecases.Interfaces
 {
-	public interface ISingletonDetectorUsecase :IDetectorUsecase
+	public interface IDetectSingletonUsecase :IDetectUsecase
 	{
 	}
 }

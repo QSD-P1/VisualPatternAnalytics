@@ -6,10 +6,10 @@ namespace VPA.Usecases.Manager
 {
 	public sealed class PatternManagerUsecase : IPatternManagerUsecase
 	{
-		private static List<IDetectorUsecase> _detectors = new List<IDetectorUsecase>();
+		private static List<IDetectUsecase> _detectors = new List<IDetectUsecase>();
 		public event EventHandler<DesignPatternsChangedEventArgs> DesignPatternsChangedEvent;
 
-		public PatternManagerUsecase(ISingletonDetectorUsecase singletonDetector, IProxyDetectorUsecase proxyDetector)
+		public PatternManagerUsecase(IDetectSingletonUsecase singletonDetector, IDetectProxyUsecase proxyDetector)
 		{
 			_detectors.Add(singletonDetector);
 			_detectors.Add(proxyDetector);
