@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VPA.Configuration;
-using VPA.Domain.Enums;
+﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
-using VPA.Usecases.Interfaces;
+using VPA.Usecases.Usecases;
 
 namespace VPA.Usecases.Tests
 {
@@ -15,8 +9,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task SingletonDetector_DoesNotThrowWhenNothingCanBeDetected()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectSingletonUsecase>();
+			var detector = new DetectSingletonUsecase();
 			var projectNode = new ProjectNode();
 
 			var exception = await Record.ExceptionAsync(() => detector.Detect(projectNode));
@@ -27,8 +20,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task SingletonDetector_DetectsPattern()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectSingletonUsecase>();
+			var detector = new DetectSingletonUsecase();
 
 			var className = "TestClass";
 
@@ -76,8 +68,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task SingletonDetector_DoesNotDetectPattern()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectSingletonUsecase>();
+			var detector = new DetectSingletonUsecase();
 
 			var className = "TestClass";
 
