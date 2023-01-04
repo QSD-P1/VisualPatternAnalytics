@@ -7,7 +7,7 @@ namespace VPA.Usecases.DetectionHelpers
 {
 	public class InterfaceHelper
 	{
-		public static bool HasSameInterface(ClassNode classNode1, ClassNode classNode2, out InterfaceNode? matchedResult)
+		public static bool HasSameInterface(IEnumerable<InterfaceNode> interfaceNodes, ClassNode classNode1, ClassNode classNode2, out InterfaceNode? matchedResult)
 		{
 			// initialize the out param
 			matchedResult = null;
@@ -22,10 +22,7 @@ namespace VPA.Usecases.DetectionHelpers
 			if (matchedInterfaceName == null) return false;
 
 			// Set matchedResult and return true
-			matchedResult = new InterfaceNode()
-			{
-				Name = matchedInterfaceName
-			};
+			matchedResult = interfaceNodes.FirstOrDefault(x => x.Name == matchedInterfaceName);
 
 			return true;
 		}

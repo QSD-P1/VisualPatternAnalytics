@@ -28,6 +28,9 @@ namespace VPA.Usecases.Detectors
 
 			foreach (ClassNode classNode in project.ClassNodes)
 			{
+				// Skip class because no constructors means that it has a single public constructor
+				if (!classNode.Children.OfType<ConstructorNode>().Any()) continue;
+
 				// we can create these here because 1 singleton can only have 1 related class
 				var detectionResult = new DetectionResult($"Singleton {collection.Results.Count + 1}");
 				var itemResult = new DetectedItem();

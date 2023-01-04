@@ -14,34 +14,42 @@ namespace VPA.Usecases.Detectors
 		public ProxyDetectorUsecase() { }
 		public string PatternName => "Proxy";
 
-		public async Task<DetectorResultCollection> Detect(ProjectNode project)
+		public async Task<DetectionResultCollection> Detect(ProjectNode project)
 		{
-			var collection = new DetectorResultCollection()
-			{
-				Name = PatternName
-			};
+			var collection = new DetectionResultCollection(PatternName);
 
 			foreach (var classNode in project.ClassNodes)
 			{
-				// we can create these here because 1 proxy can only have 1 related class
-				var result = new DetectorResult();
-				var itemResult = new DetectedItem();
+				var detectionResult = new DetectionResult($"Proxy {collection.Results.Count + 1}");
 
 				if (classNode.Interfaces != null && classNode.Children != null)
 				{
 					foreach (FieldNode fieldNode in classNode.Children.OfTypeWithAccessModifier<FieldNode>(AccessModifierEnum.Private))
 					{
-						if (FieldHelper.HasFoundOtherClassFromFieldType(project.ClassNodes, fieldNode, classNode, out ClassNode foundClass) &&
-							InterfaceHelper.HasSameInterface(classNode, foundClass, out InterfaceNode foundInterface))
+						if (FieldHelper.HasFoundOtherClassFromFieldType(project.ClassNodes, fieldNode, classNode, out ClassNode foundClassNode) &&
+							InterfaceHelper.HasSameInterface(project.InterfaceNodes, classNode, foundClassNode, out InterfaceNode foundInterfaceNode))
 						{
-							itemResult.MainNode = classNode;
-							itemResult.Children.Add(foundClass);
-							itemResult.Children.Add(fieldNode);
-							itemResult.Children.Add(foundInterface);
+							var itemResultfoundInterface = new DetectedItem();
+							itemResultfoundInterface.MainNode = foundInterfaceNode;
+							itemResultfoundInterface.Children.Add(classNode);
+							itemResultfoundInterface.Children.Add(foundClassNode);
 
-							// add items to result
-							result.Items.Add(itemResult);
-							collection.Results.Add(result);
+							var itemResultClass = new DetectedItem();
+							itemResultClass.MainNode = classNode;
+							itemResultClass.Children.Add(fieldNode);
+							itemResultClass.Children.Add(foundInterfaceNode);
+
+							var itemResultfoundClass = new DetectedItem();
+							itemResultfoundClass.MainNode = foundClassNode;
+							itemResultfoundClass.Children.Add(foundInterfaceNode);
+
+							detectionResult.DetectedItems.Add(itemResultClass);
+							detectionResult.DetectedItems.Add(itemResultfoundClass);
+							detectionResult.DetectedItems.Add(itemResultfoundInterface);
+
+							// add items to result;
+							collection.Results.Add(detectionResult);
+							break;
 						}
 					}
 				}
