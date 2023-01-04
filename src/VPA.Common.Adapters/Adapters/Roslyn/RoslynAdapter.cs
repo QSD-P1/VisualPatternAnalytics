@@ -9,17 +9,29 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 {
 	public class RoslynAdapter : IRoslynAdapter
 	{
-		public IEnumerable<ClassNode> ConvertToGenericTree(SyntaxTree tree, SemanticModel semanticModel)
+		public ProjectNode ConvertToGenericTree(SyntaxTree tree, SemanticModel semanticModel)
 		{
-			var nodes = tree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>();
-			var result = new List<ClassNode>();
+			var classNodes = tree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>();
+			var interfaceNodes = tree.GetRoot().DescendantNodes().OfType<InterfaceDeclarationSyntax>();
 
-			foreach (var node in nodes)
+			var classNodesResult = new List<ClassNode>();
+			var interfaceNodesResult = new List<InterfaceNode>();
+
+			foreach (var node in classNodes)
 			{
-				result.Add((ClassNode)ConvertToCustomNode(node, semanticModel));
+				classNodesResult.Add((ClassNode)ConvertToCustomNode(node, semanticModel));
 			}
 
-			return result;
+			foreach (var node in interfaceNodes)
+			{
+				interfaceNodesResult.Add((InterfaceNode)ConvertToCustomNode(node, semanticModel));
+			}
+
+			return new ProjectNode()
+			{
+				InterfaceNodes = interfaceNodesResult,
+				ClassNodes = classNodesResult
+			};
 		}
 
 		private BaseLeaf ConvertToCustomNode(SyntaxNode node, SemanticModel semanticModel)
@@ -29,6 +41,7 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 			Dictionary<Type, Func<SyntaxNode, SemanticModel, BaseLeaf>> NodeConvertionDictionary = new()
 			{
 				{ typeof(ClassDeclarationSyntax), ConvertClassDeclarationToClassNode },
+				{ typeof(InterfaceDeclarationSyntax), ConvertInterfaceDeclarationToInterfaceNode },
 				{ typeof(ConstructorDeclarationSyntax), ConvertConstructorDeclarationToConstructorNode },
 				{ typeof(FieldDeclarationSyntax), ConvertFieldDeclarationToFieldNode },
 				{ typeof(MethodDeclarationSyntax), ConvertMethodDeclarationToMethodNode }
@@ -77,6 +90,24 @@ namespace VPA.Common.Adapters.Adapters.Roslyn
 			};
 
 			newNode = FillBaseLeafData(roslynNode, classSymbol, newNode);
+
+			return newNode;
+		}
+
+		private InterfaceNode ConvertInterfaceDeclarationToInterfaceNode(SyntaxNode nodeToConvert, SemanticModel semanticModel)
+		{
+			var roslynNode = (InterfaceDeclarationSyntax)nodeToConvert;
+
+			// Get the symbol for the class
+			var interfaceSymbol = semanticModel.GetDeclaredSymbol(roslynNode);
+
+			// Convert the roslyndata to generic tree ClassNode
+			var newNode = new InterfaceNode()
+			{
+				Interfaces = interfaceSymbol.AllInterfaces.Select(x => x.Name).ToList(),
+			};
+
+			newNode = FillBaseLeafData(roslynNode, interfaceSymbol, newNode);
 
 			return newNode;
 		}

@@ -26,7 +26,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = roslynAdapter.ConvertToGenericTree(tree, model).First();
+			var result = roslynAdapter.ConvertToGenericTree(tree, model).ClassNodes.First();
 
 			// Assert
 			var expected = new ClassNode
@@ -64,7 +64,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, model).First().Children.First();
+			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, model).ClassNodes.First().Children.First();
 
 			// Assert
 			var expected = new ConstructorNode
@@ -95,7 +95,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First();
+			var result = roslynAdapter.ConvertToGenericTree(tree, semanticModel).ClassNodes.First();
 
 			// Assert
 			Assert.Multiple(
@@ -122,7 +122,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().Children.First();
+			var result = (ConstructorNode)roslynAdapter.ConvertToGenericTree(tree, semanticModel).ClassNodes.First().Children.First();
 
 			// Assert
 			Assert.Multiple(
@@ -148,7 +148,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var fieldNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().Children
+			var fieldNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).ClassNodes.First().Children
 				.OfType<FieldNode>()
 				.ToList();
 
@@ -179,7 +179,7 @@ namespace VPA.Common.Adapters.Tests
 			var roslynAdapter = new RoslynAdapter();
 
 			// Act
-			var methodNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).First().Children
+			var methodNodes = roslynAdapter.ConvertToGenericTree(tree, semanticModel).ClassNodes.First().Children
 				.OfType<MethodNode>()
 				.ToList();
 

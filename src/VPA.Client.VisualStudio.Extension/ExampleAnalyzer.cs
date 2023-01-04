@@ -51,13 +51,17 @@ namespace VPA.Client.VisualStudio.Extension
 		private void ValidateWork(CompilationAnalysisContext context)
 		{
 			var projectNode = new ProjectNode();
-			var result = new List<ClassNode>();
+			var classResult = new List<ClassNode>();
+			var interfaceResult = new List<InterfaceNode>();
 			foreach (var tree in context.Compilation.SyntaxTrees)
 			{
-				result.AddRange(roslynAdapter.ConvertToGenericTree(tree, context.Compilation.GetSemanticModel(tree)));
+				var result = roslynAdapter.ConvertToGenericTree(tree, context.Compilation.GetSemanticModel(tree));
+				classResult.AddRange(result.ClassNodes);
+				interfaceResult.AddRange(result.InterfaceNodes);
 			}
 
-			projectNode.ClassNodes = result;
+			projectNode.ClassNodes = classResult;
+			projectNode.InterfaceNodes = interfaceResult;
 			patternManager.UpdateTree(projectNode);
 
 			//Temporary code to show adapter is working
