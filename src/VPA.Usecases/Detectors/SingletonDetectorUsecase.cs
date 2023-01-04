@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Interfaces;
@@ -15,12 +14,9 @@ namespace VPA.Usecases.Detectors
 
 		public string PatternName => "Singleton";
 
-		public async Task<DetectorResultCollection> Detect(ProjectNode project)
+		public async Task<DetectionResultCollection> Detect(ProjectNode project)
 		{
-			var collection = new DetectorResultCollection()
-			{
-				Name = PatternName
-			};
+			var collection = new DetectionResultCollection(PatternName);
 
 			var publicStaticKeywords = new KeywordCollection()
 			{
@@ -32,11 +28,8 @@ namespace VPA.Usecases.Detectors
 
 			foreach (ClassNode classNode in project.ClassNodes)
 			{
-				// Skip class because no constructors means that it has a single public constructor
-				if (!classNode.Children.OfType<ConstructorNode>().Any()) continue;
-
 				// we can create these here because 1 singleton can only have 1 related class
-				var result = new DetectorResult();
+				var detectionResult = new DetectionResult($"Singleton {collection.Results.Count + 1}");
 				var itemResult = new DetectedItem();
 
 				if (
@@ -51,8 +44,9 @@ namespace VPA.Usecases.Detectors
 					itemResult.Children.Add(methodLeaf);
 
 					// add items to result;
-					result.Items.Add(itemResult);
-					collection.Results.Add(result);
+					//We can add the result and item in the same loop since singletons always are just 1 class
+					detectionResult.DetectedItems.Add(itemResult);
+					collection.Results.Add(detectionResult);
 				}
 			}
 			return collection;

@@ -12,7 +12,7 @@ namespace VPA.Usecases.DetectionHelpers
 			.Where(n => 
 				   n.Modifiers.Contains(ModifiersEnum.Static) 
 				&& n.AccessModifier == AccessModifierEnum.Private 
-				&& n.Type == node.Name)
+				&& n.Type?.Replace("?", "") == node.Name)
 			.FirstOrDefault();
 
 			return leaf != null;

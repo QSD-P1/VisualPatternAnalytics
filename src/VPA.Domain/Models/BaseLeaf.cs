@@ -8,5 +8,6 @@ namespace VPA.Domain.Models
 		public object? Location { get; set; }
 		public IEnumerable<ModifiersEnum>? Modifiers { get; set; }
 		public AccessModifierEnum? AccessModifier { get; set; }
+		public abstract string ObjectTypeName { get; }
 	}
 }

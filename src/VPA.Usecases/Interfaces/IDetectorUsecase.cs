@@ -9,6 +9,6 @@ namespace VPA.Usecases.Interfaces
 	{
 		public string PatternName { get; }
 
-		public Task<DetectorResultCollection> Detect(ProjectNode project);
+		public Task<DetectionResultCollection> Detect(ProjectNode project);
 	}
 }
