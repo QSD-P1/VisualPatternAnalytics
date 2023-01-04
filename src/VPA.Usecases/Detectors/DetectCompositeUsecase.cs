@@ -21,10 +21,6 @@ namespace VPA.Usecases.Detectors
 		{
 			var resultCollection = new DetectionResultCollection(PatternName);
 
-			// No classes
-			if (projectNode.ClassNodes == null)
-				return resultCollection;
-
 			// Combine all classes per interface and abstract classes
 			var classesPerParent = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
 			var classesPerInterface = ClassHelperUsecase.GetClassesPerInterface(projectNode);
