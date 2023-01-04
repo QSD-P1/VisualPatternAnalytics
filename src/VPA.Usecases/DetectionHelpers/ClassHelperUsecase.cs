@@ -10,14 +10,14 @@ namespace VPA.Usecases.DetectionHelpers
 {
 	public static class ClassHelperUsecase
 	{
-		public static Dictionary<string, List<ClassNode>> GetClassesPerParentClass(IEnumerable<ClassNode> classNodes)
+		public static Dictionary<string, List<ClassNode>> GetClassesPerParentClass(ProjectNode projectNode)
 		{
 			var classesPerParentClass = new Dictionary<string, List<ClassNode>>();
 
-			if (!classNodes.Any())
+			if (projectNode.ClassNodes == null)
 				return classesPerParentClass;
 
-			foreach (var classNode in classNodes)
+			foreach (var classNode in projectNode.ClassNodes)
 			{
 				if (classNode.ParentClassName == null)
 					continue;
@@ -31,14 +31,14 @@ namespace VPA.Usecases.DetectionHelpers
 			return classesPerParentClass;
 		}
 
-		public static Dictionary<string, List<ClassNode>> GetClassesPerInterface(IEnumerable<ClassNode> classNodes)
+		public static Dictionary<string, List<ClassNode>> GetClassesPerInterface(ProjectNode projectNode)
 		{
 			var classesPerInterface = new Dictionary<string, List<ClassNode>>();
 
-			if (!classNodes.Any())
+			if (projectNode.ClassNodes == null)
 				return classesPerInterface;
 
-			foreach (var classNode in classNodes)
+			foreach (var classNode in projectNode.ClassNodes)
 			{
 				if (classNode.Interfaces == null)
 					continue;
