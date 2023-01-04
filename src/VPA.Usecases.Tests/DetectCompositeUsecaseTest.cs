@@ -13,13 +13,19 @@ namespace VPA.Usecases.Tests
 {
 	public class DetectCompositeUsecaseTest
 	{
+		private readonly DetectCompositeUsecase _detectCompositeUsecase;
+
+		public DetectCompositeUsecaseTest(DetectCompositeUsecase detectCompositeUsecase)
+		{
+			_detectCompositeUsecase = detectCompositeUsecase;
+		}
+
 		[Fact]
 		public async Task CompositeDetector_DoesNotThrowWhenNothingCanBeDetected()
 		{
-			var detector = new DetectCompositeUsecase();
 			var projectNode = new ProjectNode();
 
-			var exception = await Record.ExceptionAsync(() => detector.Detect(projectNode));
+			var exception = await Record.ExceptionAsync(() => _detectCompositeUsecase.Detect(projectNode));
 
 			Assert.Null(exception);
 		}
@@ -27,8 +33,6 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task CompositeDetector_DetectsPatternUsingAbstracts()
 		{
-			var detector = new DetectCompositeUsecase();
-
 			var parentName = "Parent";
 
 			var fieldNode = new FieldNode
@@ -66,7 +70,7 @@ namespace VPA.Usecases.Tests
 				}
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await _detectCompositeUsecase.Detect(projectNode);
 
 			Assert.True(result.Results.Any());
 		}
@@ -74,8 +78,6 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task CompositeDetector_DetectsPatternUsingInterfaces()
 		{
-			var detector = new DetectCompositeUsecase();
-
 			var parentName = "Parent";
 
 			var fieldNode = new FieldNode
@@ -113,7 +115,7 @@ namespace VPA.Usecases.Tests
 				}
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await _detectCompositeUsecase.Detect(projectNode);
 
 			Assert.True(result.Results.Any());
 		}
@@ -121,8 +123,6 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task CompositeDetector_NoLeafFound_DoesNotDetectComposite()
 		{
-			var detector = new DetectCompositeUsecase();
-
 			var parentName = "Parent";
 
 			var fieldNode = new FieldNode
@@ -164,15 +164,13 @@ namespace VPA.Usecases.Tests
 				}
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await _detectCompositeUsecase.Detect(projectNode);
 			Assert.False(result.Results.Any());
 		}
 
 		[Fact]
 		public async Task CompositeDetector_NoCompositeFound_DoesNotDetectComposite()
 		{
-			var detector = new DetectCompositeUsecase();
-
 			var parentName = "Parent";
 
 			var fieldNode = new FieldNode
@@ -206,15 +204,13 @@ namespace VPA.Usecases.Tests
 				}
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await _detectCompositeUsecase.Detect(projectNode);
 			Assert.False(result.Results.Any());
 		}
 
 		[Fact]
 		public async Task CompositeDetector_NotSharingAParent_DoesNotDetectComposite()
 		{
-			var detector = new DetectCompositeUsecase();
-
 			var parentName = "Parent";
 			var parentNameTwo = "ParentTwo";
 
@@ -253,15 +249,13 @@ namespace VPA.Usecases.Tests
 				}
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await _detectCompositeUsecase.Detect(projectNode);
 			Assert.False(result.Results.Any());
 		}
 
 		[Fact]
 		public async Task CompositeDetector_MissingACollectionOfParent_DoesNotDetectComposite()
 		{
-			var detector = new DetectCompositeUsecase();
-
 			var parentName = "Parent";
 			var parentNameTwo = "ParentTwo";
 
@@ -300,7 +294,7 @@ namespace VPA.Usecases.Tests
 				}
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await _detectCompositeUsecase.Detect(projectNode);
 			Assert.False(result.Results.Any());
 		}
 	}

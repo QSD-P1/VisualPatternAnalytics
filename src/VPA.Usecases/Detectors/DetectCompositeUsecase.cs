@@ -11,10 +11,23 @@ namespace VPA.Usecases.Detectors
 {
 	public class DetectCompositeUsecase : IDetectCompositeUsecase
 	{
+		private readonly GetClassesPerParentClassUsecase _getClassesPerParentClass;
+		private readonly GetClassesPerInterfaceUsecase _getClassesPerInterface;
+		private readonly GetClassesWithParentListTypeUsecase _getClassesWithParentListType;
+		private readonly GetCollectionGenericObjectUsecase _getCollectionGenericObject;
 		public string PatternName => "Composite";
 
-		public DetectCompositeUsecase()
+		public DetectCompositeUsecase(
+			GetClassesPerParentClassUsecase getClassesPerParentClass,
+			GetClassesPerInterfaceUsecase getClassesPerInterface,
+			GetClassesWithParentListTypeUsecase getClassesWithParentListType,
+			GetCollectionGenericObjectUsecase collectionGenericObject
+			)
 		{
+			_getClassesPerParentClass = getClassesPerParentClass;
+			_getClassesPerInterface = getClassesPerInterface;
+			_getClassesWithParentListType = getClassesWithParentListType;
+			_getCollectionGenericObject = collectionGenericObject;
 		}
 
 		public async Task<DetectionResultCollection> Detect(ProjectNode projectNode)
@@ -22,12 +35,12 @@ namespace VPA.Usecases.Detectors
 			var resultCollection = new DetectionResultCollection(PatternName);
 
 			// Combine all classes per interface and abstract classes
-			var classesPerParent = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
-			var classesPerInterface = ClassHelperUsecase.GetClassesPerInterface(projectNode);
+			var classesPerParent = _getClassesPerParentClass.Execute(projectNode);
+			var classesPerInterface = _getClassesPerInterface.Execute(projectNode);
 
 			var combinedParentAndInterfaceClasses = classesPerParent.Concat(classesPerInterface).ToDictionary(x => x.Key, x => x.Value);
 
-			var classesWithParentListType = ClassHelperUsecase.GetClassesWithParentListType(combinedParentAndInterfaceClasses);
+			var classesWithParentListType = _getClassesWithParentListType.Execute(combinedParentAndInterfaceClasses);
 			
 			if (!classesWithParentListType.Any())
 				return resultCollection;
@@ -55,7 +68,7 @@ namespace VPA.Usecases.Detectors
 						{
 							foreach (var field in fields)
 							{
-								var collectionGenericObject = FieldHelper.GetCollectionGenericObject(field.Type);
+								var collectionGenericObject = _getCollectionGenericObject.Execute(field.Type);
 
 								if (collectionGenericObject != null && Enum.IsDefined(typeof(CollectionTypesEnum), collectionGenericObject.CollectionType) &&
 								    collectionGenericObject.GenericType == currentParent)
