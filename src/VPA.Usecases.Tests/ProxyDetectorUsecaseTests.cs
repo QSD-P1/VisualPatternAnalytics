@@ -7,14 +7,13 @@ using VPA.Domain.Models;
 using VPA.Domain.Enums;
 using VPA.Configuration;
 using VPA.Usecases.Interfaces;
+using VPA.Usecases.Detectors;
 
 namespace VPA.Usecases.Tests
 {
 	public class ProxyDetectorUsecaseTests
 	{
 		// Arrange Set up for testing
-		static DefaultConfiguration config = DefaultConfiguration.GetInstance();
-		static IProxyDetectorUsecase detector = config.GetService<IProxyDetectorUsecase>();
 		static string proxyName = "Proxy";
 		static string proxiedName = "Proxied";
 		static IList<string> interfaceList = new List<string>() { "Interface" };
@@ -52,13 +51,16 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task ProxyDetector_DetectsPattern()
 		{
+			// Arrange
+			var proxyDetector = new ProxyDetectorUsecase();
+
 			// Act
 			var projectNode = new ProjectNode()
 			{
-				ClassNodes = new List<ClassNode>() {ProxyClass, ProxiedClass}
+				ClassNodes = new List<ClassNode>() { ProxyClass, ProxiedClass }
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await proxyDetector.Detect(projectNode);
 
 			// Assert
 			Assert.True(result.Results.Any());
@@ -67,13 +69,16 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task ProxyDetector_SecondClassDifferentInterface()
 		{
+			// Arrange
+			var proxyDetector = new ProxyDetectorUsecase();
+
 			// Act
 			var projectNode = new ProjectNode()
 			{
 				ClassNodes = new List<ClassNode>() { ProxyClass, NotPartOfProxyClass }
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await proxyDetector.Detect(projectNode);
 
 			// Assert
 			Assert.True(result.Results.Count == 0);
@@ -82,13 +87,16 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task ProxyDetector_DetectsPatternWithMultipleClasses()
 		{
+			// Arrange
+			var proxyDetector = new ProxyDetectorUsecase();
+
 			// Act
 			var projectNode = new ProjectNode()
 			{
 				ClassNodes = new List<ClassNode>() { EmptyClass, ProxyClass, ProxiedClass, NotPartOfProxyClass }
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await proxyDetector.Detect(projectNode);
 
 			// Assert
 			Assert.True(result.Results.Count == 1);

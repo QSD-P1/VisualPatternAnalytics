@@ -32,7 +32,7 @@ namespace VPA.Usecases.Detectors
 				if (!classNode.Children.OfType<ConstructorNode>().Any()) continue;
 
 				// we can create these here because 1 singleton can only have 1 related class
-				var detectionResult = new DetectionResult($"Singleton {collection.Results.Count + 1}");
+				var detectionResult = new DetectionResult($"{PatternName} {collection.Results.Count + 1}");
 				var itemResult = new DetectedItem();
 
 				if (
