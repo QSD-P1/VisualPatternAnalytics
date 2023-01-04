@@ -21,18 +21,20 @@ namespace VPA.Usecases.Detectors
 		{
 			var resultCollection = new DetectionResultCollection(PatternName);
 
-			// No classes
 			if (projectNode.ClassNodes == null)
 				return resultCollection;
 
+			var classesWithInterface = projectNode.ClassNodes.Where(c => c.Interfaces.Any());
+			var classesWithParent = projectNode.ClassNodes.Where(c => c.ParentClassName != null);
+
 			// Combine all classes per interface and abstract classes
-			var classesPerParent = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
-			var classesPerInterface = ClassHelperUsecase.GetClassesPerInterface(projectNode);
+			var classesPerParent = ClassHelperUsecase.GetClassesPerParentClass(classesWithParent);
+			var classesPerInterface = ClassHelperUsecase.GetClassesPerInterface(classesWithInterface);
 
 			var combinedParentAndInterfaceClasses = classesPerParent.Concat(classesPerInterface).ToDictionary(x => x.Key, x => x.Value);
 
 			var classesWithParentListType = ClassHelperUsecase.GetClassesWithParentListType(combinedParentAndInterfaceClasses);
-			
+
 			if (!classesWithParentListType.Any())
 				return resultCollection;
 
@@ -62,7 +64,7 @@ namespace VPA.Usecases.Detectors
 								var collectionGenericObject = FieldHelper.GetCollectionGenericObject(field.Type);
 
 								if (collectionGenericObject != null && Enum.IsDefined(typeof(CollectionTypesEnum), collectionGenericObject.CollectionType) &&
-								    collectionGenericObject.GenericType == currentParent)
+									collectionGenericObject.GenericType == currentParent)
 									leafHasCollectionOfParent = true;
 							}
 						}
@@ -76,7 +78,7 @@ namespace VPA.Usecases.Detectors
 					// This set classes is a composite because we found a leaf!
 
 					var result = new DetectionResult($"{PatternName}{resultCollection.Results.Count + 1}");
-					result.DetectedItems.Add(new DetectedItem { MainNode = classNode});
+					result.DetectedItems.Add(new DetectedItem { MainNode = classNode });
 					foreach (ClassNode composite in classesWithParentListType[currentParent])
 					{
 						result.DetectedItems.Add(new DetectedItem { MainNode = composite });

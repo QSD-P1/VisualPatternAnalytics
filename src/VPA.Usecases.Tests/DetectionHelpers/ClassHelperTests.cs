@@ -13,47 +13,44 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 		[Fact]
 		public void GetClassPerParentClass_NoChildren_ReturnEmptyDict()
 		{
-			var result = ClassHelperUsecase.GetClassesPerParentClass(new ProjectNode());
+			var result = ClassHelperUsecase.GetClassesPerParentClass(new List<ClassNode>());
 			Assert.Empty(result);
 		}
 
 		[Fact]
 		public void GetClassPerParentClass_ChildrenWithoutParent_ReturnEmptyDict()
 		{
-			var projectNode = new ProjectNode();
-			projectNode.ClassNodes = new List<ClassNode>
+			var classNodes = new List<ClassNode>
 			{
 				new()
 				{
 					Name = "Test"
 				}
 			};
-			var result = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
+			var result = ClassHelperUsecase.GetClassesPerParentClass(classNodes);
 			Assert.Empty(result);
 		}
 
 		[Fact]
 		public void GetClassPerParentClass_ChildrenWithParent_ReturnClassPerParent()
 		{
-			var projectNode = new ProjectNode();
 			var classNode = new ClassNode()
 			{
 				Name = "Test",
 				ParentClassName = "TestParent"
 			};
 
-			projectNode.ClassNodes = new List<ClassNode>
+			var classNodes = new List<ClassNode>
 			{
 				classNode
 			};
-			var result = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
-			Assert.Equal(new Dictionary<string, List<ClassNode>> {{ classNode.ParentClassName, projectNode.ClassNodes.ToList()} }, result);
+			var result = ClassHelperUsecase.GetClassesPerParentClass(classNodes);
+			Assert.Equal(new Dictionary<string, List<ClassNode>> {{ classNode.ParentClassName, classNodes} }, result);
 		}
 
 		[Fact]
 		public void GetClassPerParentClass_TwoChildrenWithParent_ReturnClassPerParent()
 		{
-			var projectNode = new ProjectNode();
 			var classNode = new ClassNode()
 			{
 				Name = "Test",
@@ -66,59 +63,56 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 				ParentClassName = "TestParent"
 			};
 
-			projectNode.ClassNodes = new List<ClassNode>
+			var classNodes = new List<ClassNode>
 			{
 				classNode,
 				classNodeTwo
 			};
-			var result = ClassHelperUsecase.GetClassesPerParentClass(projectNode);
-			Assert.Equal(new Dictionary<string, List<ClassNode>> {{ classNode.ParentClassName, projectNode.ClassNodes.ToList() }}, result);
+			var result = ClassHelperUsecase.GetClassesPerParentClass(classNodes);
+			Assert.Equal(new Dictionary<string, List<ClassNode>> {{ classNode.ParentClassName, classNodes }}, result);
 		}
 		
 		[Fact]
 		public void GetClassesPerInterface_NoChildren_ReturnEmptyDict()
 		{
-			var result = ClassHelperUsecase.GetClassesPerInterface(new ProjectNode());
+			var result = ClassHelperUsecase.GetClassesPerInterface(new List<ClassNode>());
 			Assert.Empty(result);
 		}
 
 		[Fact]
 		public void GetClassesPerInterface_ChildrenWithoutParent_ReturnEmptyDict()
 		{
-			var projectNode = new ProjectNode();
-			projectNode.ClassNodes = new List<ClassNode>
+			var classNodes = new List<ClassNode>
 			{
 				new()
 				{
 					Name = "Test"
 				}
 			};
-			var result = ClassHelperUsecase.GetClassesPerInterface(projectNode);
+			var result = ClassHelperUsecase.GetClassesPerInterface(classNodes);
 			Assert.Empty(result);
 		}
 
 		[Fact]
 		public void GetClassesPerInterface_ChildrenWithParent_ReturnClassPerParent()
 		{
-			var projectNode = new ProjectNode();
 			var classNode = new ClassNode()
 			{
 				Name = "Test",
 				Interfaces = new List<string>() { "TestInterface" }
 			};
 
-			projectNode.ClassNodes = new List<ClassNode>
+			var classNodes = new List<ClassNode>
 			{
 				classNode
 			};
-			var result = ClassHelperUsecase.GetClassesPerInterface(projectNode);
-			Assert.Equal(new Dictionary<string, List<ClassNode>> {{ classNode.Interfaces.First(), projectNode.ClassNodes.ToList()} }, result);
+			var result = ClassHelperUsecase.GetClassesPerInterface(classNodes);
+			Assert.Equal(new Dictionary<string, List<ClassNode>> {{ classNode.Interfaces.First(), classNodes} }, result);
 		}
 
 		[Fact]
 		public void GetClassesPerInterface_TwoChildrenWithParent_ReturnClassPerParent()
 		{
-			var projectNode = new ProjectNode();
 			var classNode = new ClassNode()
 			{
 				Name = "Test",
@@ -131,13 +125,13 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 				Interfaces = new List<string>() { "TestInterface" }
 			};
 
-			projectNode.ClassNodes = new List<ClassNode>
+			var classNodes = new List<ClassNode>
 			{
 				classNode,
 				classNodeTwo
 			};
-			var result = ClassHelperUsecase.GetClassesPerInterface(projectNode);
-			Assert.Equal(new Dictionary<string, List<ClassNode>> {{ classNode.Interfaces.First(), projectNode.ClassNodes.ToList() }}, result);
+			var result = ClassHelperUsecase.GetClassesPerInterface(classNodes);
+			Assert.Equal(new Dictionary<string, List<ClassNode>> {{ classNode.Interfaces.First(), classNodes }}, result);
 		}
 		
 		[Fact]
