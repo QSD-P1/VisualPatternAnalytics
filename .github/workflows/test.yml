@@ -24,7 +24,7 @@ jobs:
     - uses: actions/cache@v3
       id: cache
       with:
-        path: ~/.nuget/packages
+        path: ~/src/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
 
     - name: NuGet Restore
