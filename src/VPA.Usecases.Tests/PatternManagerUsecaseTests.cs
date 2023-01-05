@@ -35,7 +35,7 @@ namespace VPA.Usecases.Tests
 				};
 
 			// Raise event
-			patternManagerUsecase.UpdateTree(projectNode);
+			Assert.Raises<DesignPatternsChangedEventArgs>(e => patternManagerUsecase.DesignPatternsChangedEvent += e, e => patternManagerUsecase.DesignPatternsChangedEvent -= e, () => patternManagerUsecase.UpdateTree(projectNode));
 
 			// Check if result is not null
 			Assert.NotNull(result);
