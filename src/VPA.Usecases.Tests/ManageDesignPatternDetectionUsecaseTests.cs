@@ -7,12 +7,12 @@ using VPA.Usecases.Usecases;
 
 namespace VPA.Usecases.Tests
 {
-	public class PatternManagerUsecaseTests
+	public class ManageDesignPatternDetectionUsecaseTests
 	{
 		[Fact]
 		public void UpdateTree_Invokes_DesignPatternsChangedEvent()
 		{
-			var patternManagerUsecase = new PatternManagerUsecase(new DetectSingletonUsecase());
+			var patternManagerUsecase = new ManageDesignPatternDetectionUsecase(new DetectSingletonUsecase());
 			var projectNode = new ProjectNode();
 
 			Assert.Raises<DesignPatternsChangedEventArgs>(e => patternManagerUsecase.DesignPatternsChangedEvent += e, e => patternManagerUsecase.DesignPatternsChangedEvent -= e, () => patternManagerUsecase.UpdateTree(projectNode));
@@ -21,7 +21,7 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public void UpdateTree_ReturnsData()
 		{
-			var patternManagerUsecase = new PatternManagerUsecase(new DetectSingletonUsecase());
+			var patternManagerUsecase = new ManageDesignPatternDetectionUsecase(new DetectSingletonUsecase());
 			var projectNode = new ProjectNode();
 			DesignPatternsChangedEventArgs result = null;
 			object eventSender = null;
@@ -42,7 +42,7 @@ namespace VPA.Usecases.Tests
 			Assert.NotNull(result.Result);
 			Assert.IsType<List<DetectionResultCollection>>(result.Result);
 			Assert.NotNull(eventSender);
-			Assert.IsType<PatternManagerUsecase>(eventSender);
+			Assert.IsType<ManageDesignPatternDetectionUsecase>(eventSender);
 		}
 	}
 }

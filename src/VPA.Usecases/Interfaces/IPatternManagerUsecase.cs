@@ -1,6 +1,6 @@
 ﻿using VPA.Domain.Models;
 using VPA.Usecases.Models;
-using static VPA.Usecases.Manager.PatternManagerUsecase;
+using static VPA.Usecases.Manager.ManageDesignPatternDetectionUsecase;
 
 namespace VPA.Usecases.Interfaces
 {
