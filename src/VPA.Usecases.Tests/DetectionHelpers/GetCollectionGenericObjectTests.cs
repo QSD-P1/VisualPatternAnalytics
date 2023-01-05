@@ -8,13 +8,13 @@ using VPA.Usecases.DetectionHelpers;
 
 namespace VPA.Usecases.Tests.DetectionHelpers
 {
-	public class GetCollectionGenericObjectUsecaseTests : IClassFixture<GetCollectionGenericObjectUsecase>
+	public class GetCollectionGenericObjectUsecaseTests
 	{
 		private readonly GetCollectionGenericObjectUsecase _getCollectionGenericObject;
 
-		public GetCollectionGenericObjectUsecaseTests(GetCollectionGenericObjectUsecase getCollectionGenericObject)
+		public GetCollectionGenericObjectUsecaseTests()
 		{
-			_getCollectionGenericObject = getCollectionGenericObject;
+			_getCollectionGenericObject = new();
 		}
 		
 		[Fact]

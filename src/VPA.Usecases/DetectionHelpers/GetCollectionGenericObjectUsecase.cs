@@ -9,7 +9,7 @@ namespace VPA.Usecases.DetectionHelpers
 	{
 		public CollectionGenericObject Execute(string typeString)
 		{
-			if (typeString == "")
+			if (typeString == null || typeString == "")
 			{
 				return null;
 			}

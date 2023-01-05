@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VPA.Configuration;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;
+using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Detectors;
 using VPA.Usecases.Interfaces;
 
@@ -15,9 +16,16 @@ namespace VPA.Usecases.Tests
 	{
 		private readonly DetectCompositeUsecase _detectCompositeUsecase;
 
-		public DetectCompositeUsecaseTest(DetectCompositeUsecase detectCompositeUsecase)
+		public DetectCompositeUsecaseTest()
 		{
-			_detectCompositeUsecase = detectCompositeUsecase;
+			_detectCompositeUsecase = new(
+				new GetClassesPerParentClassUsecase(),
+				new GetClassesPerInterfaceUsecase(),
+				new GetClassesWithParentListTypeUsecase(
+					new GetCollectionGenericObjectUsecase()
+				),
+				new GetCollectionGenericObjectUsecase()
+			);
 		}
 
 		[Fact]
@@ -60,7 +68,6 @@ namespace VPA.Usecases.Tests
 			{
 				ClassNodes = new List<ClassNode>
 				{
-
 					new()
 					{
 						Name = parentName,
@@ -105,7 +112,6 @@ namespace VPA.Usecases.Tests
 			{
 				ClassNodes = new List<ClassNode>
 				{
-
 					new()
 					{
 						Name = parentName,
@@ -126,7 +132,7 @@ namespace VPA.Usecases.Tests
 			var parentName = "Parent";
 
 			var fieldNode = new FieldNode
-			{				
+			{
 				Type = $"List<{parentName}>"
 			};
 
@@ -154,7 +160,6 @@ namespace VPA.Usecases.Tests
 			{
 				ClassNodes = new List<ClassNode>
 				{
-
 					new()
 					{
 						Name = parentName,
@@ -194,7 +199,6 @@ namespace VPA.Usecases.Tests
 			{
 				ClassNodes = new List<ClassNode>
 				{
-
 					new()
 					{
 						Name = parentName,
@@ -239,7 +243,6 @@ namespace VPA.Usecases.Tests
 			{
 				ClassNodes = new List<ClassNode>
 				{
-
 					new()
 					{
 						Name = parentName,
@@ -284,7 +287,6 @@ namespace VPA.Usecases.Tests
 			{
 				ClassNodes = new List<ClassNode>
 				{
-
 					new()
 					{
 						Name = parentName,

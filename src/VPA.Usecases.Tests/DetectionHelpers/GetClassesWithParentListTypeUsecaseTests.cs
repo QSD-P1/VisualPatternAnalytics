@@ -8,15 +8,17 @@ using VPA.Usecases.DetectionHelpers;
 
 namespace VPA.Usecases.Tests.DetectionHelpers
 {
-	public class GetClassesWithParentListTypeUsecaseTests : IClassFixture<GetClassesWithParentListTypeUsecase>
+	public class GetClassesWithParentListTypeUsecaseTests
 	{
 		private readonly GetClassesWithParentListTypeUsecase _getClassesWithParentListType;
 
-		public GetClassesWithParentListTypeUsecaseTests(GetClassesWithParentListTypeUsecase getClassesWithParentListType)
+		public GetClassesWithParentListTypeUsecaseTests()
 		{
-			_getClassesWithParentListType = getClassesWithParentListType;
+			_getClassesWithParentListType = new(
+				new GetCollectionGenericObjectUsecase()
+			);
 		}
-		
+
 		[Fact]
 		public void GetClassesWithParentListTypeUsecase_EmptyDict_ReturnEmptyDict()
 		{
@@ -48,7 +50,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 
 			var withoutParentListTypeDict = new Dictionary<string, List<ClassNode>>
 			{
-				{ "Parent", new List<ClassNode> { composite }}
+				{ "Parent", new List<ClassNode> { composite } }
 			};
 
 			var result = _getClassesWithParentListType.Execute(withoutParentListTypeDict);
@@ -78,11 +80,13 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 
 			var withoutParentListTypeDict = new Dictionary<string, List<ClassNode>>
 			{
-				{ "Parent", new List<ClassNode> { composite }}
+				{ "Parent", new List<ClassNode> { composite } }
 			};
 
 			var result = _getClassesWithParentListType.Execute(withoutParentListTypeDict);
-			Assert.Equal(new Dictionary<string, List<ClassNode>>{{ parentName, withoutParentListTypeDict[parentName] }}, result);
+			Assert.Equal(
+				new Dictionary<string, List<ClassNode>> { { parentName, withoutParentListTypeDict[parentName] } },
+				result);
 		}
 	}
 }

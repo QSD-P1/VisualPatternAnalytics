@@ -8,13 +8,13 @@ using VPA.Usecases.DetectionHelpers;
 
 namespace VPA.Usecases.Tests.DetectionHelpers
 {
-	public class GetClassesPerInterfaceUsecaseTests : IClassFixture<GetClassesPerInterfaceUsecase>
+	public class GetClassesPerInterfaceUsecaseTests
 	{
 		private readonly GetClassesPerInterfaceUsecase _getClassesPerInterface;
 
-		public GetClassesPerInterfaceUsecaseTests(GetClassesPerInterfaceUsecase getClassesPerInterface)
+		public GetClassesPerInterfaceUsecaseTests()
 		{
-			_getClassesPerInterface = getClassesPerInterface;
+			_getClassesPerInterface = new();
 		}
 		
 		[Fact]
