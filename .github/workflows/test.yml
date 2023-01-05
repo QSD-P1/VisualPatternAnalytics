@@ -16,23 +16,37 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Setup .NET
       uses: microsoft/setup-msbuild@v1.1
+
+    - uses: NuGet/setup-nuget@v1.1.1
+
+    - uses: actions/cache@v1
+      id: cache
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+
+    - name: NuGet Restore
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: nuget restore "Visual Pattern Analytics.sln"
+
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./src
-    - uses: NuGet/setup-nuget@v1.1.1
-    - name: Restore nuget packages
-      run: nuget restore "Visual Pattern Analytics.sln"
-      working-directory: ./src
+
     - name: Build
       run: msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release -m
       working-directory: ./src
+
     - name: Setup VSTest
       uses: darenm/Setup-VSTest@v1
+
     - name: Run Tests
       run: vstest.console.exe .\**\bin\Release\net6.0\*.Tests.dll
       working-directory: ./src
+      
     - name: Upload VSIX bestand
       uses: actions/upload-artifact@v3
       with:
