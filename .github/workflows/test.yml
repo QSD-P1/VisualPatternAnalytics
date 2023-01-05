@@ -41,14 +41,13 @@ jobs:
       - name: Setup .NET
         uses: microsoft/setup-msbuild@v1.1
 
-      - uses: NuGet/setup-nuget@v1.1.1
-
-      - name: NuGet Restore
-        run: nuget restore "Visual Pattern Analytics.sln"
-        working-directory: ./src
-
       - name: Restore dependencies
         run: dotnet restore
+        working-directory: ./src
+
+      - uses: NuGet/setup-nuget@v1.1.1
+      - name: NuGet Restore
+        run: nuget restore "Visual Pattern Analytics.sln"
         working-directory: ./src
 
       - name: Build and analyze
@@ -66,20 +65,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
 
     - name: Setup .NET
       uses: microsoft/setup-msbuild@v1.1
 
-    - uses: NuGet/setup-nuget@v1.1.1
-
-    - name: NuGet Restore
-      run: nuget restore "Visual Pattern Analytics.sln"
-      working-directory: ./src
-
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: ./src
+
+    - uses: NuGet/setup-nuget@v1.1.1
+    - name: NuGet Restore
+      run: nuget restore "Visual Pattern Analytics.sln"
       working-directory: ./src
 
     - name: Build
