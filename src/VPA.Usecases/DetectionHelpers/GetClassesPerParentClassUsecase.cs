@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using VPA.Domain.Models;
+using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.DetectionHelpers
 {
-	public class GetClassesPerParentClassUsecase
+	public class GetClassesPerParentClassUsecase : IGetClassesPerParentClassUsecase
 	{
 		public Dictionary<string, List<ClassNode>> Execute(ProjectNode projectNode)
 		{

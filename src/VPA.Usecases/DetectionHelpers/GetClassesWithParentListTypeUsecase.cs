@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;
+using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.DetectionHelpers
 {
-	public class GetClassesWithParentListTypeUsecase
+	public class GetClassesWithParentListTypeUsecase : IGetClassesWithParentListTypeUsecase
 	{
-		private readonly GetCollectionGenericObjectUsecase _getCollectionGenericObject;
+		private readonly IGetCollectionGenericObjectUsecase _getCollectionGenericObject;
 
-		public GetClassesWithParentListTypeUsecase(GetCollectionGenericObjectUsecase getCollectionGenericObject)
+		public GetClassesWithParentListTypeUsecase(IGetCollectionGenericObjectUsecase getCollectionGenericObject)
 		{
 			_getCollectionGenericObject = getCollectionGenericObject;
 		}

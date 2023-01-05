@@ -11,17 +11,17 @@ namespace VPA.Usecases.Detectors
 {
 	public class DetectCompositeUsecase : IDetectCompositeUsecase
 	{
-		private readonly GetClassesPerParentClassUsecase _getClassesPerParentClass;
-		private readonly GetClassesPerInterfaceUsecase _getClassesPerInterface;
-		private readonly GetClassesWithParentListTypeUsecase _getClassesWithParentListType;
-		private readonly GetCollectionGenericObjectUsecase _getCollectionGenericObject;
+		private readonly IGetClassesPerParentClassUsecase _getClassesPerParentClass;
+		private readonly IGetClassesPerInterfaceUsecase _getClassesPerInterface;
+		private readonly IGetClassesWithParentListTypeUsecase _getClassesWithParentListType;
+		private readonly IGetCollectionGenericObjectUsecase _getCollectionGenericObject;
 		public string PatternName => "Composite";
 
 		public DetectCompositeUsecase(
-			GetClassesPerParentClassUsecase getClassesPerParentClass,
-			GetClassesPerInterfaceUsecase getClassesPerInterface,
-			GetClassesWithParentListTypeUsecase getClassesWithParentListType,
-			GetCollectionGenericObjectUsecase collectionGenericObject
+			IGetClassesPerParentClassUsecase getClassesPerParentClass,
+			IGetClassesPerInterfaceUsecase getClassesPerInterface,
+			IGetClassesWithParentListTypeUsecase getClassesWithParentListType,
+			IGetCollectionGenericObjectUsecase collectionGenericObject
 			)
 		{
 			_getClassesPerParentClass = getClassesPerParentClass;
