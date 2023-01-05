@@ -43,14 +43,7 @@ jobs:
 
       - uses: NuGet/setup-nuget@v1.1.1
 
-      - uses: actions/cache@v3
-        id: cache
-        with:
-          path: ~/src/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-
       - name: NuGet Restore
-        if: steps.cache.outputs.cache-hit != 'true'
         run: nuget restore "Visual Pattern Analytics.sln"
         working-directory: ./src
 
@@ -81,14 +74,7 @@ jobs:
 
     - uses: NuGet/setup-nuget@v1.1.1
 
-    - uses: actions/cache@v3
-      id: cache
-      with:
-        path: ~/src/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-
     - name: NuGet Restore
-      if: steps.cache.outputs.cache-hit != 'true'
       run: nuget restore "Visual Pattern Analytics.sln"
       working-directory: ./src
 
