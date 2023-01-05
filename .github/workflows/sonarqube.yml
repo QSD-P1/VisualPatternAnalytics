@@ -43,6 +43,9 @@ jobs:
 
     - uses: NuGet/setup-nuget@v1.1.1
 
+    - name: Setup VSTest
+      uses: darenm/Setup-VSTest@v1
+
     - uses: actions/cache@v3
       id: cache
       with:
@@ -67,6 +70,13 @@ jobs:
       run: |
         .\.sonar\scanner\dotnet-sonarscanner begin /k:"QSD-P1_VisualPatternAnalytics" /o:"qsd-p1" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
         msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release -m
+        vstest.console.exe .\**\bin\Release\net6.0\*.Tests.dll
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+    
+    - name: Upload VSIX bestand
+      uses: actions/upload-artifact@v3
+      with:
+        name: VisualPatternAnalytics
+        path: ./src/VPA.Client.VisualStudio.Extension.Vsix/bin/Release/VPA.Client.VisualStudio.Extension.Vsix.vsix
     
     
