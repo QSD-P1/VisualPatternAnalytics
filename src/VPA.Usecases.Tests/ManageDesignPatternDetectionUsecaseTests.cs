@@ -4,6 +4,7 @@ using VPA.Usecases.Interfaces;
 using VPA.Usecases.Manager;
 using VPA.Usecases.Models;
 using VPA.Usecases.Usecases;
+using Moq;
 
 namespace VPA.Usecases.Tests
 {
@@ -12,22 +13,24 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public void UpdateTree_Invokes_DesignPatternsChangedEvent()
 		{
-			var patternManagerUsecase = new ManageDesignManageDesignPatternDetectionUsecase(new DetectSingletonUsecase());
-			var projectNode = new ProjectNode();
-
-			Assert.Raises<DesignPatternsChangedEventArgs>(e => patternManagerUsecase.DesignPatternsChangedEvent += e, e => patternManagerUsecase.DesignPatternsChangedEvent -= e, () => patternManagerUsecase.UpdateTree(projectNode));
+			var mockSingleton = new Mock<IDetectSingletonUsecase>();
+			var mockProjectNode = new Mock<ProjectNode>();
+			var manageDesignPatternDetectionUsecase = new ManageDesignPatternDetectionUsecase(mockSingleton.Object);
+			Assert.Raises<DesignPatternsChangedEventArgs>(e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent += e, e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent -= e, () => manageDesignPatternDetectionUsecase.UpdateTree(mockProjectNode.Object));
 		}
 
 		[Fact]
 		public void UpdateTree_ReturnsData()
 		{
-			var patternManagerUsecase = new ManageDesignManageDesignPatternDetectionUsecase(new DetectSingletonUsecase());
-			var projectNode = new ProjectNode();
+			var mockSingleton = new Mock<IDetectSingletonUsecase>();
+			var mockProjectNode = new Mock<ProjectNode>();
+			var manageDesignPatternDetectionUsecase = new ManageDesignPatternDetectionUsecase(mockSingleton.Object);
+
 			DesignPatternsChangedEventArgs result = null;
 			object eventSender = null;
 
 			// Set result to check
-			patternManagerUsecase.DesignPatternsChangedEvent +=
+			manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent +=
 				delegate(object sender, DesignPatternsChangedEventArgs args)
 				{
 					result = args;
@@ -35,14 +38,14 @@ namespace VPA.Usecases.Tests
 				};
 
 			// Raise event
-			Assert.Raises<DesignPatternsChangedEventArgs>(e => patternManagerUsecase.DesignPatternsChangedEvent += e, e => patternManagerUsecase.DesignPatternsChangedEvent -= e, () => patternManagerUsecase.UpdateTree(projectNode));
+			Assert.Raises<DesignPatternsChangedEventArgs>(e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent += e, e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent -= e, () => manageDesignPatternDetectionUsecase.UpdateTree(mockProjectNode.Object));
 
 			// Check if result is not null and has the correct type
 			Assert.NotNull(result);
 			Assert.NotNull(result.Result);
 			Assert.IsType<List<DetectionResultCollection>>(result.Result);
 			Assert.NotNull(eventSender);
-			Assert.IsType<ManageDesignManageDesignPatternDetectionUsecase>(eventSender);
+			Assert.IsType<ManageDesignPatternDetectionUsecase>(eventSender);
 		}
 	}
 }

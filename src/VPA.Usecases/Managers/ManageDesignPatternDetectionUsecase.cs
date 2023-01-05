@@ -4,12 +4,12 @@ using VPA.Usecases.Models;
 
 namespace VPA.Usecases.Manager
 {
-	public sealed class ManageDesignManageDesignPatternDetectionUsecase : IManageDesignPatternDetectionUsecase
+	public sealed class ManageDesignPatternDetectionUsecase : IManageDesignPatternDetectionUsecase
 	{
 		private static List<IDetectUsecase> _detectors = new List<IDetectUsecase>();
 		public event EventHandler<DesignPatternsChangedEventArgs> DesignPatternsChangedEvent;
 
-		public ManageDesignManageDesignPatternDetectionUsecase(IDetectSingletonUsecase detectSingletonUsecase)
+		public ManageDesignPatternDetectionUsecase(IDetectSingletonUsecase detectSingletonUsecase)
 		{
 			_detectors.Add(detectSingletonUsecase);
 		}
