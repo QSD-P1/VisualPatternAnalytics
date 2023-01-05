@@ -37,7 +37,7 @@ namespace VPA.Usecases.Tests
 			// Raise event
 			Assert.Raises<DesignPatternsChangedEventArgs>(e => patternManagerUsecase.DesignPatternsChangedEvent += e, e => patternManagerUsecase.DesignPatternsChangedEvent -= e, () => patternManagerUsecase.UpdateTree(projectNode));
 
-			// Check if result is not null
+			// Check if result is not null and has the correct type
 			Assert.NotNull(result);
 			Assert.NotNull(result.Result);
 			Assert.IsType<List<DetectionResultCollection>>(result.Result);
