@@ -1,10 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Threading;
-using VPA.Common.Adapters.Adapters;
 using VPA.Common.Adapters.Interfaces;
 using VPA.Configuration;
 using VPA.Domain.Models;
@@ -13,7 +10,7 @@ using VPA.Usecases.Interfaces;
 namespace VPA.Client.VisualStudio.Extension
 {
 	[DiagnosticAnalyzer(LanguageNames.CSharp)]
-	public class ExampleAnalyzer : DiagnosticAnalyzer
+	public class PatternAnalyzer : DiagnosticAnalyzer
 	{
 		public const string DiagnosticId = "VPAClientVisualStudioExtension";
 
@@ -30,7 +27,7 @@ namespace VPA.Client.VisualStudio.Extension
 		private readonly IRoslynAdapter roslynAdapter;
 		private readonly IManageDesignPatternDetectionUsecase _manageDesignPatternDetection;
 
-		public ExampleAnalyzer()
+		public PatternAnalyzer()
 		{
 			//Sadly analyzers dont contain MEF so we cant use Dependency injection.
 			//We wrote our own singleton that manages the implementations.
@@ -42,37 +39,24 @@ namespace VPA.Client.VisualStudio.Extension
 		{
 			context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 			context.EnableConcurrentExecution();
-
-			// TODO: Consider registering other actions that act on syntax instead of or in addition to symbols
-			// See https://github.com/dotnet/roslyn/blob/main/docs/analyzers/Analyzer%20Actions%20Semantics.md for more information
 			context.RegisterCompilationAction(ValidateWork);
 		}
 
 		private void ValidateWork(CompilationAnalysisContext context)
 		{
 			var projectNode = new ProjectNode();
-
-			var result = new List<ClassNode>();
+			var classResult = new List<ClassNode>();
+			var interfaceResult = new List<InterfaceNode>();
 			foreach (var tree in context.Compilation.SyntaxTrees)
 			{
-				result.AddRange(roslynAdapter.ConvertToGenericTree(tree, context.Compilation.GetSemanticModel(tree)));
+				var result = roslynAdapter.ConvertToGenericTree(tree, context.Compilation.GetSemanticModel(tree));
+				classResult.AddRange(result.ClassNodes);
+				interfaceResult.AddRange(result.InterfaceNodes);
 			}
 
-			projectNode.ClassNodes = result;
-			_manageDesignPatternDetection.UpdateTree(projectNode);
-
-			return;
-
-			//Temporary code to show adapter is working
-			/*foreach (var classnode in projectNode.ClassNodes)
-			{
-				var test = (ImmutableArray<Location>)classnode.Location;
-				foreach (var location in test)
-				{
-					var diagnostic = Diagnostic.Create(Rule, location: location);
-					context.ReportDiagnostic(diagnostic);
-				}
-			}*/
+			projectNode.ClassNodes = classResult;
+			projectNode.InterfaceNodes = interfaceResult;
+			_= _manageDesignPatternDetection.UpdateTree(projectNode);
 		}
 	}
 }

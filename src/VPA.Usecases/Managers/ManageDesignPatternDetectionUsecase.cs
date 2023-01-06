@@ -11,23 +11,28 @@ namespace VPA.Usecases.Manager
 
 		public ManageDesignPatternDetectionUsecase(
 			IDetectSingletonUsecase detectSingletonUsecase, 
-			IDetectCompositeUsecase detectCompositeUsecase)
+			IDetectCompositeUsecase detectCompositeUsecase,
+            IDetectProxyUsecase detectProxyUsecase)
 		{
 			_detectors.Add(detectSingletonUsecase);
 			_detectors.Add(detectCompositeUsecase);
+			_detectors.Add(detectProxyUsecase);
 		}
 
-		public async Task UpdateTree(ProjectNode node)
+		public async Task UpdateTree(ProjectNode projectNode)
 		{
 			if (DesignPatternsChangedEvent == null)
 				return;
 
 			var result = new List<DetectionResultCollection>();
 
-			foreach (var detector in _detectors)
+			if (projectNode.ClassNodes != null && projectNode.ClassNodes.Any(c => c.Children != null && c.Children.Any()))
 			{
-				var res = await detector.Detect(node);
-				result.Add(res);
+				foreach (var detector in _detectors)
+				{
+					var res = await detector.Detect(projectNode);
+					result.Add(res);
+				}
 			}
 
 			DesignPatternsChangedEvent?.Invoke(this, new DesignPatternsChangedEventArgs(result));

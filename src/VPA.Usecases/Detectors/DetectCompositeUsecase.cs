@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Text;
-using VPA.Domain.Enums;
+﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
-using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.Detectors

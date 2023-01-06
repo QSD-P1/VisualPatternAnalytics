@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace VPA.Configuration
+﻿namespace VPA.Configuration
 {
 	public class DefaultConfiguration
 	{

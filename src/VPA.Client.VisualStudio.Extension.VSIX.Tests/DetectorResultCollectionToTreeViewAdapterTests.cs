@@ -1,6 +1,4 @@
-using System.Windows.Controls;
 using VPA.Client.VisualStudio.Extension.VSIX.Adapters;
-using VPA.Domain.Models;
 
 namespace VPA.Client.VisualStudio.Extension.VSIX.Tests
 {

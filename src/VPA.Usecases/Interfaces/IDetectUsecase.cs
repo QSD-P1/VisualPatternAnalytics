@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using VPA.Domain.Models;
+﻿using VPA.Domain.Models;
 
 namespace VPA.Usecases.Interfaces
 {
@@ -9,6 +6,6 @@ namespace VPA.Usecases.Interfaces
 	{
 		public string PatternName { get; }
 
-		public Task<DetectionResultCollection> Detect(ProjectNode projectNode);
+		public Task<DetectionResultCollection> Detect(ProjectNode project);
 	}
 }

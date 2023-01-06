@@ -7,7 +7,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 	public class AccessModifierHelperTests
 	{
 		[Fact]
-		public void AllTypeOfHasAccessModifier_WhenUsingPrivateConstructorsOnly_ShouldReturnTrue()
+		public void AllOfTypeHasAccessModifier_WhenUsingPrivateConstructorsOnly_ShouldReturnTrue()
 		{
 			// Arrange
 			var constructorNode = new ConstructorNode()
@@ -32,15 +32,15 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 			};
 
 			// Act
-			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
+			var result = AccessModifierHelper.AllOfTypeHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
 
 			// Assert
-			Assert.True(matchedLeaves.Any());
+			Assert.True(matchedLeaves != null && matchedLeaves.Any());
 			Assert.True(result);
 		}
 
 		[Fact]
-		public void AllTypeOfHasAccessModifier_WhenNotUsingPrivateConstructorsOnly_ShouldReturnFalse()
+		public void AllOfTypeHasAccessModifier_WhenNotUsingPrivateConstructorsOnly_ShouldReturnFalse()
 		{
 			// Arrange
 			var privateConstructorNode = new ConstructorNode()
@@ -65,10 +65,10 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 			};
 
 			// Act
-			var result = AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
+			var result = AccessModifierHelper.AllOfTypeHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
 
 			// Assert
-			Assert.False(matchedLeaves.Any());
+			Assert.Null(matchedLeaves);
 			Assert.False(result);
 		}
 	}

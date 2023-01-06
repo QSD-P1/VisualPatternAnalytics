@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VPA.Configuration;
-using VPA.Domain.Enums;
-using VPA.Domain.Models;
+﻿using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Detectors;
-using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.Tests
 {

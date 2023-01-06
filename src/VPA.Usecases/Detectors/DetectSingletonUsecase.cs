@@ -2,7 +2,8 @@
 using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Interfaces;
-namespace VPA.Usecases.Usecases
+
+namespace VPA.Usecases.Detectors
 {
 	public class DetectSingletonUsecase : IDetectSingletonUsecase
 	{
@@ -12,12 +13,9 @@ namespace VPA.Usecases.Usecases
 
 		public string PatternName => "Singleton";
 
-		public async Task<DetectionResultCollection> Detect(ProjectNode projectNode)
+		public async Task<DetectionResultCollection> Detect(ProjectNode project)
 		{
 			var collection = new DetectionResultCollection(PatternName);
-
-			if (projectNode.ClassNodes == null || !projectNode.ClassNodes.Any(c => c.Children != null))
-				return collection;
 
 			var publicStaticKeywords = new KeywordCollection()
 			{
@@ -27,14 +25,17 @@ namespace VPA.Usecases.Usecases
 				}
 			};
 
-			foreach (var classNode in projectNode.ClassNodes)
+			foreach (ClassNode classNode in project.ClassNodes)
 			{
+				// Skip class because no constructors means that it has a single public constructor
+				if (!classNode.Children.OfType<ConstructorNode>().Any()) continue;
+
 				// we can create these here because 1 singleton can only have 1 related class
-				var detectionResult = new DetectionResult($"Singleton {collection.Results.Count + 1}");
+				var detectionResult = new DetectionResult($"{PatternName} {collection.Results.Count + 1}");
 				var itemResult = new DetectedItem();
 
 				if (
-					   AccessModifierHelper.AllTypeOfHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves)
+					   AccessModifierHelper.AllOfTypeHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves)
 					&& FieldHelper.ClassHasPrivateStaticFieldWithOwnType(classNode, out var fieldLeaf)
 					&& MethodHelper.HasSameClassReturnTypeWithKeywords(classNode, publicStaticKeywords, out var methodLeaf)
 					)

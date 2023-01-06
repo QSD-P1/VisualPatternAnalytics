@@ -4,7 +4,6 @@ using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Detectors;
 using VPA.Usecases.Interfaces;
 using VPA.Usecases.Manager;
-using VPA.Usecases.Usecases;
 
 namespace VPA.Configuration
 {
@@ -63,6 +62,9 @@ namespace VPA.Configuration
 			services.RegisterTransient<IGetClassesPerInterfaceUsecase, GetClassesPerInterfaceUsecase>();
 			services.RegisterTransient<IGetClassesWithParentListTypeUsecase, GetClassesWithParentListTypeUsecase>();
 			services.RegisterTransient<IGetCollectionGenericObjectUsecase, GetCollectionGenericObjectUsecase>();
+			services.RegisterTransient<IDetectProxyUsecase, DetectProxyUsecase>();
+			services.RegisterTransient<IGetClassFromFieldType, GetClassFromFieldType>();
+			services.RegisterTransient<ICheckForSameInterfaceImplementation, CheckForSameInterfaceImplementation>();
 			services.RegisterSingleton<IManageDesignPatternDetectionUsecase, ManageDesignPatternDetectionUsecase>();
 			return services;
 		}
