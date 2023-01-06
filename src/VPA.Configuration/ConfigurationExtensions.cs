@@ -59,11 +59,11 @@ namespace VPA.Configuration
 		{
 			services.RegisterTransient<IDetectSingletonUsecase, DetectSingletonUsecase>();
 			services.RegisterTransient<IDetectCompositeUsecase, DetectCompositeUsecase>();
-			services.RegisterSingleton<IPatternManagerUsecase, PatternManagerUsecase>();
 			services.RegisterTransient<IGetClassesPerParentClassUsecase, GetClassesPerParentClassUsecase>();
 			services.RegisterTransient<IGetClassesPerInterfaceUsecase, GetClassesPerInterfaceUsecase>();
 			services.RegisterTransient<IGetClassesWithParentListTypeUsecase, GetClassesWithParentListTypeUsecase>();
 			services.RegisterTransient<IGetCollectionGenericObjectUsecase, GetCollectionGenericObjectUsecase>();
+			services.RegisterSingleton<IManageDesignPatternDetectionUsecase, ManageDesignPatternDetectionUsecase>();
 			return services;
 		}
 

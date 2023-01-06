@@ -28,7 +28,7 @@ namespace VPA.Client.VisualStudio.Extension
 		public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(Rule); } }
 
 		private readonly IRoslynAdapter roslynAdapter;
-		private readonly IPatternManagerUsecase patternManager;
+		private readonly IManageDesignPatternDetectionUsecase _manageDesignPatternDetection;
 
 		public ExampleAnalyzer()
 		{
@@ -36,7 +36,7 @@ namespace VPA.Client.VisualStudio.Extension
 			//We wrote our own singleton that manages the implementations.
 			var config = DefaultConfiguration.GetInstance();
 			roslynAdapter = config.GetService<IRoslynAdapter>();
-			patternManager = config.GetService<IPatternManagerUsecase>();
+			_manageDesignPatternDetection = config.GetService<IManageDesignPatternDetectionUsecase>();
 		}
 		public override void Initialize(AnalysisContext context)
 		{
@@ -59,7 +59,7 @@ namespace VPA.Client.VisualStudio.Extension
 			}
 
 			projectNode.ClassNodes = result;
-			patternManager.UpdateTree(projectNode);
+			_manageDesignPatternDetection.UpdateTree(projectNode);
 
 			return;
 
