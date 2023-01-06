@@ -2,7 +2,6 @@
 using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Interfaces;
-using VPA.Domain.Enums;
 
 namespace VPA.Usecases.Detectors
 {
@@ -14,7 +13,7 @@ namespace VPA.Usecases.Detectors
 
 		public string PatternName => "Singleton";
 
-		public async Task<DetectionResultCollection> Detect(ProjectNode projectNode)
+		public async Task<DetectionResultCollection> Detect(ProjectNode project)
 		{
 			var collection = new DetectionResultCollection(PatternName);
 
@@ -26,7 +25,7 @@ namespace VPA.Usecases.Detectors
 				}
 			};
 
-			foreach (ClassNode classNode in projectNode.ClassNodes)
+			foreach (ClassNode classNode in project.ClassNodes)
 			{
 				// Skip class because no constructors means that it has a single public constructor
 				if (!classNode.Children.OfType<ConstructorNode>().Any()) continue;

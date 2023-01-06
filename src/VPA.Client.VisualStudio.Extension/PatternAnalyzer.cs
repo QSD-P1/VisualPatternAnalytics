@@ -1,10 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Threading;
-using VPA.Common.Adapters.Adapters;
 using VPA.Common.Adapters.Interfaces;
 using VPA.Configuration;
 using VPA.Domain.Models;
@@ -42,9 +39,6 @@ namespace VPA.Client.VisualStudio.Extension
 		{
 			context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 			context.EnableConcurrentExecution();
-
-			// TODO: Consider registering other actions that act on syntax instead of or in addition to symbols
-			// See https://github.com/dotnet/roslyn/blob/main/docs/analyzers/Analyzer%20Actions%20Semantics.md for more information
 			context.RegisterCompilationAction(ValidateWork);
 		}
 
@@ -62,8 +56,7 @@ namespace VPA.Client.VisualStudio.Extension
 
 			projectNode.ClassNodes = classResult;
 			projectNode.InterfaceNodes = interfaceResult;
-			_manageDesignPatternDetection.UpdateTree(projectNode);
-			return;
+			_= _manageDesignPatternDetection.UpdateTree(projectNode);
 		}
 	}
 }

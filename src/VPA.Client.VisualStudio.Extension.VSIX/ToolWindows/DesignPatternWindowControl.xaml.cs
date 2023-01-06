@@ -13,14 +13,14 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 	public partial class DesignPatternWindowControl : UserControl
 	{
 		private List<TreeViewItem> _treeItems = new();
-		private readonly IManageDesignPatternDetectionUsecase _manageDesignPatternDetection;
+		private readonly IManageDesignPatternDetectionUsecase _patternManager;
 		private readonly IDetectorResultCollectionToTreeViewAdapter _adapter;
 		public DesignPatternWindowControl()
 		{
 			InitializeComponent();
 
 			var configuration = DefaultConfiguration.GetInstance();
-			_manageDesignPatternDetection = configuration.GetService<IManageDesignPatternDetectionUsecase>();
+			_patternManager = configuration.GetService<IManageDesignPatternDetectionUsecase>();
 			_adapter = new DetectorResultCollectionToTreeViewToTreeViewAdapter();
 
 			Init();
@@ -31,13 +31,13 @@ namespace VPA.Client.VisualStudio.Extension.VSIX.ToolWindows
 			VS.Events.WindowEvents.ActiveFrameChanged += WindowEvents_ActiveFrameChanged;
 			ClassTreeView.SelectedItemChanged += ClassTreeView_SelectedItemChanged;
 
-			_manageDesignPatternDetection.DesignPatternsChangedEvent += ManageDesignPatternDetectionDesignManageDesignPatternsChangedEventHandler;
+			_patternManager.DesignPatternsChangedEvent += PatternManagerDesignPatternsChangedEventHandler;
 
 			ClassTreeView.ItemsSource = _treeItems;
 		}
 
 		#region EventHandlers
-		private void ManageDesignPatternDetectionDesignManageDesignPatternsChangedEventHandler(object patternManager, DesignPatternsChangedEventArgs eventArgs)
+		private void PatternManagerDesignPatternsChangedEventHandler(object patternManager, DesignPatternsChangedEventArgs eventArgs)
 		{
 			ThreadHelper.JoinableTaskFactory.Run(async delegate
 			{

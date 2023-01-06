@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using VPA.Common.Adapters.Adapters;
 using VPA.Common.Adapters.Adapters.Roslyn;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;

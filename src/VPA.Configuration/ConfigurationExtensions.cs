@@ -4,8 +4,6 @@ using VPA.Usecases.DetectionHelpers;
 using VPA.Usecases.Detectors;
 using VPA.Usecases.Interfaces;
 using VPA.Usecases.Manager;
-using VPA.Usecases.Detectors;
-using VPA.Usecases.DetectionHelpers;
 
 namespace VPA.Configuration
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using VPA.Domain.Models;
+﻿using VPA.Domain.Models;
 using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.DetectionHelpers

@@ -1,4 +1,3 @@
-using VPA.Configuration;
 using VPA.Domain.Models;
 using VPA.Usecases.Interfaces;
 using VPA.Usecases.Manager;

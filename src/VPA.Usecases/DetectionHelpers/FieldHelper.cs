@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using VPA.Domain.Enums;
+﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
 
 namespace VPA.Usecases.DetectionHelpers

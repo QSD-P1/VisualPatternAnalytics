@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VPA.Domain.Models;
+﻿using VPA.Domain.Models;
 using VPA.Domain.Enums;
-using VPA.Configuration;
-using VPA.Usecases.Interfaces;
 using VPA.Usecases.Detectors;
 using VPA.Usecases.DetectionHelpers;
 
