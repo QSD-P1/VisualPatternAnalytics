@@ -50,8 +50,9 @@ jobs:
         run: nuget restore "Visual Pattern Analytics.sln"
         working-directory: ./src
 
-      - name: Setup VSTest
-        uses: darenm/Setup-VSTest@v1
+
+      - name: Setup dotCover
+        run: dotnet tool install --global JetBrains.dotCover.GlobalTool
 
       - name: Build and analyze
         env:
@@ -60,9 +61,9 @@ jobs:
         shell: powershell
         working-directory: ./src
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"QSD-P1_VisualPatternAnalytics" /o:"qsd-p1" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"QSD-P1_VisualPatternAnalytics" /o:"qsd-p1" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
           msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release
-          dotnet test .\**\bin\Release\net6.0\*.Tests.dll --collect "Code Coverage" 
+          dotnet dotcover test --dcReportType=HTML
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
   build:
     runs-on: windows-latest
