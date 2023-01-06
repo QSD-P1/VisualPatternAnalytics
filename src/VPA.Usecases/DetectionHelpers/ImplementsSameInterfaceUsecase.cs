@@ -3,7 +3,7 @@ using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.DetectionHelpers
 {
-	public class CheckForSameInterfaceImplementation : ICheckForSameInterfaceImplementation
+	public class ImplementsSameInterfaceUsecase : IImplementsSameInterfaceUsecase
 	{
 		public bool Execute(IEnumerable<InterfaceNode> interfaceNodes, ClassNode classNode1, ClassNode classNode2, out InterfaceNode? matchedResult)
 		{

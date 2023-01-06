@@ -63,8 +63,8 @@ namespace VPA.Configuration
 			services.RegisterTransient<IGetClassesWithParentListTypeUsecase, GetClassesWithParentListTypeUsecase>();
 			services.RegisterTransient<IGetCollectionGenericObjectUsecase, GetCollectionGenericObjectUsecase>();
 			services.RegisterTransient<IDetectProxyUsecase, DetectProxyUsecase>();
-			services.RegisterTransient<IGetClassFromFieldType, GetClassFromFieldType>();
-			services.RegisterTransient<ICheckForSameInterfaceImplementation, CheckForSameInterfaceImplementation>();
+			services.RegisterTransient<IHasFoundOtherClassFromFieldTypeUsecase, HasFoundOtherClassFromFieldTypeUsecase>();
+			services.RegisterTransient<IImplementsSameInterfaceUsecase, ImplementsSameInterfaceUsecase>();
 			services.RegisterSingleton<IManageDesignPatternDetectionUsecase, ManageDesignPatternDetectionUsecase>();
 			return services;
 		}
