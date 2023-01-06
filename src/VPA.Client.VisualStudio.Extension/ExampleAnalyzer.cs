@@ -60,10 +60,10 @@ namespace VPA.Client.VisualStudio.Extension
 				interfaceResult.AddRange(result.InterfaceNodes);
 			}
 
-			//projectNode.ClassNodes = classResult;
+			projectNode.ClassNodes = classResult;
 			projectNode.InterfaceNodes = interfaceResult;
 			//patternManager.UpdateTree(projectNode);
-			projectNode.ClassNodes = result;
+			//projectNode.ClassNodes = result;
 			_manageDesignPatternDetection.UpdateTree(projectNode);
 
 			//Temporary code to show adapter is working

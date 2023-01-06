@@ -1,6 +1,6 @@
 ﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
-using VPA.Usecases.Usecases;
+using VPA.Usecases.Detectors;
 
 namespace VPA.Usecases.Tests
 {
