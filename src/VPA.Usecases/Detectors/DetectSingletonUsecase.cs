@@ -12,11 +12,11 @@ namespace VPA.Usecases.Usecases
 
 		public string PatternName => "Singleton";
 
-		public async Task<DetectionResultCollection> Detect(ProjectNode project)
+		public async Task<DetectionResultCollection> Detect(ProjectNode projectNode)
 		{
 			var collection = new DetectionResultCollection(PatternName);
 
-			if (project.ClassNodes == null || !project.ClassNodes.Any(c => c.Children != null))
+			if (projectNode.ClassNodes == null || !projectNode.ClassNodes.Any(c => c.Children != null))
 				return collection;
 
 			var publicStaticKeywords = new KeywordCollection()
@@ -27,7 +27,7 @@ namespace VPA.Usecases.Usecases
 				}
 			};
 
-			foreach (var classNode in project.ClassNodes)
+			foreach (var classNode in projectNode.ClassNodes)
 			{
 				// we can create these here because 1 singleton can only have 1 related class
 				var detectionResult = new DetectionResult($"Singleton {collection.Results.Count + 1}");

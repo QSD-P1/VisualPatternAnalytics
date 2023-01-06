@@ -51,6 +51,7 @@ namespace VPA.Client.VisualStudio.Extension
 		private void ValidateWork(CompilationAnalysisContext context)
 		{
 			var projectNode = new ProjectNode();
+
 			var result = new List<ClassNode>();
 			foreach (var tree in context.Compilation.SyntaxTrees)
 			{
@@ -59,6 +60,8 @@ namespace VPA.Client.VisualStudio.Extension
 
 			projectNode.ClassNodes = result;
 			_manageDesignPatternDetection.UpdateTree(projectNode);
+
+			return;
 
 			//Temporary code to show adapter is working
 			/*foreach (var classnode in projectNode.ClassNodes)

@@ -1,5 +1,7 @@
 ﻿using VPA.Common.Adapters.Adapters.Roslyn;
 using VPA.Common.Adapters.Interfaces;
+using VPA.Usecases.DetectionHelpers;
+using VPA.Usecases.Detectors;
 using VPA.Usecases.Interfaces;
 using VPA.Usecases.Manager;
 using VPA.Usecases.Usecases;
@@ -56,6 +58,11 @@ namespace VPA.Configuration
 		public static Dictionary<Type, ServiceConfiguration> RegisterUsecases(this Dictionary<Type, ServiceConfiguration> services)
 		{
 			services.RegisterTransient<IDetectSingletonUsecase, DetectSingletonUsecase>();
+			services.RegisterTransient<IDetectCompositeUsecase, DetectCompositeUsecase>();
+			services.RegisterTransient<IGetClassesPerParentClassUsecase, GetClassesPerParentClassUsecase>();
+			services.RegisterTransient<IGetClassesPerInterfaceUsecase, GetClassesPerInterfaceUsecase>();
+			services.RegisterTransient<IGetClassesWithParentListTypeUsecase, GetClassesWithParentListTypeUsecase>();
+			services.RegisterTransient<IGetCollectionGenericObjectUsecase, GetCollectionGenericObjectUsecase>();
 			services.RegisterSingleton<IManageDesignPatternDetectionUsecase, ManageDesignPatternDetectionUsecase>();
 			return services;
 		}
