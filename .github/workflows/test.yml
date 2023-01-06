@@ -23,9 +23,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
       - name: Install SonarCloud scanner
-        run: dotnet tool install --global dotnet-sonarscanner
-                  
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool install dotnet-sonarscanner --tool-path .\.sonar\scanner
+        working-directory: ./src
+          
       - name: Setup .NET
         uses: microsoft/setup-msbuild@v1.1
 
@@ -48,10 +60,10 @@ jobs:
         shell: powershell
         working-directory: ./src
         run: |
-          SonarScanner.MSBuild.exe begin /k:"QSD-P1_VisualPatternAnalytics" /o:"qsd-p1" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"QSD-P1_VisualPatternAnalytics" /o:"qsd-p1" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release
-          vstest.console.exe .\**\bin\Release\net6.0\*.Tests.dll /EnableCodeCoverage
-          SonarScanner.MSBuild.exe end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet test .\**\bin\Release\net6.0\*.Tests.dll --collect "Code Coverage" 
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
   build:
     runs-on: windows-latest
 
