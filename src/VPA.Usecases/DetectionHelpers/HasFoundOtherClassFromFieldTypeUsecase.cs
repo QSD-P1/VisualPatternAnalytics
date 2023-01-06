@@ -3,7 +3,7 @@ using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.DetectionHelpers
 {
-	public class GetClassFromFieldType: IGetClassFromFieldType
+	public class HasFoundOtherClassFromFieldTypeUsecase: IHasFoundOtherClassFromFieldTypeUsecase
 	{
 		public bool Execute(IEnumerable<ClassNode> classNodes, FieldNode fieldNode, ClassNode classNode, out ClassNode? matchedResult)
 		{

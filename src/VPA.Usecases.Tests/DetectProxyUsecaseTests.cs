@@ -12,8 +12,8 @@ namespace VPA.Usecases.Tests
 		public DetectProxyUsecaseTests()
 		{
 			detectProxyUsecase = new(
-				new CheckForSameInterfaceImplementation(),
-				new GetClassFromFieldType()
+				new ImplementsSameInterfaceUsecase(),
+				new HasFoundOtherClassFromFieldTypeUsecase()
 				);
 		}
 

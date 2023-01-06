@@ -7,15 +7,15 @@ namespace VPA.Usecases.Detectors
 {
 	public class DetectProxyUsecase : IDetectProxyUsecase
 	{
-		public readonly ICheckForSameInterfaceImplementation checkForSameInterfaceImplementation;
-		private readonly IGetClassFromFieldType getClassFromFieldType;
+		public readonly IImplementsSameInterfaceUsecase implementsSameInterfaceUsecase;
+		private readonly IHasFoundOtherClassFromFieldTypeUsecase hasFoundOtherClassFromFieldTypeUsecase;
 
 		public DetectProxyUsecase(
-			ICheckForSameInterfaceImplementation checkForSameInterfaceImplementation,
-			IGetClassFromFieldType getClassFromFieldType
+			IImplementsSameInterfaceUsecase implementsSameInterfaceUsecase,
+			IHasFoundOtherClassFromFieldTypeUsecase hasFoundOtherClassFromFieldTypeUsecase
 		) {
-			this.checkForSameInterfaceImplementation = checkForSameInterfaceImplementation;
-			this.getClassFromFieldType = getClassFromFieldType;
+			this.implementsSameInterfaceUsecase = implementsSameInterfaceUsecase;
+			this.hasFoundOtherClassFromFieldTypeUsecase = hasFoundOtherClassFromFieldTypeUsecase;
 		}
 		public string PatternName => "Proxy";
 			
@@ -28,8 +28,8 @@ namespace VPA.Usecases.Detectors
 			{
 				foreach (FieldNode fieldNode in classNode.Children.OfTypeWithAccessModifier<FieldNode>(AccessModifierEnum.Private))
 				{
-					if (this.getClassFromFieldType.Execute(project.ClassNodes, fieldNode, classNode, out ClassNode foundClassNode) &&
-						this.checkForSameInterfaceImplementation.Execute(project.InterfaceNodes, classNode, foundClassNode, out InterfaceNode foundInterfaceNode))
+					if (hasFoundOtherClassFromFieldTypeUsecase.Execute(project.ClassNodes, fieldNode, classNode, out ClassNode foundClassNode) &&
+						implementsSameInterfaceUsecase.Execute(project.InterfaceNodes, classNode, foundClassNode, out InterfaceNode foundInterfaceNode))
 					{
 						var itemResultfoundInterface = new DetectedItem();
 						itemResultfoundInterface.MainNode = foundInterfaceNode;
