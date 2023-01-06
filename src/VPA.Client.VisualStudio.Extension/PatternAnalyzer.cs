@@ -13,7 +13,7 @@ using VPA.Usecases.Interfaces;
 namespace VPA.Client.VisualStudio.Extension
 {
 	[DiagnosticAnalyzer(LanguageNames.CSharp)]
-	public class ExampleAnalyzer : DiagnosticAnalyzer
+	public class PatternAnalyzer : DiagnosticAnalyzer
 	{
 		public const string DiagnosticId = "VPAClientVisualStudioExtension";
 
@@ -30,7 +30,7 @@ namespace VPA.Client.VisualStudio.Extension
 		private readonly IRoslynAdapter roslynAdapter;
 		private readonly IManageDesignPatternDetectionUsecase _manageDesignPatternDetection;
 
-		public ExampleAnalyzer()
+		public PatternAnalyzer()
 		{
 			//Sadly analyzers dont contain MEF so we cant use Dependency injection.
 			//We wrote our own singleton that manages the implementations.
@@ -62,22 +62,8 @@ namespace VPA.Client.VisualStudio.Extension
 
 			projectNode.ClassNodes = classResult;
 			projectNode.InterfaceNodes = interfaceResult;
-			//patternManager.UpdateTree(projectNode);
-			//projectNode.ClassNodes = result;
 			_manageDesignPatternDetection.UpdateTree(projectNode);
-
 			return;
-
-			//Temporary code to show adapter is working
-			/*foreach (var classnode in projectNode.ClassNodes)
-			{
-				var test = (ImmutableArray<Location>)classnode.Location;
-				foreach (var location in test)
-				{
-					var diagnostic = Diagnostic.Create(Rule, location: location);
-					context.ReportDiagnostic(diagnostic);
-				}
-			}*/
 		}
 	}
 }
