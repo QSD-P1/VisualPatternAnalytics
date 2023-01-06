@@ -22,9 +22,17 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public void UpdateTree_ReturnsData()
 		{
-			var mockSingleton = new Mock<IDetectSingletonUsecase>();
-			var mockProjectNode = new Mock<ProjectNode>();
-			var manageDesignPatternDetectionUsecase = new ManageDesignPatternDetectionUsecase(mockSingleton.Object);
+			// Test return data
+			var mockedDetetectionResult = new DetectionResultCollection("Singleton");
+
+			// Mock singleton usecase
+			var mockSingletonUsecase = new Mock<IDetectSingletonUsecase>();
+
+			// Assign what is mocked and what it should return
+			mockSingletonUsecase.Setup(s => s.Detect(It.IsAny<ProjectNode>())).ReturnsAsync(mockedDetetectionResult);
+
+			// Give the mock in the constructor
+			var manageDesignPatternDetectionUsecase = new ManageDesignPatternDetectionUsecase(mockSingletonUsecase.Object);
 
 			DesignPatternsChangedEventArgs result = null;
 			object eventSender = null;
@@ -38,7 +46,7 @@ namespace VPA.Usecases.Tests
 				};
 
 			// Raise event
-			Assert.Raises<DesignPatternsChangedEventArgs>(e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent += e, e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent -= e, () => manageDesignPatternDetectionUsecase.UpdateTree(mockProjectNode.Object));
+			Assert.Raises<DesignPatternsChangedEventArgs>(e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent += e, e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent -= e, () => manageDesignPatternDetectionUsecase.UpdateTree(new ProjectNode()));
 
 			// Check if result is not null and has the correct type
 			Assert.NotNull(result);
