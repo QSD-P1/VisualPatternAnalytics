@@ -13,10 +13,10 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public void UpdateTree_Invokes_DesignPatternsChangedEvent()
 		{
-			var mockSingleton = new Mock<IDetectSingletonUsecase>();
-			var mockProjectNode = new Mock<ProjectNode>();
-			var manageDesignPatternDetectionUsecase = new ManageDesignPatternDetectionUsecase(mockSingleton.Object);
-			Assert.Raises<DesignPatternsChangedEventArgs>(e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent += e, e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent -= e, () => manageDesignPatternDetectionUsecase.UpdateTree(mockProjectNode.Object));
+			// Mock singleton usecase
+			var mockSingletonUsecase = new Mock<IDetectSingletonUsecase>();
+			var manageDesignPatternDetectionUsecase = new ManageDesignPatternDetectionUsecase(mockSingletonUsecase.Object);
+			Assert.Raises<DesignPatternsChangedEventArgs>(e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent += e, e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent -= e, () => manageDesignPatternDetectionUsecase.UpdateTree(new ProjectNode()));
 		}
 
 		[Fact]
