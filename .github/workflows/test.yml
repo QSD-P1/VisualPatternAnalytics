@@ -62,7 +62,7 @@ jobs:
         working-directory: ./src
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"QSD-P1_VisualPatternAnalytics" /o:"qsd-p1" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
-          msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release
+          msbuild /nologo /noconsolelogger "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release
           dotnet dotcover test --dcReportType=HTML
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
   build:
@@ -84,7 +84,7 @@ jobs:
       working-directory: ./src
 
     - name: Build
-      run: msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release -m
+      run: msbuild /nologo /noconsolelogger "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release -m
       working-directory: ./src
 
     - name: Setup VSTest
