@@ -50,6 +50,9 @@ jobs:
         run: nuget restore "Visual Pattern Analytics.sln"
         working-directory: ./src
 
+      - name: Setup VSTest
+        uses: darenm/Setup-VSTest@v1
+
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -59,6 +62,7 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"QSD-P1_VisualPatternAnalytics" /o:"qsd-p1" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           msbuild "Visual Pattern Analytics.sln" -t:rebuild -verbosity:diag -property:Configuration=Release -m
+          vstest.console.exe .\**\bin\Release\net6.0\*.Tests.dll /EnableCodeCoverage
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
   build:
     runs-on: windows-latest
@@ -86,7 +90,7 @@ jobs:
       uses: darenm/Setup-VSTest@v1
 
     - name: Run Tests
-      run: vstest.console.exe .\**\bin\Release\net6.0\*.Tests.dll
+      run: vstest.console.exe .\**\bin\Release\net6.0\*.Tests.dll /EnableCodeCoverage
       working-directory: ./src
       
     - name: Upload VSIX bestand
