@@ -9,9 +9,13 @@ namespace VPA.Usecases.Manager
 		private static List<IDetectUsecase> _detectors = new List<IDetectUsecase>();
 		public event EventHandler<DesignPatternsChangedEventArgs> DesignPatternsChangedEvent;
 
-		public ManageDesignPatternDetectionUsecase(IDetectSingletonUsecase detectSingletonUsecase, IDetectProxyUsecase detectProxyUsecase)
+		public ManageDesignPatternDetectionUsecase(
+			IDetectSingletonUsecase detectSingletonUsecase, 
+			IDetectCompositeUsecase detectCompositeUsecase,
+            IDetectProxyUsecase detectProxyUsecase)
 		{
 			_detectors.Add(detectSingletonUsecase);
+			_detectors.Add(detectCompositeUsecase);
 			_detectors.Add(detectProxyUsecase);
 		}
 
@@ -31,7 +35,7 @@ namespace VPA.Usecases.Manager
 				}
 			}
 
-			DesignPatternsChangedEvent.Invoke(this, new DesignPatternsChangedEventArgs(result));
+			DesignPatternsChangedEvent?.Invoke(this, new DesignPatternsChangedEventArgs(result));
 		}
 	}
 }

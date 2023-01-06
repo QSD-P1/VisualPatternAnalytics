@@ -15,7 +15,8 @@ namespace VPA.Usecases.Tests
 			// Mock usecases
 			var mockProxyUsecase = new Mock<IDetectProxyUsecase>();
 			var mockSingletonUsecase = new Mock<IDetectSingletonUsecase>();
-			var manageDesignPatternDetectionUsecase = new ManageDesignPatternDetectionUsecase(mockSingletonUsecase.Object, mockProxyUsecase.Object);
+			var mockCompositeUsecase = new Mock<IDetectCompositeUsecase>();
+			var manageDesignPatternDetectionUsecase = new ManageDesignPatternDetectionUsecase(mockSingletonUsecase.Object, mockCompositeUsecase.Object, mockProxyUsecase.Object);
 			Assert.Raises<DesignPatternsChangedEventArgs>(e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent += e, e => manageDesignPatternDetectionUsecase.DesignPatternsChangedEvent -= e, () => manageDesignPatternDetectionUsecase.UpdateTree(new ProjectNode()));
 		}
 
@@ -25,15 +26,16 @@ namespace VPA.Usecases.Tests
 			// Test return data
 			var mockedDetetectionResult = new DetectionResultCollection("Singleton");
 
-			// Mock singleton usecase
+			// Mock usecases
 			var mockSingletonUsecase = new Mock<IDetectSingletonUsecase>();
+			var mockCompositeUsecase = new Mock<IDetectCompositeUsecase>();
 			var mockProxyUsecase = new Mock<IDetectProxyUsecase>();
 
 			// Assign what is mocked and what it should return
 			mockSingletonUsecase.Setup(s => s.Detect(It.IsAny<ProjectNode>())).ReturnsAsync(mockedDetetectionResult);
 
 			// Give the mock in the constructor
-			var manageDesignPatternDetectionUsecase = new ManageDesignPatternDetectionUsecase(mockSingletonUsecase.Object, mockProxyUsecase.Object);
+			var manageDesignPatternDetectionUsecase = new ManageDesignPatternDetectionUsecase(mockSingletonUsecase.Object, mockCompositeUsecase.Object, mockProxyUsecase.Object);
 
 			DesignPatternsChangedEventArgs result = null;
 			object eventSender = null;

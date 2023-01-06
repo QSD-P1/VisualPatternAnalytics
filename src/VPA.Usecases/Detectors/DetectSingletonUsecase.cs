@@ -14,7 +14,7 @@ namespace VPA.Usecases.Detectors
 
 		public string PatternName => "Singleton";
 
-		public async Task<DetectionResultCollection> Detect(ProjectNode project)
+		public async Task<DetectionResultCollection> Detect(ProjectNode projectNode)
 		{
 			var collection = new DetectionResultCollection(PatternName);
 
@@ -26,7 +26,7 @@ namespace VPA.Usecases.Detectors
 				}
 			};
 
-			foreach (ClassNode classNode in project.ClassNodes)
+			foreach (ClassNode classNode in projectNode.ClassNodes)
 			{
 				// Skip class because no constructors means that it has a single public constructor
 				if (!classNode.Children.OfType<ConstructorNode>().Any()) continue;

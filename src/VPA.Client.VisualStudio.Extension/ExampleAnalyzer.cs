@@ -66,6 +66,8 @@ namespace VPA.Client.VisualStudio.Extension
 			//projectNode.ClassNodes = result;
 			_manageDesignPatternDetection.UpdateTree(projectNode);
 
+			return;
+
 			//Temporary code to show adapter is working
 			/*foreach (var classnode in projectNode.ClassNodes)
 			{
