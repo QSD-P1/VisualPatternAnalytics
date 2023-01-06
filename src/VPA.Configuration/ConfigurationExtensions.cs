@@ -61,6 +61,7 @@ namespace VPA.Configuration
 			services.RegisterTransient<IGetClassFromFieldType, GetClassFromFieldType>();
 			services.RegisterTransient<ICheckForSameInterfaceImplementation, CheckForSameInterfaceImplementation>();
 			services.RegisterSingleton<IPatternManagerUsecase, PatternManagerUsecase>();
+			services.RegisterSingleton<IManageDesignPatternDetectionUsecase, ManageDesignPatternDetectionUsecase>();
 			return services;
 		}
 
