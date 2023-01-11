@@ -1,20 +1,31 @@
 ﻿using VPA.Configuration;
 using VPA.Domain.Enums;
 using VPA.Domain.Models;
+using VPA.Usecases.DetectionHelpers;
+using VPA.Usecases.Detectors;
 using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.Tests
 {
 	public class DetectSingletonUsecaseTests
 	{
+		private readonly DetectSingletonUsecase _detectSingletonUsecase;
+
+		public DetectSingletonUsecaseTests()
+		{
+			_detectSingletonUsecase = new DetectSingletonUsecase(
+				new AllOfTypeHasAccessModifierUsecase(),
+				new ClassHasPrivateStaticFieldWithOwnTypeUsecase(),
+				new HasSameClassReturnTypeWithKeywordsUsecase()
+				);
+		}
+
 		[Fact]
 		public async Task SingletonDetector_DoesNotThrowWhenNothingCanBeDetected()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectSingletonUsecase>();
 			var projectNode = new ProjectNode();
 
-			var exception = await Record.ExceptionAsync(() => detector.Detect(projectNode));
+			var exception = await Record.ExceptionAsync(() => _detectSingletonUsecase.Detect(projectNode));
 
 			Assert.Null(exception);
 		}
@@ -22,9 +33,6 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task SingletonDetector_DetectsPattern()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectSingletonUsecase>();
-
 			var className = "TestClass";
 
 			var constructorNode = new ConstructorNode()
@@ -63,7 +71,7 @@ namespace VPA.Usecases.Tests
 				}
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await _detectSingletonUsecase.Detect(projectNode);
 
 			Assert.True(result.Results.Any());
 		}
@@ -71,9 +79,6 @@ namespace VPA.Usecases.Tests
 		[Fact]
 		public async Task SingletonDetector_DoesNotDetectPattern()
 		{
-			var config = DefaultConfiguration.GetInstance();
-			var detector = config.GetService<IDetectSingletonUsecase>();
-
 			var className = "TestClass";
 
 			var constructorNode = new ConstructorNode()
@@ -111,7 +116,7 @@ namespace VPA.Usecases.Tests
 				}
 			};
 
-			var result = await detector.Detect(projectNode);
+			var result = await _detectSingletonUsecase.Detect(projectNode);
 
 			Assert.True(!result.Results.Any());
 		}

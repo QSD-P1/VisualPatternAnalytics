@@ -1,11 +1,19 @@
 ﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
+using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.Tests.DetectionHelpers
 {
-	public class FieldHelperTests
+	public class ClassHasPrivateStaticFieldWithOwnTypeUsecaseTests
 	{
+		private readonly IClassHasPrivateStaticFieldWithOwnTypeUsecase _usecase;
+
+		public ClassHasPrivateStaticFieldWithOwnTypeUsecaseTests()
+		{
+			_usecase = new ClassHasPrivateStaticFieldWithOwnTypeUsecase();
+		}
+
 		[Fact]
 		public void ClassHasPublicStaticFieldWithOwnType_ShouldReturnTrue()
 		{
@@ -27,7 +35,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 				}
 			};
 
-			var result = FieldHelper.ClassHasPrivateStaticFieldWithOwnType(classNode, out var leaf);
+			var result = _usecase.Execute(classNode, out var leaf);
 
 			Assert.True(result && leaf != null);
 		}
@@ -53,7 +61,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 				}
 			};
 
-			var result = FieldHelper.ClassHasPrivateStaticFieldWithOwnType(classNode, out var leaf);
+			var result = _usecase.Execute(classNode, out var leaf);
 
 			Assert.False(result && leaf == null);
 		}

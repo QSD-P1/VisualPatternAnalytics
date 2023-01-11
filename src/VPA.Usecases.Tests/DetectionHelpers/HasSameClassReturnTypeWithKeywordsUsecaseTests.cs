@@ -1,11 +1,19 @@
 ﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
+using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.Tests.DetectionHelpers
 {
-	public class MethodHelperTests
+	public class HasSameClassReturnTypeWithKeywordsUsecaseTests
 	{
+		private readonly IHasSameClassReturnTypeWithKeywordsUsecase _usecase;
+
+		public HasSameClassReturnTypeWithKeywordsUsecaseTests()
+		{
+			_usecase = new HasSameClassReturnTypeWithKeywordsUsecase();
+		}
+
 		[Fact]
 		public void HasSameClassReturnTypeAndModifiers_WithValidKeywords_ShouldReturnTrue()
 		{
@@ -34,7 +42,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 			};
 
 			// Act
-			var result = MethodHelper.HasSameClassReturnTypeWithKeywords(classNode, publicStaticKeywords, out var matchedResult);
+			var result = _usecase.Execute(classNode, publicStaticKeywords, out var matchedResult);
 
 			// Assert
 			Assert.True(result);
@@ -70,7 +78,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 			};
 
 			// Act
-			var result = MethodHelper.HasSameClassReturnTypeWithKeywords(classNode, publicStaticKeywords, out var matchedResult);
+			var result = _usecase.Execute(classNode, publicStaticKeywords, out var matchedResult);
 
 			// Assert
 			Assert.Null(matchedResult);

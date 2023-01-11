@@ -1,13 +1,14 @@
 ﻿using VPA.Domain.Enums;
 using VPA.Domain.Models;
+using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.DetectionHelpers
 {
-	public static class AccessModifierHelper
+	public class AllOfTypeHasAccessModifierUsecase : IAllOfTypeHasAccessModifierUsecase
 	{
-		public static bool AllOfTypeHasAccessModifier<T>(IEnumerable<BaseLeaf> nodes, AccessModifierEnum accessModifier, out List<T>? matchedLeaves) where T : BaseLeaf
+		public bool Execute<T>(IEnumerable<BaseLeaf> nodes, AccessModifierEnum accessModifier, out List<T>? matchedLeaves)
+			where T : BaseLeaf
 		{
-			// initialize the out param
 			matchedLeaves = null;
 
 			// Get only the nodes of the correct type
