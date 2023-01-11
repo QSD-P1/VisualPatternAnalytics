@@ -33,8 +33,6 @@ namespace VPA.Usecases.Detectors
 					{
 						var itemResultfoundInterface = new DetectedItem();
 						itemResultfoundInterface.MainNode = foundInterfaceNode;
-						itemResultfoundInterface.Children.Add(classNode);
-						itemResultfoundInterface.Children.Add(foundClassNode);
 
 						var itemResultClass = new DetectedItem();
 						itemResultClass.MainNode = classNode;
