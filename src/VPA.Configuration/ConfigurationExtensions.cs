@@ -79,6 +79,9 @@ namespace VPA.Configuration
 			services.RegisterTransient<IHasFoundOtherClassFromFieldTypeUsecase, HasFoundOtherClassFromFieldTypeUsecase>();
 			services.RegisterTransient<IImplementsSameInterfaceUsecase, ImplementsSameInterfaceUsecase>();
 			services.RegisterSingleton<IManageDesignPatternDetectionUsecase, ManageDesignPatternDetectionUsecase>();
+			services.RegisterSingleton<IAllOfTypeHasAccessModifierUsecase, AllOfTypeHasAccessModifierUsecase>();
+			services.RegisterSingleton<IClassHasPrivateStaticFieldWithOwnTypeUsecase, ClassHasPrivateStaticFieldWithOwnTypeUsecase>();
+			services.RegisterSingleton<IHasSameClassReturnTypeWithKeywordsUsecase, HasSameClassReturnTypeWithKeywordsUsecase>();
 			return services;
 		}
 

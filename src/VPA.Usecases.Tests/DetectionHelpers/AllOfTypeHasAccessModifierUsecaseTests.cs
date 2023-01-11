@@ -1,11 +1,19 @@
 using VPA.Domain.Models;
 using VPA.Usecases.DetectionHelpers;
 using VPA.Domain.Enums;
+using VPA.Usecases.Interfaces;
 
 namespace VPA.Usecases.Tests.DetectionHelpers
 {
-	public class AccessModifierHelperTests
+	public class AllOfTypeHasAccessModifierUsecaseTests
 	{
+		private readonly IAllOfTypeHasAccessModifierUsecase _usecase;
+
+		public AllOfTypeHasAccessModifierUsecaseTests()
+		{
+			_usecase = new AllOfTypeHasAccessModifierUsecase();
+		}
+
 		[Fact]
 		public void AllOfTypeHasAccessModifier_WhenUsingPrivateConstructorsOnly_ShouldReturnTrue()
 		{
@@ -32,7 +40,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 			};
 
 			// Act
-			var result = AccessModifierHelper.AllOfTypeHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
+			var result = _usecase.Execute<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
 
 			// Assert
 			Assert.True(matchedLeaves != null && matchedLeaves.Any());
@@ -65,7 +73,7 @@ namespace VPA.Usecases.Tests.DetectionHelpers
 			};
 
 			// Act
-			var result = AccessModifierHelper.AllOfTypeHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
+			var result = _usecase.Execute<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var matchedLeaves);
 
 			// Assert
 			Assert.Null(matchedLeaves);

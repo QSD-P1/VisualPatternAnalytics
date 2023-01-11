@@ -7,8 +7,18 @@ namespace VPA.Usecases.Detectors
 {
 	public class DetectSingletonUsecase : IDetectSingletonUsecase
 	{
-		public DetectSingletonUsecase()
+		private readonly IAllOfTypeHasAccessModifierUsecase _allOfTypeHasAccessModifierUsecase;
+		private readonly IClassHasPrivateStaticFieldWithOwnTypeUsecase _classHasPrivateStaticFieldWithOwnTypeUsecase;
+		private readonly IHasSameClassReturnTypeWithKeywordsUsecase _hasSameClassReturnTypeWithKeywordsUsecase;
+
+		public DetectSingletonUsecase(
+			IAllOfTypeHasAccessModifierUsecase allOfTypeHasAccessModifierUsecase,
+			IClassHasPrivateStaticFieldWithOwnTypeUsecase classHasPrivateStaticFieldWithOwnTypeUsecase,
+			IHasSameClassReturnTypeWithKeywordsUsecase hasSameClassReturnTypeWithKeywordsUsecase)
 		{
+			_allOfTypeHasAccessModifierUsecase = allOfTypeHasAccessModifierUsecase;
+			_classHasPrivateStaticFieldWithOwnTypeUsecase = classHasPrivateStaticFieldWithOwnTypeUsecase;
+			_hasSameClassReturnTypeWithKeywordsUsecase = hasSameClassReturnTypeWithKeywordsUsecase;
 		}
 
 		public string PatternName => "Singleton";
@@ -35,9 +45,9 @@ namespace VPA.Usecases.Detectors
 				var itemResult = new DetectedItem();
 
 				if (
-					   AccessModifierHelper.AllOfTypeHasAccessModifier<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves)
-					&& FieldHelper.ClassHasPrivateStaticFieldWithOwnType(classNode, out var fieldLeaf)
-					&& MethodHelper.HasSameClassReturnTypeWithKeywords(classNode, publicStaticKeywords, out var methodLeaf)
+					   _allOfTypeHasAccessModifierUsecase.Execute<ConstructorNode>(classNode.Children, AccessModifierEnum.Private, out var leaves)
+					&& _classHasPrivateStaticFieldWithOwnTypeUsecase.Execute(classNode, out var fieldLeaf)
+					&& _hasSameClassReturnTypeWithKeywordsUsecase.Execute(classNode, publicStaticKeywords, out var methodLeaf)
 					)
 				{
 					itemResult.MainNode = classNode;
