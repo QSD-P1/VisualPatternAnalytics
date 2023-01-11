@@ -4,13 +4,13 @@
 	{
 		private static DefaultConfiguration? defaultConfiguration;
 
-		private readonly Dictionary<Type, ServiceConfiguration> _Services = new();
+		private readonly Dictionary<Type, ServiceConfiguration> services = new();
 
-		private static Dictionary<Type, object> PresistantServices = new();
+		private readonly Dictionary<Type, object> presistantServices = new();
 		private DefaultConfiguration()
 		{
-			_Services.RegisterUsecases();
-			_Services.RegisterAdapters();
+			services.RegisterUsecases();
+			services.RegisterAdapters();
 		}
 
 		/// <summary>
@@ -19,14 +19,25 @@
 		/// <returns>Singleton DefaultConfiguration</returns>
 		public static DefaultConfiguration GetInstance() => defaultConfiguration ??= new DefaultConfiguration();
 
+		/// <summary>
+		/// Gets the requestes service matching the given type
+		/// </summary>
+		/// <typeparam name="T">The type of service to get</typeparam>
+		/// <returns>The service corresponding to the given type</returns>
 		public T GetService<T>() where T : class
 		{
 			return (T)GetService(typeof(T));
 		}
 
+		/// <summary>
+		/// Get the given service
+		/// </summary>
+		/// <param name="T">The type of service to get</param>
+		/// <returns>The service corresponding to the given type</returns>
+		/// <exception cref="ArgumentException"></exception>
 		private object GetService(Type T)
 		{
-			if (_Services.TryGetValue(T, out ServiceConfiguration serviceConfiguration) is false ||
+			if (services.TryGetValue(T, out ServiceConfiguration serviceConfiguration) is false ||
 				serviceConfiguration.Type is null)
 			{
 				throw new ArgumentException("Can't initialize given type. Make sure it is added to the config list");
@@ -35,7 +46,7 @@
 			object? serviceToReturn = null;
 			if (serviceConfiguration.IsPresistent)
 			{
-				PresistantServices.TryGetValue(serviceConfiguration.Type, out serviceToReturn);
+				presistantServices.TryGetValue(serviceConfiguration.Type, out serviceToReturn);
 			}
 
 			if (serviceToReturn is null)
@@ -44,14 +55,21 @@
 
 				if (serviceConfiguration.IsPresistent)
 				{
-					PresistantServices.Add(serviceConfiguration.Type, serviceToReturn);
+					presistantServices.Add(serviceConfiguration.Type, serviceToReturn);
 				}
 			}
 
 			return serviceToReturn;
 		}
 
-		private object? GenerateService(Type T, ServiceConfiguration serviceConfiguration)
+		/// <summary>
+		/// Generate the requested service with the given ServiceConfiguration
+		/// </summary>
+		/// <param name="T">The type to generate</param>
+		/// <param name="serviceConfiguration">The configuration to use in the generation</param>
+		/// <returns>The generated type as object</returns>
+		/// <exception cref="ArgumentException"></exception>
+		private object GenerateService(Type T, ServiceConfiguration serviceConfiguration)
 		{
 			var constructor = serviceConfiguration.Type.GetConstructors()[0];
 			var parameters = constructor.GetParameters();

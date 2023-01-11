@@ -35,6 +35,14 @@ namespace VPA.Configuration
 			RegisterService<I, C>(services, true);
 		}
 
+		/// <summary>
+		/// Register the given service to servie dictionary
+		/// </summary>
+		/// <typeparam name="I">The interface of the service to register</typeparam>
+		/// <typeparam name="C">The type of the service to register</typeparam>
+		/// <param name="services">The dictionary of registered services</param>
+		/// <param name="isPresistent">Bool indicating if the service is presistant (singleton)</param>
+		/// <exception cref="ArgumentException"></exception>
 		private static void RegisterService<I, C>(Dictionary<Type, ServiceConfiguration> services, bool isPresistent)
 			where I : class
 			where C : class
@@ -54,6 +62,11 @@ namespace VPA.Configuration
 			services.Add(typeof(I), newConfig);
 		}
 
+		/// <summary>
+		/// Method to register all needed Usecases in the solution
+		/// </summary>
+		/// <param name="services">Dictionary of regsitered services</param>
+		/// <returns>Dictionary of registerd services including the usecases</returns>
 		public static Dictionary<Type, ServiceConfiguration> RegisterUsecases(this Dictionary<Type, ServiceConfiguration> services)
 		{
 			services.RegisterTransient<IDetectSingletonUsecase, DetectSingletonUsecase>();
@@ -69,6 +82,11 @@ namespace VPA.Configuration
 			return services;
 		}
 
+		/// <summary>
+		/// Method to register all adapters in the solution
+		/// </summary>
+		/// <param name="services">Dictionary of registerd services</param>
+		/// <returns>Dictionary of registerd services including the adapters</returns>
 		public static Dictionary<Type, ServiceConfiguration> RegisterAdapters(this Dictionary<Type, ServiceConfiguration> services)
 		{
 			services.RegisterTransient<IRoslynAdapter, RoslynAdapter>();
